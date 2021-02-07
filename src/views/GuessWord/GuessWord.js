@@ -1,5 +1,6 @@
 import React from 'react';
 import AppContext from '../../context';
+import styles from './GuessWord.module.scss';
 import Input from '../../components/Input/Input';
 //import Button from '../../components/Button/Button';
 //{this.state.words.map((item, index) => <h5 key={index}>{item.english}</h5>)}

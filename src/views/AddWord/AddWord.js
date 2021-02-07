@@ -1,5 +1,5 @@
 import React from 'react';
-
+import styles from './AddWord.module.scss';
 
 const AddWord = () => (
     <>
