@@ -1,0 +1,16 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin-right: 30px;
+
+    &Link {
+        text-decoration: none;
+        color: white;
+    }
+}

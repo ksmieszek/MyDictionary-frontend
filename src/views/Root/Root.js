@@ -18,26 +18,45 @@ class Root extends React.Component {
 
     changeNumber = () => {
         this.setState({
-            randomNumber: randomNumber(0, words.length),
+            randomNumber: randomNumber(0, this.state.words.length),
         })
     }
 
+    addWord = (e, externalState) => {
+        e.preventDefault();
+
+        this.setState((prevState) => ({
+            words: [...prevState.words, { english: externalState.english, polish: externalState.polish}]
+        }))
+    }
+
     render() {
-        const context = {
+
+        const guessWordContext = {
             pairOfWords: this.state.words[this.state.randomNumber],
             changeNumber: this.changeNumber,
+        }
+        const addWordContext = {
+            addWord: this.addWord,
         }
 
         return (
             <div className="wrapper">
                 <BrowserRouter>
-                    <AppContext.Provider value={context}>
-                        <Header />
+                    <Header />
+
+                    <AppContext.Provider value={guessWordContext}>
                         <Switch>
                             <Route path="/guess/word" component={GuessWord} />
+                        </Switch>
+                    </AppContext.Provider>
+
+                    <AppContext.Provider value={addWordContext}>
+                        <Switch>
                             <Route path="/add/word" component={AddWord} />
                         </Switch>
                     </AppContext.Provider>
+
                 </BrowserRouter>
             </div>
         );
