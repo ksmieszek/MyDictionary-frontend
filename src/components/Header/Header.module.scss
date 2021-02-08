@@ -1,6 +1,19 @@
 .wrapper {
+    margin: 30px 40px 100px 40px;
+}
+
+.listWrapper {
     display: flex;
-    align-items: center;
+    margin-left: 90px;
+}
+
+.logo {
+    color: white;
+    text-decoration: none;
+}
+
+.nav{
+    display: flex;
 }
 
 .navItem {
@@ -12,5 +25,6 @@
     &Link {
         text-decoration: none;
         color: white;
+        font-size: .8em;
     }
 }
