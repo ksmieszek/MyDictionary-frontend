@@ -19,6 +19,11 @@ const Header = () => (
             Add word
           </Link>
         </li>
+        <li className={styles.navItem}>
+          <Link className={styles.navItemLink} to="/show/words">
+            All words
+          </Link>
+        </li>
       </ul>
     </nav>
   </header>

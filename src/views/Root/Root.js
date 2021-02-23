@@ -5,6 +5,7 @@ import store from "../../store/index";
 import "./index.css";
 import GuessWord from "../GuessWord/GuessWord";
 import AddWords from "../AddWords/AddWords";
+import WordsPage from "../WordsPage/WordsPage";
 import Header from "../../components/Header/Header";
 
 //Almost before we knew it, we had left the ground.
@@ -19,6 +20,7 @@ class Root extends React.Component {
             <Switch>
               <Route path="/guess/word" component={GuessWord} />
               <Route path="/add/words" component={AddWords} />
+              <Route path="/show/words" component={WordsPage} />
             </Switch>
           </BrowserRouter>
         </div>
