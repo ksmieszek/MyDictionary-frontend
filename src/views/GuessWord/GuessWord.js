@@ -1,5 +1,5 @@
 import React from "react";
-import { connect } from "react-redux";
+import withUserWords from "../../hoc/withUserWords";
 import { randomNumber } from "../../utilities/Utilities";
 import styles from "./GuessWord.module.scss";
 import Input from "../../components/Input/Input";
@@ -46,34 +46,34 @@ class GuessWords extends React.Component {
 
   render() {
     const words = this.props.words;
+
     return (
       <div className={styles.wrapper}>
-        <form
-          className={styles.form}
-          autoComplete="off"
-          onSubmit={(e) => this.checkWord(e)}
-        >
-          <div className={styles.row}>
-            <div className={styles.wordToGuess}>
-              {words[this.state.randomNumber].english}
+        {words.length !== 0 ? (
+          <form
+            className={styles.form}
+            autoComplete="off"
+            onSubmit={(e) => this.checkWord(e)}
+          >
+            <div className={styles.row}>
+              <div className={styles.wordToGuess}>
+                {words[this.state.randomNumber].english}
+              </div>
+              <div className={styles.separator}>-</div>
+              <Input
+                placeholder="enter word"
+                value={this.state.Inputvalue}
+                onChange={this.handleChange}
+              />
             </div>
-            <div className={styles.separator}>-</div>
-            <Input
-              placeholder="enter word"
-              value={this.state.Inputvalue}
-              onChange={this.handleChange}
-            />
-          </div>
-          <Button>{this.state.isCorrect ? "next" : "check"}</Button>
-        </form>
+            <Button>{this.state.isCorrect ? "next" : "check"}</Button>
+          </form>
+        ) : (
+          <h2>theres no content yet</h2>
+        )}
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  const { words } = state;
-  return { words };
-};
-
-export default connect(mapStateToProps)(GuessWords);
+export default withUserWords(GuessWords);
