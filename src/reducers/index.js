@@ -19,14 +19,21 @@ const rootReducer = (state = {}, action) => {
         ...state,
         words: [...state.words, action.payload.data],
       };
-    case "FETCH_REQUEST":
+    case "FETCH_WORDS_REQUEST":
       return {
         ...state,
       };
-    case "FETCH_SUCCESS":
+    case "FETCH_WORDS_SUCCESS":
       return {
         ...state,
         words: [...action.payload.data],
+      };
+    case "DELETE_WORDS_SUCCESS":
+      return {
+        ...state,
+        words: [
+          ...state.words.filter((item) => item._id !== action.payload.wordsId),
+        ],
       };
 
     default:

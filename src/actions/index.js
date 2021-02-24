@@ -26,7 +26,7 @@ export const addWords = (words) => (dispatch) => {
 };
 
 export const fetchWords = () => (dispatch) => {
-  dispatch({ type: "FETCH_REQUEST" });
+  dispatch({ type: "FETCH_WORDS_REQUEST" });
 
   return axios
     .post("http://localhost:9000/api/show/words", {
@@ -34,7 +34,7 @@ export const fetchWords = () => (dispatch) => {
     })
     .then(({ data }) => {
       dispatch({
-        type: "FETCH_SUCCESS",
+        type: "FETCH_WORDS_SUCCESS",
         payload: {
           data,
         },
@@ -42,5 +42,24 @@ export const fetchWords = () => (dispatch) => {
     })
     .catch((err) => {
       dispatch({ type: "FETCH_FAILURE" });
+    });
+};
+
+export const deleteWords = (wordsId) => (dispatch) => {
+  dispatch({ type: "DELETE_WORDS_REQUEST" });
+
+  return axios
+    .delete(`http://localhost:9000/api/delete/words/${wordsId}`)
+    .then(() => {
+      dispatch({
+        type: "DELETE_WORDS_SUCCESS",
+        payload: {
+          wordsId,
+        },
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({ type: "DELETE_WORDS_FAILURE" });
     });
 };

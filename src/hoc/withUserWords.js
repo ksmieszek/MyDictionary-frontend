@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { fetchWords } from "../actions/index";
 import { connect } from "react-redux";
 
-const withUserWords = (ChildComponent) => {
+const withUserWords = (ChildComponent, props) => {
   class HOC extends Component {
     componentDidMount() {
       if (this.props.words.length === 0) {
@@ -13,7 +13,7 @@ const withUserWords = (ChildComponent) => {
 
     render() {
       const { words } = this.props;
-      return <ChildComponent {...{ words }} />;
+      return <ChildComponent {...props} {...{ words }} />;
     }
   }
 
