@@ -1,4 +1,5 @@
 import React from "react";
+import withReduxState from "../../hoc/withReduxState";
 import { connect } from "react-redux";
 import { addWords } from "../../actions/index";
 import styles from "./AddWords.module.scss";
@@ -7,8 +8,9 @@ import Button from "../../components/Button/Button";
 
 class AddWords extends React.Component {
   state = {
-    english: "",
-    polish: "",
+    firstWord: "",
+    secondWord: "",
+    newLanguageName: "",
   };
 
   handleChange = (e) => {
@@ -18,46 +20,48 @@ class AddWords extends React.Component {
   };
 
   render() {
-    const addWordsAction = this.props.addWordsAction;
-
+    const { addWordsAction, activeLanguageFirst, activeLanguageSecond, changeActiveLanguage } = this.props;
     return (
       <div className={styles.wrapper}>
-        <form
-          className={styles.form}
-          onSubmit={(e) => {
-            e.preventDefault();
-            this.setState({
-              english: "",
-              polish: "",
-            });
-            addWordsAction({
-              english: this.state.english,
-              polish: this.state.polish,
-            });
-          }}
-        >
-          <div className={styles.keys}>
-            <div className={styles.key}>English</div>
-            <div className={styles.key}>Polish</div>
-          </div>
-          <div className={styles.values}>
-            <div className={styles.value}>
-              <Input
-                name="english"
-                value={this.state.english}
-                onChange={(e) => this.handleChange(e)}
-              />
+        <h3>Add Words</h3>
+        {this.props.languages.length > 1 ? (
+          <form
+            className={styles.form}
+            onSubmit={(e) => {
+              e.preventDefault();
+              this.setState({
+                firstWord: "",
+                secondWord: "",
+              });
+              addWordsAction({
+                firstWord: this.state.firstWord,
+                secondWord: this.state.secondWord,
+                firstLanguage: activeLanguageFirst.name,
+                secondLanguage: activeLanguageSecond.name,
+              });
+            }}
+          >
+            <div className={styles.keys}>
+              <div className={styles.key}>
+                <select className="chooseLanguage" id="activeLanguageFirst" onChange={changeActiveLanguage}></select>
+              </div>
+              <div className={styles.key}>
+                <select className="chooseLanguage" id="activeLanguageSecond" onChange={changeActiveLanguage}></select>
+              </div>
             </div>
-            <div className={styles.value}>
-              <Input
-                name="polish"
-                value={this.state.polish}
-                onChange={(e) => this.handleChange(e)}
-              />
+            <div className={styles.values}>
+              <div className={styles.value}>
+                <Input name="firstWord" value={this.state.firstWord} onChange={(e) => this.handleChange(e)} />
+              </div>
+              <div className={styles.value}>
+                <Input name="secondWord" value={this.state.secondWord} onChange={(e) => this.handleChange(e)} />
+              </div>
             </div>
-          </div>
-          <Button>add</Button>
-        </form>
+            <Button>add</Button>
+          </form>
+        ) : (
+          <h2>add languages first</h2>
+        )}
       </div>
     );
   }
@@ -67,4 +71,4 @@ const mapDispatchToProps = (dispatch) => ({
   addWordsAction: (words) => dispatch(addWords(words)),
 });
 
-export default connect(null, mapDispatchToProps)(AddWords);
+export default withReduxState(connect(null, mapDispatchToProps)(AddWords));

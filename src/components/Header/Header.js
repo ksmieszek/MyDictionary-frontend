@@ -24,6 +24,11 @@ const Header = () => (
             All words
           </Link>
         </li>
+        <li className={styles.navItem}>
+          <Link className={styles.navItemLink} to="/languages">
+            Languages
+          </Link>
+        </li>
       </ul>
     </nav>
   </header>

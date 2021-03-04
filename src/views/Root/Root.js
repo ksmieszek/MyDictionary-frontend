@@ -6,9 +6,8 @@ import "./index.css";
 import GuessWord from "../GuessWord/GuessWord";
 import AddWords from "../AddWords/AddWords";
 import WordsPage from "../WordsPage/WordsPage";
+import Languages from "../Languages/Languages";
 import Header from "../../components/Header/Header";
-
-//Almost before we knew it, we had left the ground.
 
 class Root extends React.Component {
   render() {
@@ -21,6 +20,7 @@ class Root extends React.Component {
               <Route path="/guess/word" component={GuessWord} />
               <Route path="/add/words" component={AddWords} />
               <Route path="/show/words" component={WordsPage} />
+              <Route path="/languages" component={Languages} />
             </Switch>
           </BrowserRouter>
         </div>

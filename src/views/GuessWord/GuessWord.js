@@ -1,5 +1,5 @@
 import React from "react";
-import withUserWords from "../../hoc/withUserWords";
+import withReduxState from "../../hoc/withReduxState";
 import { randomNumber } from "../../utilities/Utilities";
 import styles from "./GuessWord.module.scss";
 import Input from "../../components/Input/Input";
@@ -9,7 +9,7 @@ class GuessWords extends React.Component {
   state = {
     Inputvalue: "",
     isCorrect: false,
-    randomNumber: randomNumber(0, this.props.words.length),
+    index: randomNumber(0, this.props.words.length),
   };
 
   handleChange = (e) => {
@@ -24,7 +24,7 @@ class GuessWords extends React.Component {
     });
   };
 
-  checkWord = (e) => {
+  isAnswerCorrect = (e) => {
     e.preventDefault();
     if (this.state.isCorrect === true) {
       this.setState({
@@ -34,10 +34,9 @@ class GuessWords extends React.Component {
       this.changeNumber();
       return;
     }
-    if (
-      this.props.words[this.state.randomNumber].polish === this.state.Inputvalue
-    ) {
-      console.log("trafiles");
+    const { words } = this.props;
+    if (words[this.state.index].secondWord === this.state.Inputvalue) {
+      console.log("correct");
       this.setState({
         isCorrect: true,
       });
@@ -45,35 +44,25 @@ class GuessWords extends React.Component {
   };
 
   render() {
-    const words = this.props.words;
+    const { words } = this.props;
 
     return (
       <div className={styles.wrapper}>
         {words.length !== 0 ? (
-          <form
-            className={styles.form}
-            autoComplete="off"
-            onSubmit={(e) => this.checkWord(e)}
-          >
+          <form className={styles.form} autoComplete="off" onSubmit={(e) => this.isAnswerCorrect(e)}>
             <div className={styles.row}>
-              <div className={styles.wordToGuess}>
-                {words[this.state.randomNumber].english}
-              </div>
+              <div className={styles.wordToGuess}>{words[this.state.randomNumber].firstWord}</div>
               <div className={styles.separator}>-</div>
-              <Input
-                placeholder="enter word"
-                value={this.state.Inputvalue}
-                onChange={this.handleChange}
-              />
+              <Input placeholder="enter word" value={this.state.Inputvalue} onChange={this.handleChange} />
             </div>
             <Button>{this.state.isCorrect ? "next" : "check"}</Button>
           </form>
         ) : (
-          <h2>theres no content yet</h2>
+          <h2>add words first</h2>
         )}
       </div>
     );
   }
 }
 
-export default withUserWords(GuessWords);
+export default withReduxState(GuessWords);
