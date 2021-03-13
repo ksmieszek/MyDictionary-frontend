@@ -15,6 +15,9 @@ import {
   ADD_LANGUAGE_SUCCESS,
   // ADD_LANGUAGE_FAILURE,
   // FETCH_ACTIVE_LANGUAGES_REQUEST,
+  // DELETE_LANGUAGE_REQUEST,
+  DELETE_LANGUAGE_SUCCESS,
+  // DELETE_LANGUAGE_FAILURE,
   FETCH_ACTIVE_LANGUAGES_SUCCESS,
   // FETCH_ACTIVE_LANGUAGES_FAILURE,
   // ADD_ACTIVE_LANGUAGE_REQUEST,
@@ -23,6 +26,9 @@ import {
   // UPDATE_ACTIVE_LANGUAGES_REQUEST,
   UPDATE_ACTIVE_LANGUAGES_SUCCESS,
   // UPDATE_ACTIVE_LANGUAGES_FAILURE,
+  // DELETE_ACTIVE_LANGUAGES_REQUEST,
+  DELETE_ACTIVE_LANGUAGES_SUCCESS,
+  // DELETE_ACTIVE_LANGUAGES_FAILURE,
 } from "../actions/index";
 
 const initialState = {
@@ -69,24 +75,55 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         languages: [...action.payload.data],
       };
-    case FETCH_ACTIVE_LANGUAGES_SUCCESS:
+    case DELETE_LANGUAGE_SUCCESS:
       return {
         ...state,
-        activeLanguageFirst: action.payload.data.find((item) => item.chosen === "activeLanguageFirst"),
-        activeLanguageSecond: action.payload.data.find((item) => item.chosen === "activeLanguageSecond"),
+        languages: [...state.languages.filter((item) => item._id !== action.payload.languageId)],
+      };
+    case FETCH_ACTIVE_LANGUAGES_SUCCESS:
+      const firstActive = action.payload.data.find((item) => item.chosen === "activeLanguageFirst");
+      const secondActive = action.payload.data.find((item) => item.chosen === "activeLanguageSecond");
+      return {
+        ...state,
+        activeLanguageFirst: firstActive !== undefined ? firstActive : {},
+        activeLanguageSecond: secondActive !== undefined ? secondActive : {},
       };
     case ADD_ACTIVE_LANGUAGE_SUCCESS:
-      return {
-        ...state,
-        activeLanguageFirst: "activeLanguageFirst" === action.payload.data.chosen ? action.payload.data : state.activeLanguageFirst,
-        selectedLanguageSecond: "activeLanguageSecond" === action.payload.data.chosen ? action.payload.data : state.activeLanguageSecond,
-      };
+      if ("activeLanguageFirst" === action.payload.data.chosen)
+        return {
+          ...state,
+          activeLanguageFirst: action.payload.data,
+        };
+      else if ("activeLanguageSecond" === action.payload.data.chosen)
+        return {
+          ...state,
+          activeLanguageSecond: action.payload.data,
+        };
+      else
+        return {
+          ...state,
+        };
     case UPDATE_ACTIVE_LANGUAGES_SUCCESS:
       return {
         ...state,
         activeLanguageFirst: state.activeLanguageFirst.chosen === action.payload.data.chosen ? action.payload.data : state.activeLanguageFirst,
         activeLanguageSecond: state.activeLanguageSecond.chosen === action.payload.data.chosen ? action.payload.data : state.activeLanguageSecond,
       };
+    case DELETE_ACTIVE_LANGUAGES_SUCCESS:
+      if (state.activeLanguageFirst._id === action.payload.activeLanguageId)
+        return {
+          ...state,
+          activeLanguageFirst: {},
+        };
+      else if (state.activeLanguageSecond._id === action.payload.activeLanguageId)
+        return {
+          ...state,
+          activeLanguageSecond: {},
+        };
+      else
+        return {
+          ...state,
+        };
 
     default:
       return state;
