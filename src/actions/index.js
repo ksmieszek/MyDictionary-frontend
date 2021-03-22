@@ -40,6 +40,16 @@ export const DELETE_ACTIVE_LANGUAGES_REQUEST = "DELETE_ACTIVE_LANGUAGES_REQUEST"
 export const DELETE_ACTIVE_LANGUAGES_SUCCESS = "DELETE_ACTIVE_LANGUAGES_SUCCESS";
 export const DELETE_ACTIVE_LANGUAGES_FAILURE = "DELETE_ACTIVE_LANGUAGES_FAILURE";
 
+export const ADD_PHOTO_REQUEST = "ADD_PHOTO_REQUEST";
+export const ADD_PHOTO_SUCCESS = "ADD_PHOTO_SUCCESS";
+export const ADD_PHOTO_FAILURE = "ADD_PHOTO_FAILURE";
+export const FETCH_PHOTO_REQUEST = "FETCH_PHOTO_REQUEST";
+export const FETCH_PHOTO_SUCCESS = "FETCH_PHOTO_SUCCESS";
+export const FETCH_PHOTO_FAILURE = "FETCH_PHOTO_FAILURE";
+export const DELETE_PHOTO_REQUEST = "DELETE_PHOTO_REQUEST";
+export const DELETE_PHOTO_SUCCESS = "DELETE_PHOTO_SUCCESS";
+export const DELETE_PHOTO_FAILURE = "DELETE_PHOTO_FAILURE";
+
 export const addWords = (words) => (dispatch) => {
   dispatch({ type: ADD_WORDS_REQUEST });
 
@@ -254,5 +264,68 @@ export const deleteActiveLanguage = (activeLanguageId) => (dispatch) => {
     .catch((err) => {
       console.log(err);
       dispatch({ type: DELETE_ACTIVE_LANGUAGES_FAILURE });
+    });
+};
+
+export const addPhoto = ({ photoSource, title, description }) => (dispatch) => {
+  dispatch({ type: ADD_PHOTO_REQUEST });
+
+  return axios
+    .post("http://localhost:9000/api/add/photo", {
+      photoSource,
+      title,
+      description,
+      userID: "604910dfee923d03a8c755f0",
+    })
+    .then(({ data }) => {
+      dispatch({
+        type: ADD_PHOTO_SUCCESS,
+        payload: {
+          data,
+        },
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({ type: ADD_PHOTO_FAILURE });
+    });
+};
+
+export const fetchPhotos = () => (dispatch) => {
+  dispatch({ type: FETCH_PHOTO_REQUEST });
+
+  return axios
+    .post("http://localhost:9000/api/show/photos", {
+      userID: "604910dfee923d03a8c755f0",
+    })
+    .then(({ data }) => {
+      dispatch({
+        type: FETCH_PHOTO_SUCCESS,
+        payload: {
+          data,
+        },
+      });
+    })
+    .catch((err) => {
+      dispatch({ type: FETCH_PHOTO_FAILURE });
+    });
+};
+
+export const deletePhoto = (photoId) => (dispatch) => {
+  dispatch({ type: DELETE_PHOTO_REQUEST });
+
+  return axios
+    .delete(`http://localhost:9000/api/delete/photo/${photoId}`)
+    .then(() => {
+      dispatch({
+        type: DELETE_PHOTO_SUCCESS,
+        payload: {
+          photoId,
+        },
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({ type: DELETE_PHOTO_FAILURE });
     });
 };

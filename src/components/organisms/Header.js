@@ -46,13 +46,16 @@ const Header = () => (
       <StyledLogo to="/">YOUr dictionary</StyledLogo>
       <StyledListWrapper>
         <StyledNavItem>
-          <StyledNavItemLink to="/show/words">Words</StyledNavItemLink>
+          <StyledNavItemLink to="/words">Words</StyledNavItemLink>
         </StyledNavItem>
         <StyledNavItem>
           <StyledNavItemLink to="/languages">Languages</StyledNavItemLink>
         </StyledNavItem>
         <StyledNavItem>
-          <StyledNavItemLink to="/guess/word">Guess word</StyledNavItemLink>
+          <StyledNavItemLink to="/quiz/words">Guess word</StyledNavItemLink>
+        </StyledNavItem>
+        <StyledNavItem>
+          <StyledNavItemLink to="/photos">Photos</StyledNavItemLink>
         </StyledNavItem>
       </StyledListWrapper>
     </StyledNav>

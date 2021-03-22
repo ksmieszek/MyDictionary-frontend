@@ -7,6 +7,8 @@ import Header from "../components/organisms/Header";
 import GuessWord from "./GuessWord";
 import Words from "./Words";
 import Languages from "./Languages";
+import Photos from "./Photos";
+import PhotoDetails from "./PhotoDetails";
 
 class Root extends Component {
   render() {
@@ -16,9 +18,11 @@ class Root extends Component {
           <BrowserRouter>
             <Header />
             <Switch>
-              <Route path="/guess/word" component={GuessWord} />
-              <Route path="/show/words" component={Words} />
+              <Route path="/quiz/words" component={GuessWord} />
+              <Route path="/words" component={Words} />
               <Route path="/languages" component={Languages} />
+              <Route exact path="/photos" component={Photos} />
+              <Route path="/photo/details/:id" component={PhotoDetails} />
             </Switch>
           </BrowserRouter>
         </MainTemplate>

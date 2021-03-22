@@ -6,10 +6,9 @@ import LanguagesPill from "./LanguagesPill";
 const LanguagesList = (props) => {
   const handleDeleteLanguage = async (languageId) => {
     const { deleteLanguageAction, deleteActiveLanguageAction, activeLanguageFirst, activeLanguageSecond } = props;
+    await deleteConnectedWordsToLanguage(languageId);
     if (activeLanguageFirst.languageId === languageId) await deleteActiveLanguageAction(activeLanguageFirst._id);
     else if (activeLanguageSecond.languageId === languageId) await deleteActiveLanguageAction(activeLanguageSecond._id);
-
-    await deleteConnectedWordsToLanguage(languageId);
     await deleteLanguageAction(languageId);
   };
 

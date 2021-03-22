@@ -29,6 +29,15 @@ import {
   // DELETE_ACTIVE_LANGUAGES_REQUEST,
   DELETE_ACTIVE_LANGUAGES_SUCCESS,
   // DELETE_ACTIVE_LANGUAGES_FAILURE,
+  // ADD_PHOTO_REQUEST,
+  ADD_PHOTO_SUCCESS,
+  // ADD_PHOTO_FAILURE,
+  // FETCH_PHOTO_REQUEST,
+  FETCH_PHOTO_SUCCESS,
+  // FETCH_PHOTO_FAILURE,
+  // DELETE_PHOTO_REQUEST,
+  DELETE_PHOTO_SUCCESS,
+  // DELETE_PHOTO_FAILURE,
 } from "../actions/index";
 
 const initialState = {
@@ -36,6 +45,7 @@ const initialState = {
   languages: [],
   activeLanguageFirst: {},
   activeLanguageSecond: {},
+  photos: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -124,6 +134,21 @@ const rootReducer = (state = initialState, action) => {
         return {
           ...state,
         };
+    case ADD_PHOTO_SUCCESS:
+      return {
+        ...state,
+        photos: [...state.photos, action.payload.data],
+      };
+    case FETCH_PHOTO_SUCCESS:
+      return {
+        ...state,
+        photos: [...action.payload.data],
+      };
+    case DELETE_PHOTO_SUCCESS:
+      return {
+        ...state,
+        photos: [...state.photos.filter((item) => item._id !== action.payload.photoId)],
+      };
 
     default:
       return state;
