@@ -38,6 +38,15 @@ import {
   // DELETE_PHOTO_REQUEST,
   DELETE_PHOTO_SUCCESS,
   // DELETE_PHOTO_FAILURE,
+  // ADD_TEXTS_REQUEST,
+  ADD_TEXTS_SUCCESS,
+  // ADD_TEXTS_FAILURE,
+  // FETCH_TEXTS_REQUEST,
+  FETCH_TEXTS_SUCCESS,
+  // FETCH_TEXTS_FAILURE,
+  // DELETE_TEXTS_REQUEST,
+  DELETE_TEXTS_SUCCESS,
+  // DELETE_TEXTS_FAILURE,
 } from "actions/index";
 
 const initialState = {
@@ -46,6 +55,7 @@ const initialState = {
   activeLanguageFirst: {},
   activeLanguageSecond: {},
   photos: [],
+  texts: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -148,6 +158,28 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         photos: [...state.photos.filter((item) => item._id !== action.payload.photoId)],
+      };
+
+    case ADD_TEXTS_SUCCESS:
+      return {
+        ...state,
+        texts: [...state.texts, action.payload.data],
+      };
+    case FETCH_TEXTS_SUCCESS:
+      const textAlreadyInState = state.texts.find((item) => item._id === action.payload.data[0]._id);
+      if (textAlreadyInState !== undefined)
+        return {
+          ...state,
+        };
+
+      return {
+        ...state,
+        texts: [...state.texts, ...action.payload.data],
+      };
+    case DELETE_TEXTS_SUCCESS:
+      return {
+        ...state,
+        texts: [...state.texts.filter((item) => item._id !== action.payload.textsId)],
       };
 
     default:

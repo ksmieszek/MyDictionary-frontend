@@ -43,12 +43,26 @@ export const DELETE_ACTIVE_LANGUAGES_FAILURE = "DELETE_ACTIVE_LANGUAGES_FAILURE"
 export const ADD_PHOTO_REQUEST = "ADD_PHOTO_REQUEST";
 export const ADD_PHOTO_SUCCESS = "ADD_PHOTO_SUCCESS";
 export const ADD_PHOTO_FAILURE = "ADD_PHOTO_FAILURE";
+
 export const FETCH_PHOTO_REQUEST = "FETCH_PHOTO_REQUEST";
 export const FETCH_PHOTO_SUCCESS = "FETCH_PHOTO_SUCCESS";
 export const FETCH_PHOTO_FAILURE = "FETCH_PHOTO_FAILURE";
+
 export const DELETE_PHOTO_REQUEST = "DELETE_PHOTO_REQUEST";
 export const DELETE_PHOTO_SUCCESS = "DELETE_PHOTO_SUCCESS";
 export const DELETE_PHOTO_FAILURE = "DELETE_PHOTO_FAILURE";
+
+export const ADD_TEXTS_REQUEST = "ADD_TEXTS_REQUEST";
+export const ADD_TEXTS_SUCCESS = "ADD_TEXTS_SUCCESS";
+export const ADD_TEXTS_FAILURE = "ADD_TEXTS_FAILURE";
+
+export const FETCH_TEXTS_REQUEST = "FETCH_TEXTS_REQUEST";
+export const FETCH_TEXTS_SUCCESS = "FETCH_TEXTS_SUCCESS";
+export const FETCH_TEXTS_FAILURE = "FETCH_TEXTS_FAILURE";
+
+export const DELETE_TEXTS_REQUEST = "DELETE_TEXTS_REQUEST";
+export const DELETE_TEXTS_SUCCESS = "DELETE_TEXTS_SUCCESS";
+export const DELETE_TEXTS_FAILURE = "DELETE_TEXTS_FAILURE";
 
 export const addWords = (words) => (dispatch) => {
   dispatch({ type: ADD_WORDS_REQUEST });
@@ -327,5 +341,74 @@ export const deletePhoto = (photoId) => (dispatch) => {
     .catch((err) => {
       console.log(err);
       dispatch({ type: DELETE_PHOTO_FAILURE });
+    });
+};
+
+export const addTexts = (texts) => (dispatch) => {
+  dispatch({ type: ADD_TEXTS_REQUEST });
+
+  const { title, firstText, secondText, firstLanguage, secondLanguage } = texts;
+  return axios
+    .post("http://localhost:9000/api/add/texts", {
+      title,
+      firstText,
+      secondText,
+      firstLanguage,
+      secondLanguage,
+      userID: "604910dfee923d03a8c755f0",
+    })
+    .then(({ data }) => {
+      dispatch({
+        type: ADD_TEXTS_SUCCESS,
+        payload: {
+          data,
+        },
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({ type: ADD_TEXTS_FAILURE });
+    });
+};
+
+export const fetchTexts = (firstLanguage, secondLanguage) => (dispatch) => {
+  dispatch({ type: FETCH_TEXTS_REQUEST });
+
+  return axios
+    .post("http://localhost:9000/api/show/texts", {
+      firstLanguage: firstLanguage,
+      secondLanguage: secondLanguage,
+      userID: "604910dfee923d03a8c755f0",
+    })
+    .then(({ data }) => {
+      console.log(data);
+      dispatch({
+        type: FETCH_TEXTS_SUCCESS,
+        payload: {
+          data,
+        },
+      });
+    })
+    .catch((err) => {
+      dispatch({ type: FETCH_TEXTS_FAILURE });
+    });
+};
+
+export const deleteTexts = (textsId) => (dispatch) => {
+  dispatch({ type: DELETE_TEXTS_REQUEST });
+
+  return axios
+    .delete(`http://localhost:9000/api/delete/texts/${textsId}`)
+    .then(() => {
+      dispatch({
+        type: DELETE_TEXTS_SUCCESS,
+        payload: {
+          textsId,
+        },
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({ type: DELETE_TEXTS_FAILURE });
     });
 };

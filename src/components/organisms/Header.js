@@ -58,6 +58,9 @@ const Header = () => (
         <StyledNavItem>
           <StyledNavItemLink to={routes.photos}>Photos</StyledNavItemLink>
         </StyledNavItem>
+        <StyledNavItem>
+          <StyledNavItemLink to={routes.texts}>Texts</StyledNavItemLink>
+        </StyledNavItem>
       </StyledListWrapper>
     </StyledNav>
   </StyledWrapper>

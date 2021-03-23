@@ -31,12 +31,13 @@ const withReduxState = (ChildComponent, props) => {
     };
 
     render() {
-      const { words, languages, activeLanguageFirst, activeLanguageSecond } = this.props;
+      const { words, texts, languages, activeLanguageFirst, activeLanguageSecond } = this.props;
 
       return (
         <ChildComponent
           {...props}
           words={words}
+          texts={texts}
           languages={languages}
           activeLanguageFirst={activeLanguageFirst}
           activeLanguageSecond={activeLanguageSecond}
@@ -45,8 +46,8 @@ const withReduxState = (ChildComponent, props) => {
     }
   }
 
-  const mapStateToProps = ({ words, languages, activeLanguageFirst, activeLanguageSecond }) => {
-    return { words, languages, activeLanguageFirst, activeLanguageSecond };
+  const mapStateToProps = ({ words, texts, languages, activeLanguageFirst, activeLanguageSecond }) => {
+    return { words, texts, languages, activeLanguageFirst, activeLanguageSecond };
   };
 
   const mapDispatchToProps = (dispatch) => ({

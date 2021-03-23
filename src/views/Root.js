@@ -9,7 +9,9 @@ import Words from "views/Words";
 import Languages from "views/Languages";
 import Photos from "views/Photos";
 import PhotoDetails from "views/PhotoDetails";
+import Texts from "views/Texts";
 import routes from "routes/index";
+import TextsDetails from "./TextsDetails";
 
 class Root extends React.Component {
   render() {
@@ -24,6 +26,8 @@ class Root extends React.Component {
               <Route path={routes.languages} component={Languages} />
               <Route path={routes.photos} component={Photos} />
               <Route path={routes.photo} component={PhotoDetails} />
+              <Route path={routes.texts} component={Texts} />
+              <Route path={routes.text} component={TextsDetails} />
             </Switch>
           </BrowserRouter>
         </MainTemplate>

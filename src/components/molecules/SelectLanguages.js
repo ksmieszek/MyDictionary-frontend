@@ -1,7 +1,7 @@
 import React from "react";
 import withReduxState from "hoc/withReduxState";
 import { connect } from "react-redux";
-import { fetchWords, updateActiveLanguage } from "actions/index";
+import { fetchWords, fetchTexts, updateActiveLanguage } from "actions/index";
 import styled from "styled-components";
 
 const StyledWrapper = styled.div`
@@ -27,13 +27,13 @@ const StyledKey = styled.div`
 
 class SelectLanguages extends React.Component {
   componentDidMount() {
-    if (this.props.words.length === 0) {
-      this.fetchWordsToState();
+    if (this.props.words.length === 0 || this.props.texts.length === 0) {
+      this.fetchToState();
     }
   }
   componentDidUpdate(prevProps) {
     if (this.props.languages.length !== prevProps.languages.length) {
-      this.fetchWordsToState();
+      this.fetchToState();
     }
   }
 
@@ -70,13 +70,15 @@ class SelectLanguages extends React.Component {
     };
     const finalObject = Object.assign(newActiveLanguage, newValues);
     await updateActiveLanguageAction(finalObject, activeLanguageId);
-    this.fetchWordsToState();
+    this.fetchToState();
   };
 
-  fetchWordsToState = () => {
-    const { fetchWordsAction, activeLanguageFirst, activeLanguageSecond } = this.props;
+  fetchToState = () => {
+    const { fetchWordsAction, fetchTextsAction, activeLanguageFirst, activeLanguageSecond } = this.props;
     fetchWordsAction(activeLanguageFirst.name, activeLanguageSecond.name);
     fetchWordsAction(activeLanguageSecond.name, activeLanguageFirst.name);
+    fetchTextsAction(activeLanguageFirst.name, activeLanguageSecond.name);
+    fetchTextsAction(activeLanguageSecond.name, activeLanguageFirst.name);
   };
 
   render() {
@@ -103,6 +105,7 @@ class SelectLanguages extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchWordsAction: (firstLanguage, secondLanguage) => dispatch(fetchWords(firstLanguage, secondLanguage)),
+  fetchTextsAction: (firstLanguage, secondLanguage) => dispatch(fetchTexts(firstLanguage, secondLanguage)),
   updateActiveLanguageAction: (newSelectedLanguage, selectedId) => dispatch(updateActiveLanguage(newSelectedLanguage, selectedId)),
 });
 
