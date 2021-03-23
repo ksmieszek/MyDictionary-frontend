@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import { addPhoto } from "../../actions/index";
-import styled from "styled-components";
-import Button from "../atoms/Button";
-import Input from "../atoms/Input";
-import InputFile from "../atoms/InputFile";
+import { addPhoto } from "actions/index";
 import Compressor from "compressorjs";
+import styled from "styled-components";
+import Button from "components/atoms/Button";
+import Input from "components/atoms/Input";
+import InputFile from "components/atoms/InputFile";
 
 const StyledForm = styled.form`
   display: flex;
@@ -29,7 +29,7 @@ const StyledFakeButton = styled.div`
   background-color: blue;
 `;
 
-class AddPhotoForm extends Component {
+class AddPhotoForm extends React.Component {
   state = {
     photoSource: {},
     title: "",

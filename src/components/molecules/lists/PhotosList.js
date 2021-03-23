@@ -1,6 +1,6 @@
 import React from "react";
-import PhotoPill from "../molecules/PhotoPill";
 import styled from "styled-components";
+import PhotoPill from "components/molecules/pills/PhotoPill";
 
 const StydedWrapper = styled.div`
   display: flex;
@@ -8,7 +8,7 @@ const StydedWrapper = styled.div`
   flex-direction: column;
 `;
 
-const PhotoList = (props) => {
+const PhotosList = (props) => {
   return (
     <StydedWrapper>
       {props.photos.map(({ _id: id, photoSource, title }) => (
@@ -18,4 +18,4 @@ const PhotoList = (props) => {
   );
 };
 
-export default PhotoList;
+export default PhotosList;

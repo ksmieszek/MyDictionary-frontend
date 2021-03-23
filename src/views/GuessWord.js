@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import withReduxState from "../hoc/withReduxState";
-import { randomNumber } from "../utilities/Utilities";
+import React from "react";
+import withReduxState from "hoc/withReduxState";
+import { randomNumber } from "utilities/Utilities";
 import styled from "styled-components";
-import SelectLanguages from "../components/molecules/SelectLanguages";
-import Input from "../components/atoms/Input";
-import Button from "../components/atoms/Button";
+import SelectLanguages from "components/molecules/SelectLanguages";
+import Input from "components/atoms/Input";
+import Button from "components/atoms/Button";
 
 const StyledWrapper = styled.div`
   width: 50vw;
@@ -27,7 +27,7 @@ const StyledRow = styled.div`
   }
 `;
 
-class GuessWords extends Component {
+class GuessWords extends React.Component {
   state = {
     inputValue: "",
     isCorrect: false,

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { fetchLanguages, fetchActiveLanguages, addToActiveLanguages, deleteActiveLanguage } from "../actions/index";
+import React from "react";
+import { fetchLanguages, fetchActiveLanguages, addToActiveLanguages, deleteActiveLanguage } from "actions/index";
 import { connect } from "react-redux";
 
 const withReduxState = (ChildComponent, props) => {
-  class HOC extends Component {
+  class HOC extends React.Component {
     async componentDidMount() {
       if (this.props.languages.length === 0) {
         const { fetchLanguagesAction, fetchActiveLanguagesAction } = this.props;

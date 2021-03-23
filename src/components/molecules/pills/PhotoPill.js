@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Redirect } from "react-router-dom";
 import styled from "styled-components";
 
@@ -8,7 +8,7 @@ const StydedWrapper = styled.div`
   flex-direction: column;
 `;
 
-class PhotoPill extends Component {
+class PhotoPill extends React.Component {
   state = {
     redirect: false,
   };

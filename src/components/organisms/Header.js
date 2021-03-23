@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import routes from "routes/index";
 
 const StyledWrapper = styled.div`
   margin: 30px 40px 100px 40px;
@@ -43,19 +44,19 @@ const StyledNavItemLink = styled(Link)`
 const Header = () => (
   <StyledWrapper>
     <StyledNav>
-      <StyledLogo to="/">YOUr dictionary</StyledLogo>
+      <StyledLogo to={routes.home}>YOUr dictionary</StyledLogo>
       <StyledListWrapper>
         <StyledNavItem>
-          <StyledNavItemLink to="/words">Words</StyledNavItemLink>
+          <StyledNavItemLink to={routes.words}>Words</StyledNavItemLink>
         </StyledNavItem>
         <StyledNavItem>
-          <StyledNavItemLink to="/languages">Languages</StyledNavItemLink>
+          <StyledNavItemLink to={routes.languages}>Languages</StyledNavItemLink>
         </StyledNavItem>
         <StyledNavItem>
-          <StyledNavItemLink to="/quiz/words">Guess word</StyledNavItemLink>
+          <StyledNavItemLink to={routes.quizWords}>Guess word</StyledNavItemLink>
         </StyledNavItem>
         <StyledNavItem>
-          <StyledNavItemLink to="/photos">Photos</StyledNavItemLink>
+          <StyledNavItemLink to={routes.photos}>Photos</StyledNavItemLink>
         </StyledNavItem>
       </StyledListWrapper>
     </StyledNav>

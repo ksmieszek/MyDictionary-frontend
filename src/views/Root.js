@@ -1,16 +1,17 @@
-import React, { Component } from "react";
+import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
-import store from "../store/index";
-import MainTemplate from "../templates/MainTemplate";
-import Header from "../components/organisms/Header";
-import GuessWord from "./GuessWord";
-import Words from "./Words";
-import Languages from "./Languages";
-import Photos from "./Photos";
-import PhotoDetails from "./PhotoDetails";
+import store from "store/index";
+import MainTemplate from "templates/MainTemplate";
+import Header from "components/organisms/Header";
+import GuessWord from "views/GuessWord";
+import Words from "views/Words";
+import Languages from "views/Languages";
+import Photos from "views/Photos";
+import PhotoDetails from "views/PhotoDetails";
+import routes from "routes/index";
 
-class Root extends Component {
+class Root extends React.Component {
   render() {
     return (
       <Provider store={store}>
@@ -18,11 +19,11 @@ class Root extends Component {
           <BrowserRouter>
             <Header />
             <Switch>
-              <Route path="/quiz/words" component={GuessWord} />
-              <Route path="/words" component={Words} />
-              <Route path="/languages" component={Languages} />
-              <Route exact path="/photos" component={Photos} />
-              <Route path="/photo/details/:id" component={PhotoDetails} />
+              <Route path={routes.quizWords} component={GuessWord} />
+              <Route path={routes.words} component={Words} />
+              <Route path={routes.languages} component={Languages} />
+              <Route path={routes.photos} component={Photos} />
+              <Route path={routes.photo} component={PhotoDetails} />
             </Switch>
           </BrowserRouter>
         </MainTemplate>

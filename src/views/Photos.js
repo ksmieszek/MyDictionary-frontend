@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchPhotos } from "../actions/index";
+import { fetchPhotos } from "actions/index";
 import styled from "styled-components";
-import AddPhotoForm from "../components/molecules/AddPhotoForm";
-import PhotoList from "../components/molecules/PhotoList";
+import AddPhotoForm from "components/molecules/forms/AddPhotoForm";
+import PhotosList from "components/molecules/lists/PhotosList";
 
 const StydedWrapper = styled.div`
   display: flex;
@@ -25,7 +25,7 @@ class Photos extends Component {
         <h3>Add Photo</h3>
         <AddPhotoForm />
         <h3>All Photos</h3>
-        <PhotoList photos={photos} />
+        <PhotosList photos={photos} />
       </StydedWrapper>
     );
   }

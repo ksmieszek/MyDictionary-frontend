@@ -1,6 +1,6 @@
 import React from "react";
 
-const LanguagesPill = ({ id, name, handleDeleteLanguage }) => {
+const LanguagePill = ({ id, name, handleDeleteLanguage }) => {
   return (
     <div>
       <span>{name}</span>
@@ -9,4 +9,4 @@ const LanguagesPill = ({ id, name, handleDeleteLanguage }) => {
   );
 };
 
-export default LanguagesPill;
+export default LanguagePill;

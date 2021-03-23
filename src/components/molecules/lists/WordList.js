@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { deleteWords } from "../../actions/index";
+import { deleteWords } from "actions/index";
 import styled from "styled-components";
-import WordsPill from "./WordsPill";
+import WordsPill from "components/molecules/pills/WordsPill";
 
 const StyledWrapper = styled.div`
   display: flex;

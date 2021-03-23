@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import styled from "styled-components";
-import { deletePhoto } from "../actions/index";
+import { deletePhoto } from "actions/index";
 import { Redirect } from "react-router-dom";
+import styled from "styled-components";
+import routes from "routes/index";
 
 const StydedWrapper = styled.div`
   display: flex;
@@ -10,7 +11,7 @@ const StydedWrapper = styled.div`
   flex-direction: column;
 `;
 
-class PhotoDetails extends Component {
+class PhotoDetails extends React.Component {
   state = {
     id: "",
     description: "",
@@ -34,7 +35,7 @@ class PhotoDetails extends Component {
 
   render() {
     if (!this.props.photo) {
-      return <Redirect to={`/photos`} />;
+      return <Redirect to={routes.photos} />;
     }
 
     const { description, photoSource, title } = this.state;

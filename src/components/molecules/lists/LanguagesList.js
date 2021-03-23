@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { deleteLanguage, deleteActiveLanguage, addToActiveLanguages, fetchActiveLanguages, deleteWords, fetchWords } from "../../actions/index";
-import LanguagesPill from "./LanguagesPill";
+import { deleteLanguage, deleteActiveLanguage, addToActiveLanguages, fetchActiveLanguages, deleteWords, fetchWords } from "../../../actions/index";
+import LanguagePill from "components/molecules/pills/LanguagePill";
 
 const LanguagesList = (props) => {
   const handleDeleteLanguage = async (languageId) => {
@@ -29,7 +29,7 @@ const LanguagesList = (props) => {
     });
   };
 
-  return props.languages.map(({ _id: id, name }) => <LanguagesPill key={id} id={id} name={name} handleDeleteLanguage={handleDeleteLanguage} />);
+  return props.languages.map(({ _id: id, name }) => <LanguagePill key={id} id={id} name={name} handleDeleteLanguage={handleDeleteLanguage} />);
 };
 
 const mapDispatchToProps = (dispatch) => ({

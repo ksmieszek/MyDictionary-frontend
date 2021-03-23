@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import withReduxState from "../../hoc/withReduxState";
+import React from "react";
+import withReduxState from "hoc/withReduxState";
 import { connect } from "react-redux";
-import { fetchWords, updateActiveLanguage } from "../../actions/index";
+import { fetchWords, updateActiveLanguage } from "actions/index";
 import styled from "styled-components";
 
 const StyledWrapper = styled.div`
@@ -25,7 +25,7 @@ const StyledKey = styled.div`
   font-size: 1.2em;
 `;
 
-class SelectLanguages extends Component {
+class SelectLanguages extends React.Component {
   componentDidMount() {
     if (this.props.words.length === 0) {
       this.fetchWordsToState();

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import { addLanguage } from "../../actions/index";
+import { addLanguage } from "actions/index";
 import styled from "styled-components";
-import Input from "../atoms/Input";
-import Button from "../atoms/Button";
+import Button from "components/atoms/Button";
+import Input from "components/atoms/Input";
 
 const StyledForm = styled.form`
   display: flex;
@@ -13,7 +13,7 @@ const StyledForm = styled.form`
   width: 50vw;
 `;
 
-class AddLanguageForm extends Component {
+class AddLanguageForm extends React.Component {
   state = {
     newLanguageName: "",
   };

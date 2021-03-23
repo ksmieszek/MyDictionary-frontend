@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { addWords } from "../../actions/index";
+import { addWords } from "actions/index";
 import styled from "styled-components";
-import Input from "../atoms/Input";
-import Button from "../atoms/Button";
+import Button from "components/atoms/Button";
+import Input from "components/atoms/Input";
 
 const StyledWrapper = styled.div`
   display: flex;

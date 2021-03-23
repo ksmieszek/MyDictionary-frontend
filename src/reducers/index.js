@@ -38,7 +38,7 @@ import {
   // DELETE_PHOTO_REQUEST,
   DELETE_PHOTO_SUCCESS,
   // DELETE_PHOTO_FAILURE,
-} from "../actions/index";
+} from "actions/index";
 
 const initialState = {
   words: [],

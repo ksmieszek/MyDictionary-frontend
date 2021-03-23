@@ -1,9 +1,9 @@
 import React from "react";
-import withReduxState from "../hoc/withReduxState";
+import withReduxState from "hoc/withReduxState";
 import styled from "styled-components";
-import SelectLanguages from "../components/molecules/SelectLanguages";
-import AddWordForm from "../components/molecules/AddWordForm";
-import WordList from "../components/molecules/WordList";
+import SelectLanguages from "components/molecules/SelectLanguages";
+import AddWordForm from "components/molecules/forms/AddWordForm";
+import WordList from "components/molecules/lists/WordList";
 
 const StydedWrapper = styled.div`
   display: flex;
