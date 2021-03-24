@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { deleteTexts } from "actions/index";
 import { Redirect } from "react-router-dom";
+import UserPageTemplate from "templates/UserPageTemplate";
 import styled from "styled-components";
 import routes from "routes/index";
 
@@ -42,15 +43,17 @@ class TextsDetails extends React.Component {
     const { firstText, secondText, firstLanguage, secondLanguage, title } = this.state;
 
     return (
-      <StydedWrapper>
-        Texts details
-        <button onClick={this.handleDelete}>DELETE</button>
-        <h2>{title}</h2>
-        <div>{firstLanguage}</div>
-        <pre>{firstText}</pre>
-        <div>{secondLanguage}</div>
-        <pre>{secondText}</pre>
-      </StydedWrapper>
+      <UserPageTemplate>
+        <StydedWrapper>
+          Texts details
+          <button onClick={this.handleDelete}>DELETE</button>
+          <h2>{title}</h2>
+          <div>{firstLanguage}</div>
+          <pre>{firstText}</pre>
+          <div>{secondLanguage}</div>
+          <pre>{secondText}</pre>
+        </StydedWrapper>
+      </UserPageTemplate>
     );
   }
 }

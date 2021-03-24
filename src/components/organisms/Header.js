@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+import { logout } from "actions/index";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import routes from "routes/index";
@@ -41,7 +43,20 @@ const StyledNavItemLink = styled(Link)`
   padding: 10px 15px;
 `;
 
-const Header = () => (
+const StyledNavLogoutButton = styled(Link)`
+  align-self: end;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  font-size: 0.8em;
+  padding: 10px 15px;
+  border: 1px solid white;
+  border-radius: 5px;
+`;
+
+const Header = ({ logoutAction }) => (
   <StyledWrapper>
     <StyledNav>
       <StyledLogo to={routes.home}>YOUr dictionary</StyledLogo>
@@ -62,8 +77,15 @@ const Header = () => (
           <StyledNavItemLink to={routes.texts}>Texts</StyledNavItemLink>
         </StyledNavItem>
       </StyledListWrapper>
+      <StyledNavLogoutButton onClick={logoutAction} to={routes.login}>
+        Wyloguj
+      </StyledNavLogoutButton>
     </StyledNav>
   </StyledWrapper>
 );
 
-export default Header;
+const mapDispatchToProps = (dispatch) => ({
+  logoutAction: () => dispatch(logout()),
+});
+
+export default connect(null, mapDispatchToProps)(Header);

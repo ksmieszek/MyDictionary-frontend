@@ -1,17 +1,19 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "store/index";
+import routes from "routes/index";
+import ProtectedRoute from "routes/ProtectedRoute";
 import MainTemplate from "templates/MainTemplate";
-import Header from "components/organisms/Header";
 import GuessWord from "views/GuessWord";
 import Words from "views/Words";
 import Languages from "views/Languages";
 import Photos from "views/Photos";
 import PhotoDetails from "views/PhotoDetails";
 import Texts from "views/Texts";
-import routes from "routes/index";
-import TextsDetails from "./TextsDetails";
+import TextsDetails from "views/TextsDetails";
+import LoginPage from "views/LoginPage";
+import SignUpPage from "views/SignUpPage";
 
 class Root extends React.Component {
   render() {
@@ -19,15 +21,17 @@ class Root extends React.Component {
       <Provider store={store}>
         <MainTemplate>
           <BrowserRouter>
-            <Header />
             <Switch>
-              <Route path={routes.quizWords} component={GuessWord} />
-              <Route path={routes.words} component={Words} />
-              <Route path={routes.languages} component={Languages} />
-              <Route path={routes.photos} component={Photos} />
-              <Route path={routes.photo} component={PhotoDetails} />
-              <Route path={routes.texts} component={Texts} />
-              <Route path={routes.text} component={TextsDetails} />
+              <Route exact path={routes.home} render={() => <Redirect to={routes.login} />} />
+              <Route path={routes.login} component={LoginPage} />
+              <Route path={routes.signup} component={SignUpPage} />
+              <ProtectedRoute path={routes.quizWords} component={GuessWord} />
+              <ProtectedRoute path={routes.words} component={Words} />
+              <ProtectedRoute path={routes.languages} component={Languages} />
+              <ProtectedRoute path={routes.photos} component={Photos} />
+              <ProtectedRoute path={routes.photo} component={PhotoDetails} />
+              <ProtectedRoute path={routes.texts} component={Texts} />
+              <ProtectedRoute path={routes.text} component={TextsDetails} />
             </Switch>
           </BrowserRouter>
         </MainTemplate>

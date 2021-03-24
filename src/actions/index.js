@@ -64,7 +64,39 @@ export const DELETE_TEXTS_REQUEST = "DELETE_TEXTS_REQUEST";
 export const DELETE_TEXTS_SUCCESS = "DELETE_TEXTS_SUCCESS";
 export const DELETE_TEXTS_FAILURE = "DELETE_TEXTS_FAILURE";
 
-export const addWords = (words) => (dispatch) => {
+export const LOGIN_REQUEST = "LOGIN_REQUEST";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAILURE = "LOGIN_FAILURE";
+
+export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+export const LOGOUT_FAILURE = "LOGOUT_FAILURE";
+
+export const login = (username, password) => (dispatch) => {
+  dispatch({ type: LOGIN_REQUEST });
+  return axios
+    .post("http://localhost:9000/api/user/login", {
+      username,
+      password,
+    })
+    .then((payload) => {
+      console.log(payload);
+      dispatch({ type: LOGIN_SUCCESS, payload });
+    })
+    .then(() => {
+      return true;
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({ type: LOGIN_FAILURE });
+    });
+};
+
+export const logout = () => (dispatch) => {
+  return dispatch({ type: LOGOUT_SUCCESS, undefined });
+};
+
+export const addWords = (words) => (dispatch, getState) => {
   dispatch({ type: ADD_WORDS_REQUEST });
 
   const { firstWord, secondWord, firstLanguage, secondLanguage } = words;
@@ -74,7 +106,7 @@ export const addWords = (words) => (dispatch) => {
       secondWord,
       firstLanguage,
       secondLanguage,
-      userID: "604910dfee923d03a8c755f0",
+      userID: getState().userID,
     })
     .then(({ data }) => {
       dispatch({
@@ -90,17 +122,16 @@ export const addWords = (words) => (dispatch) => {
     });
 };
 
-export const fetchWords = (firstLanguage, secondLanguage) => (dispatch) => {
+export const fetchWords = (firstLanguage, secondLanguage) => (dispatch, getState) => {
   dispatch({ type: FETCH_WORDS_REQUEST });
 
   return axios
     .post("http://localhost:9000/api/show/words", {
       firstLanguage: firstLanguage,
       secondLanguage: secondLanguage,
-      userID: "604910dfee923d03a8c755f0",
+      userID: getState().userID,
     })
     .then(({ data }) => {
-      console.log(data);
       dispatch({
         type: FETCH_WORDS_SUCCESS,
         payload: {
@@ -132,13 +163,13 @@ export const deleteWords = (wordsId) => (dispatch) => {
     });
 };
 
-export const addLanguage = ({ name }) => (dispatch) => {
+export const addLanguage = ({ name }) => (dispatch, getState) => {
   dispatch({ type: ADD_LANGUAGE_REQUEST });
 
   return axios
     .post("http://localhost:9000/api/add/language", {
       name,
-      userID: "604910dfee923d03a8c755f0",
+      userID: getState().userID,
     })
     .then(({ data }) => {
       dispatch({
@@ -154,12 +185,12 @@ export const addLanguage = ({ name }) => (dispatch) => {
     });
 };
 
-export const fetchLanguages = () => (dispatch) => {
+export const fetchLanguages = () => (dispatch, getState) => {
   dispatch({ type: FETCH_LANGUAGES_REQUEST });
 
   return axios
     .post("http://localhost:9000/api/show/languages", {
-      userID: "604910dfee923d03a8c755f0",
+      userID: getState().userID,
     })
     .then(({ data }) => {
       dispatch({
@@ -193,12 +224,12 @@ export const deleteLanguage = (languageId) => (dispatch) => {
     });
 };
 
-export const fetchActiveLanguages = () => (dispatch) => {
+export const fetchActiveLanguages = () => (dispatch, getState) => {
   dispatch({ type: FETCH_ACTIVE_LANGUAGES_REQUEST });
 
   return axios
     .post("http://localhost:9000/api/show/active/languages", {
-      userID: "604910dfee923d03a8c755f0",
+      userID: getState().userID,
     })
     .then(({ data }) => {
       dispatch({
@@ -213,7 +244,7 @@ export const fetchActiveLanguages = () => (dispatch) => {
     });
 };
 
-export const addToActiveLanguages = (newActiveLanguage) => (dispatch) => {
+export const addToActiveLanguages = (newActiveLanguage) => (dispatch, getState) => {
   dispatch({ type: ADD_ACTIVE_LANGUAGE_REQUEST });
 
   const { _id: languageId, name, chosen } = newActiveLanguage;
@@ -222,7 +253,7 @@ export const addToActiveLanguages = (newActiveLanguage) => (dispatch) => {
       languageId,
       name,
       chosen,
-      userID: "604910dfee923d03a8c755f0",
+      userID: getState().userID,
     })
     .then(({ data }) => {
       console.log(data);
@@ -281,7 +312,7 @@ export const deleteActiveLanguage = (activeLanguageId) => (dispatch) => {
     });
 };
 
-export const addPhoto = ({ photoSource, title, description }) => (dispatch) => {
+export const addPhoto = ({ photoSource, title, description }) => (dispatch, getState) => {
   dispatch({ type: ADD_PHOTO_REQUEST });
 
   return axios
@@ -289,7 +320,7 @@ export const addPhoto = ({ photoSource, title, description }) => (dispatch) => {
       photoSource,
       title,
       description,
-      userID: "604910dfee923d03a8c755f0",
+      userID: getState().userID,
     })
     .then(({ data }) => {
       dispatch({
@@ -305,12 +336,12 @@ export const addPhoto = ({ photoSource, title, description }) => (dispatch) => {
     });
 };
 
-export const fetchPhotos = () => (dispatch) => {
+export const fetchPhotos = () => (dispatch, getState) => {
   dispatch({ type: FETCH_PHOTO_REQUEST });
 
   return axios
     .post("http://localhost:9000/api/show/photos", {
-      userID: "604910dfee923d03a8c755f0",
+      userID: getState().userID,
     })
     .then(({ data }) => {
       dispatch({
@@ -344,7 +375,7 @@ export const deletePhoto = (photoId) => (dispatch) => {
     });
 };
 
-export const addTexts = (texts) => (dispatch) => {
+export const addTexts = (texts) => (dispatch, getState) => {
   dispatch({ type: ADD_TEXTS_REQUEST });
 
   const { title, firstText, secondText, firstLanguage, secondLanguage } = texts;
@@ -355,7 +386,7 @@ export const addTexts = (texts) => (dispatch) => {
       secondText,
       firstLanguage,
       secondLanguage,
-      userID: "604910dfee923d03a8c755f0",
+      userID: getState().userID,
     })
     .then(({ data }) => {
       dispatch({
@@ -371,14 +402,14 @@ export const addTexts = (texts) => (dispatch) => {
     });
 };
 
-export const fetchTexts = (firstLanguage, secondLanguage) => (dispatch) => {
+export const fetchTexts = (firstLanguage, secondLanguage) => (dispatch, getState) => {
   dispatch({ type: FETCH_TEXTS_REQUEST });
 
   return axios
     .post("http://localhost:9000/api/show/texts", {
       firstLanguage: firstLanguage,
       secondLanguage: secondLanguage,
-      userID: "604910dfee923d03a8c755f0",
+      userID: getState().userID,
     })
     .then(({ data }) => {
       console.log(data);

@@ -1,4 +1,10 @@
 import {
+  // LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  // LOGIN_FAILURE,
+  // LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
+  // LOGOUT_FAILURE,
   FETCH_WORDS_REQUEST,
   FETCH_WORDS_SUCCESS,
   // FETCH_WORDS_FAILURE,
@@ -50,6 +56,7 @@ import {
 } from "actions/index";
 
 const initialState = {
+  userID: localStorage.getItem("userID") || "",
   words: [],
   languages: [],
   activeLanguageFirst: {},
@@ -60,6 +67,23 @@ const initialState = {
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOGIN_SUCCESS:
+      localStorage.setItem("userID", `${action.payload.data._id}`);
+      return {
+        ...state,
+        userID: action.payload.data._id,
+      };
+    case LOGOUT_SUCCESS:
+      localStorage.removeItem("userID");
+      return {
+        userID: "",
+        words: [],
+        languages: [],
+        activeLanguageFirst: {},
+        activeLanguageSecond: {},
+        photos: [],
+        texts: [],
+      };
     case FETCH_WORDS_REQUEST:
       return {
         ...state,

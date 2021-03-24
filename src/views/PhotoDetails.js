@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { deletePhoto } from "actions/index";
 import { Redirect } from "react-router-dom";
+import UserPageTemplate from "templates/UserPageTemplate";
 import styled from "styled-components";
 import routes from "routes/index";
 
@@ -41,13 +42,15 @@ class PhotoDetails extends React.Component {
     const { description, photoSource, title } = this.state;
 
     return (
-      <StydedWrapper>
-        Photo details
-        <button onClick={this.handleDelete}>DELETE</button>
-        <h4>{title}</h4>
-        <img src={photoSource} alt="" />
-        <pre>{description}</pre>
-      </StydedWrapper>
+      <UserPageTemplate>
+        <StydedWrapper>
+          Photo details
+          <button onClick={this.handleDelete}>DELETE</button>
+          <h4>{title}</h4>
+          <img src={photoSource} alt="" />
+          <pre>{description}</pre>
+        </StydedWrapper>
+      </UserPageTemplate>
     );
   }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchPhotos } from "actions/index";
+import UserPageTemplate from "templates/UserPageTemplate";
 import styled from "styled-components";
 import AddPhotoForm from "components/molecules/forms/AddPhotoForm";
 import PhotosList from "components/molecules/lists/PhotosList";
@@ -21,12 +22,14 @@ class Photos extends Component {
     const { photos } = this.props;
 
     return (
-      <StydedWrapper>
-        <h3>Add Photo</h3>
-        <AddPhotoForm />
-        <h3>All Photos</h3>
-        <PhotosList photos={photos} />
-      </StydedWrapper>
+      <UserPageTemplate>
+        <StydedWrapper>
+          <h3>Add Photo</h3>
+          <AddPhotoForm />
+          <h3>All Photos</h3>
+          <PhotosList photos={photos} />
+        </StydedWrapper>
+      </UserPageTemplate>
     );
   }
 }

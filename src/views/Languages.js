@@ -1,5 +1,6 @@
 import React from "react";
 import withReduxState from "hoc/withReduxState";
+import UserPageTemplate from "templates/UserPageTemplate";
 import styled from "styled-components";
 import AddLanguageForm from "components/molecules/forms/AddLanguageForm";
 import LanguagesList from "components/molecules/lists/LanguagesList";
@@ -11,12 +12,14 @@ const StydedWrapper = styled.div`
 `;
 
 const Languages = ({ languages, activeLanguageFirst, activeLanguageSecond, words }) => (
-  <StydedWrapper>
-    <h3>Add Language</h3>
-    <AddLanguageForm languages={languages} />
-    <h3>All Languages</h3>
-    <LanguagesList languages={languages} activeLanguageFirst={activeLanguageFirst} activeLanguageSecond={activeLanguageSecond} words={words} />
-  </StydedWrapper>
+  <UserPageTemplate>
+    <StydedWrapper>
+      <h3>Add Language</h3>
+      <AddLanguageForm languages={languages} />
+      <h3>All Languages</h3>
+      <LanguagesList languages={languages} activeLanguageFirst={activeLanguageFirst} activeLanguageSecond={activeLanguageSecond} words={words} />
+    </StydedWrapper>
+  </UserPageTemplate>
 );
 
 export default withReduxState(Languages);

@@ -1,6 +1,7 @@
 import React from "react";
 import withReduxState from "hoc/withReduxState";
 import { randomNumber } from "utilities/Utilities";
+import UserPageTemplate from "templates/UserPageTemplate";
 import styled from "styled-components";
 import SelectLanguages from "components/molecules/SelectLanguages";
 import Input from "components/atoms/Input";
@@ -97,27 +98,29 @@ class GuessWords extends React.Component {
     const { index, inputValue, isCorrect, activeLanguageWords } = this.state;
 
     return (
-      <StyledWrapper>
-        {languages.length > 1 && Object.keys(activeLanguageFirst).length !== 0 && Object.keys(activeLanguageSecond).length !== 0 ? (
-          <>
-            <SelectLanguages />
-            {activeLanguageWords.length > 0 ? (
-              <StyledForm autoComplete="off" onSubmit={(e) => this.isAnswerCorrect(e)}>
-                <StyledRow>
-                  <div>{activeLanguageWords[index].firstWord}</div>
-                  <div>-</div>
-                  <Input placeholder="enter word" value={inputValue} onChange={this.handleChange} />
-                </StyledRow>
-                <Button>{isCorrect ? "next" : "check"}</Button>
-              </StyledForm>
-            ) : (
-              <h3>add words first</h3>
-            )}
-          </>
-        ) : (
-          <h3>add languages first</h3>
-        )}
-      </StyledWrapper>
+      <UserPageTemplate>
+        <StyledWrapper>
+          {languages.length > 1 && Object.keys(activeLanguageFirst).length !== 0 && Object.keys(activeLanguageSecond).length !== 0 ? (
+            <>
+              <SelectLanguages />
+              {activeLanguageWords.length > 0 ? (
+                <StyledForm autoComplete="off" onSubmit={(e) => this.isAnswerCorrect(e)}>
+                  <StyledRow>
+                    <div>{activeLanguageWords[index].firstWord}</div>
+                    <div>-</div>
+                    <Input placeholder="enter word" value={inputValue} onChange={this.handleChange} />
+                  </StyledRow>
+                  <Button>{isCorrect ? "next" : "check"}</Button>
+                </StyledForm>
+              ) : (
+                <h3>add words first</h3>
+              )}
+            </>
+          ) : (
+            <h3>add languages first</h3>
+          )}
+        </StyledWrapper>
+      </UserPageTemplate>
     );
   }
 }
