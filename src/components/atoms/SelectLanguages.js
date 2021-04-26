@@ -7,27 +7,40 @@ import styled from "styled-components";
 const StyledWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%;
-`;
-
-const StyledKeys = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
   align-items: center;
+  width: 90%;
+  max-width: 500px;
   margin-bottom: 30px;
 `;
 
 const StyledKey = styled.div`
-  width: 50%;
   display: flex;
   justify-content: center;
-  font-size: 1.2em;
+  width: 40%;
+  max-width: 160px;
+`;
+
+const StyledSelect = styled.select`
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #595959;
+  outline: none;
+  background: #323232;
+  color: white;
+  font-size: 1.4rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+
+  @media (min-width: 1024px) {
+    padding: 8px;
+    font-size: 1.6rem;
+  }
 `;
 
 class SelectLanguages extends React.Component {
   componentDidMount() {
-    if (this.props.words.length === 0 || this.props.texts.length === 0) {
+    if (this.props.words.length === 0 && this.props.texts.length === 0) {
       this.fetchToState();
     }
   }
@@ -64,9 +77,9 @@ class SelectLanguages extends React.Component {
   changeActiveLanguage = async (e) => {
     const { languages, updateActiveLanguageAction, activeLanguageFirst, activeLanguageSecond } = this.props;
     const newActiveLanguage = languages.find((item) => item.name === e.target.value);
-    const activeLanguageId = e.target.id === "activeLanguageFirst" ? activeLanguageFirst._id : activeLanguageSecond._id;
+    const activeLanguageId = e.target.name === "activeLanguageFirst" ? activeLanguageFirst._id : activeLanguageSecond._id;
     const newValues = {
-      chosen: e.target.id,
+      chosen: e.target.name,
     };
     const finalObject = Object.assign(newActiveLanguage, newValues);
     await updateActiveLanguageAction(finalObject, activeLanguageId);
@@ -86,18 +99,16 @@ class SelectLanguages extends React.Component {
 
     return (
       <StyledWrapper>
-        <StyledKeys>
-          <StyledKey>
-            <select className="chooseLanguage" id="activeLanguageFirst" onChange={this.changeActiveLanguage} value={activeLanguageFirst.name}>
-              {this.populateSelectList("activeLanguageFirst")}
-            </select>
-          </StyledKey>
-          <StyledKey>
-            <select className="chooseLanguage" id="activeLanguageSecond" onChange={this.changeActiveLanguage} value={activeLanguageSecond.name}>
-              {this.populateSelectList("activeLanguageSecond")}
-            </select>
-          </StyledKey>
-        </StyledKeys>
+        <StyledKey>
+          <StyledSelect name="activeLanguageFirst" onChange={this.changeActiveLanguage} value={activeLanguageFirst.name}>
+            {this.populateSelectList("activeLanguageFirst")}
+          </StyledSelect>
+        </StyledKey>
+        <StyledKey>
+          <StyledSelect name="activeLanguageSecond" onChange={this.changeActiveLanguage} value={activeLanguageSecond.name}>
+            {this.populateSelectList("activeLanguageSecond")}
+          </StyledSelect>
+        </StyledKey>
       </StyledWrapper>
     );
   }

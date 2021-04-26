@@ -1,25 +1,11 @@
 import React from "react";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
-import AuthorizationTemplate from "templates/AuthorizationTemplate";
-import styled from "styled-components";
 import routes from "routes/index";
-import Button from "components/atoms/Button";
-import Input from "components/atoms/Input";
-
-const StydedWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-`;
-
-const StyledForm = styled.form`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 50vw;
-`;
+import AuthorizationTemplate from "templates/AuthorizationTemplate";
+import { StyledLogo, StyledHeading, StyledForm, StyledInput, StyledButton } from "templates/AuthorizationTemplate";
+import Paragraph from "components/atoms/Paragraph";
+import Hyperlink from "components/atoms/Hyperlink";
 
 class SignUpPage extends React.Component {
   state = {
@@ -62,14 +48,16 @@ class SignUpPage extends React.Component {
 
     return (
       <AuthorizationTemplate>
-        <StydedWrapper>
-          <h4>Zarejestruj się</h4>
-          <StyledForm onSubmit={(e) => this.handleSubmit(e)}>
-            <Input placeholder="username" name="username" value={username} onChange={(e) => this.handleChange(e)} />
-            <Input placeholder="password" name="password" type="password" value={password} onChange={(e) => this.handleChange(e)} />
-            <Button>Submit</Button>
-          </StyledForm>
-        </StydedWrapper>
+        <StyledLogo />
+        <StyledHeading>Zarejestruj się</StyledHeading>
+        <StyledForm onSubmit={(e) => this.handleSubmit(e)}>
+          <StyledInput placeholder="username" name="username" value={username} onChange={(e) => this.handleChange(e)} />
+          <StyledInput placeholder="password" name="password" type="password" value={password} onChange={(e) => this.handleChange(e)} />
+          <StyledButton>Zarejestruj</StyledButton>
+        </StyledForm>
+        <Paragraph>
+          Posiadasz już konto? <Hyperlink href={routes.login}>Zaloguj się</Hyperlink>
+        </Paragraph>
       </AuthorizationTemplate>
     );
   }

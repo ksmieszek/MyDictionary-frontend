@@ -1,38 +1,32 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { fetchPhotos } from "actions/index";
 import UserPageTemplate from "templates/UserPageTemplate";
-import styled from "styled-components";
 import AddPhotoForm from "components/molecules/forms/AddPhotoForm";
 import PhotosList from "components/molecules/lists/PhotosList";
+import Button from "components/atoms/Button";
+import ModalTemplate from "templates/ModalTemplate";
 
-const StydedWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-`;
-
-class Photos extends Component {
-  componentDidMount() {
-    const { fetchPhotosAction, photos } = this.props;
+const Photos = ({ photos, fetchPhotosAction }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
     if (photos.length === 0) fetchPhotosAction();
-  }
+  }, []);
 
-  render() {
-    const { photos } = this.props;
-
-    return (
-      <UserPageTemplate>
-        <StydedWrapper>
-          <h3>Add Photo</h3>
+  return (
+    <UserPageTemplate>
+      <div>
+        <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title="Nowe zdjęcie">
           <AddPhotoForm />
-          <h3>All Photos</h3>
-          <PhotosList photos={photos} />
-        </StydedWrapper>
-      </UserPageTemplate>
-    );
-  }
-}
+        </ModalTemplate>
+        <Button add onClick={() => setIsOpen(true)} pulse={photos.length === 0}>
+          Dodaj zdjęcie
+        </Button>
+        <PhotosList photos={photos} />
+      </div>
+    </UserPageTemplate>
+  );
+};
 
 const mapStateToProps = ({ photos }) => {
   return { photos };

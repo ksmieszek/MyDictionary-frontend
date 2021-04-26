@@ -16,9 +16,10 @@ const GlobalStyle = createGlobalStyle`
     }
 
     body {
-    font-family: "Rubik", sans-serif;
+    color: white;
     font-size: 2.1rem;
-    font-weight: 300;
+    font-family: "Rubik", sans-serif;
+    /* font-weight: 300; */
     }
 `;
 

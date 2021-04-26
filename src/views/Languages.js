@@ -1,25 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import withReduxState from "hoc/withReduxState";
 import UserPageTemplate from "templates/UserPageTemplate";
-import styled from "styled-components";
 import AddLanguageForm from "components/molecules/forms/AddLanguageForm";
 import LanguagesList from "components/molecules/lists/LanguagesList";
+import ModalTemplate from "templates/ModalTemplate";
+import Button from "components/atoms/Button";
 
-const StydedWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-`;
+const Languages = ({ languages, activeLanguageFirst, activeLanguageSecond, words, texts }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-const Languages = ({ languages, activeLanguageFirst, activeLanguageSecond, words }) => (
-  <UserPageTemplate>
-    <StydedWrapper>
-      <h3>Add Language</h3>
-      <AddLanguageForm languages={languages} />
-      <h3>All Languages</h3>
-      <LanguagesList languages={languages} activeLanguageFirst={activeLanguageFirst} activeLanguageSecond={activeLanguageSecond} words={words} />
-    </StydedWrapper>
-  </UserPageTemplate>
-);
+  return (
+    <UserPageTemplate>
+      <div>
+        <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title="Nowy język">
+          <AddLanguageForm languages={languages} />
+        </ModalTemplate>
+        <Button add onClick={() => setIsOpen(true)} pulse={languages.length < 2}>
+          Dodaj język
+        </Button>
+        <LanguagesList
+          languages={languages}
+          activeLanguageFirst={activeLanguageFirst}
+          activeLanguageSecond={activeLanguageSecond}
+          words={words}
+          texts={texts}
+        />
+      </div>
+    </UserPageTemplate>
+  );
+};
 
 export default withReduxState(Languages);

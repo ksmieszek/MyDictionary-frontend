@@ -2,14 +2,20 @@ import React from "react";
 import { connect } from "react-redux";
 import { deletePhoto } from "actions/index";
 import { Redirect } from "react-router-dom";
-import UserPageTemplate from "templates/UserPageTemplate";
-import styled from "styled-components";
 import routes from "routes/index";
+import styled from "styled-components";
+import DetailsTemplate from "templates/DetailsTemplate";
+import PreformattedText from "components/atoms/PreformattedText";
 
-const StydedWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+const StydedImage = styled.img`
+  max-width: 90%;
+  height: auto;
+  margin-top: 20px;
+  user-select: none;
+`;
+
+const StydedDescription = styled(PreformattedText)`
+  margin-top: 30px;
 `;
 
 class PhotoDetails extends React.Component {
@@ -39,18 +45,13 @@ class PhotoDetails extends React.Component {
       return <Redirect to={routes.photos} />;
     }
 
-    const { description, photoSource, title } = this.state;
+    const { title, photoSource, description } = this.state;
 
     return (
-      <UserPageTemplate>
-        <StydedWrapper>
-          Photo details
-          <button onClick={this.handleDelete}>DELETE</button>
-          <h4>{title}</h4>
-          <img src={photoSource} alt="" />
-          <pre>{description}</pre>
-        </StydedWrapper>
-      </UserPageTemplate>
+      <DetailsTemplate title={title} handleDelete={this.handleDelete} route={routes.photos}>
+        <StydedImage src={photoSource} alt="" />
+        <StydedDescription>{description}</StydedDescription>
+      </DetailsTemplate>
     );
   }
 }

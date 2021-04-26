@@ -6,27 +6,28 @@ import styled from "styled-components";
 import Button from "components/atoms/Button";
 import Input from "components/atoms/Input";
 import InputFile from "components/atoms/InputFile";
-
-const StyledForm = styled.form`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 50vw;
-`;
+import Textarea from "components/atoms/Textarea";
+import Form from "components/molecules/forms/Form";
 
 const StyledFileWrapper = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin-bottom: 30px;
   text-align: center;
+  cursor: pointer;
 `;
 
-const StyledFakeButton = styled.div`
-  position: relative;
-  width: 175px;
-  padding: 10px;
-  background-color: blue;
+const StyledButton = styled(Button)`
+  @media (min-width: 1024px) {
+    font-size: 1.8rem;
+  }
+`;
+
+const StyledInput = styled(Input)`
+  width: 90%;
+  margin-bottom: 20px;
 `;
 
 class AddPhotoForm extends React.Component {
@@ -48,7 +49,7 @@ class AddPhotoForm extends React.Component {
 
   handleTextChange = (e) => {
     this.setState({
-      [e.target.id]: e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -90,19 +91,18 @@ class AddPhotoForm extends React.Component {
 
   render() {
     const { photoName, title, description } = this.state;
+
     return (
-      <StyledForm as="form" onSubmit={(e) => this.handleSubmit(e)}>
+      <Form onSubmit={(e) => this.handleSubmit(e)}>
         <StyledFileWrapper>
-          <StyledFakeButton>
-            Wybierz zdjęcie
-            <InputFile handleFileChange={this.handleFileChange} />
-          </StyledFakeButton>
-          {photoName}
+          <InputFile handleFileChange={this.handleFileChange} />
+          <StyledButton>Wybierz zdjęcie</StyledButton>
+          <p>{photoName}</p>
         </StyledFileWrapper>
-        <Input id="title" value={title} onChange={(e) => this.handleTextChange(e)} />
-        <textarea id="description" rows="5" cols="33" value={description} onChange={(e) => this.handleTextChange(e)}></textarea>
-        <Button>add</Button>
-      </StyledForm>
+        <StyledInput name="title" value={title} onChange={(e) => this.handleTextChange(e)} placeholder="Tytuł" />
+        <Textarea name="description" value={description} onChange={(e) => this.handleTextChange(e)} placeholder="Opis"></Textarea>
+        <Button save>zapisz</Button>
+      </Form>
     );
   }
 }

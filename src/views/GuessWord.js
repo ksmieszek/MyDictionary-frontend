@@ -1,128 +1,126 @@
-import React from "react";
-import withReduxState from "hoc/withReduxState";
-import { randomNumber } from "utilities/Utilities";
-import UserPageTemplate from "templates/UserPageTemplate";
-import styled from "styled-components";
-import SelectLanguages from "components/molecules/SelectLanguages";
-import Input from "components/atoms/Input";
-import Button from "components/atoms/Button";
+// import React from "react";
+// import withReduxState from "hoc/withReduxState";
+// import { randomNumber } from "utilities/Utilities";
+// import UserPageTemplate from "templates/UserPageTemplate";
+// import styled from "styled-components";
+// import SelectLanguages from "components/atoms/SelectLanguages";
+// import Input from "components/atoms/Input";
+// import Button from "components/atoms/Button";
+// import Form from "components/molecules/forms/Form";
 
-const StyledWrapper = styled.div`
-  width: 50vw;
-  margin: 0 auto;
-`;
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-const StyledRow = styled.div`
-  display: flex;
-  width: 100%;
-  font-size: 1.2em;
+// const StyledWrapper = styled.div`
+//   display: flex;
+//   align-items: center;
+//   flex-direction: column;
+// `;
 
-  > * {
-    width: 33%;
-    display: flex;
-    justify-content: center;
-  }
-`;
+// const StyledRow = styled.div`
+//   display: flex;
+//   width: 90%;
+//   font-size: 1.2em;
 
-class GuessWords extends React.Component {
-  state = {
-    inputValue: "",
-    isCorrect: false,
-    activeLanguageWords: [],
-    index: 0,
-  };
+//   > * {
+//     display: flex;
+//     justify-content: center;
+//     width: 33%;
+//   }
+// `;
 
-  componentDidMount() {
-    this.addActiveLanguageWords();
-  }
+// class GuessWords extends React.Component {
+//   state = {
+//     inputValue: "",
+//     isCorrect: false,
+//     activeLanguageWords: [],
+//     index: 0,
+//   };
 
-  componentDidUpdate(prevProps) {
-    if (JSON.stringify(prevProps.words) !== JSON.stringify(this.props.words)) {
-      this.addActiveLanguageWords();
-    }
-  }
+//   componentDidMount() {
+//     this.addActiveLanguageWords();
+//   }
 
-  handleChange = (e) => {
-    this.setState({
-      inputValue: e.target.value,
-    });
-  };
+//   componentDidUpdate(prevProps) {
+//     if (JSON.stringify(prevProps.words) !== JSON.stringify(this.props.words)) {
+//       this.addActiveLanguageWords();
+//     }
+//   }
 
-  changeNumber = () => {
-    this.setState({
-      index: randomNumber(0, this.state.activeLanguageWords.length),
-    });
-  };
+//   handleChange = (e) => {
+//     this.setState({
+//       inputValue: e.target.value,
+//     });
+//   };
 
-  isAnswerCorrect = (e) => {
-    e.preventDefault();
-    if (this.state.isCorrect === true) {
-      this.setState({
-        isCorrect: false,
-        inputValue: "",
-      });
-      this.changeNumber();
-      return;
-    }
-    const { activeLanguageWords, index, inputValue } = this.state;
-    if (activeLanguageWords[index].secondWord === inputValue) {
-      this.setState({
-        isCorrect: true,
-      });
-    }
-  };
+//   changeNumber = () => {
+//     this.setState({
+//       index: randomNumber(0, this.state.activeLanguageWords.length),
+//     });
+//   };
 
-  addActiveLanguageWords() {
-    const { activeLanguageFirst, activeLanguageSecond, words } = this.props;
-    const WordsToGuess = [];
-    words.forEach((item) => {
-      if (
-        (activeLanguageFirst.name === item.firstLanguage || activeLanguageFirst.name === item.secondLanguage) &&
-        (activeLanguageSecond.name === item.firstLanguage || activeLanguageSecond.name === item.secondLanguage)
-      )
-        WordsToGuess.push(item);
-    });
+//   isAnswerCorrect = (e) => {
+//     e.preventDefault();
+//     if (this.state.isCorrect === true) {
+//       this.setState({
+//         isCorrect: false,
+//         inputValue: "",
+//       });
+//       this.changeNumber();
+//       return;
+//     }
+//     const { activeLanguageWords, index, inputValue } = this.state;
+//     if (activeLanguageWords[index].secondWord === inputValue) {
+//       this.setState({
+//         isCorrect: true,
+//       });
+//     }
+//   };
 
-    this.setState({
-      activeLanguageWords: WordsToGuess,
-      index: randomNumber(0, WordsToGuess.length),
-    });
-  }
+//   addActiveLanguageWords() {
+//     const { activeLanguageFirst, activeLanguageSecond, words } = this.props;
+//     const WordsToGuess = [];
+//     words.forEach((item) => {
+//       if (
+//         (activeLanguageFirst.name === item.firstLanguage || activeLanguageFirst.name === item.secondLanguage) &&
+//         (activeLanguageSecond.name === item.firstLanguage || activeLanguageSecond.name === item.secondLanguage)
+//       )
+//         WordsToGuess.push(item);
+//     });
 
-  render() {
-    const { languages, activeLanguageFirst, activeLanguageSecond } = this.props;
-    const { index, inputValue, isCorrect, activeLanguageWords } = this.state;
+//     this.setState({
+//       activeLanguageWords: WordsToGuess,
+//       index: randomNumber(0, WordsToGuess.length),
+//     });
+//   }
 
-    return (
-      <UserPageTemplate>
-        <StyledWrapper>
-          {languages.length > 1 && Object.keys(activeLanguageFirst).length !== 0 && Object.keys(activeLanguageSecond).length !== 0 ? (
-            <>
-              <SelectLanguages />
-              {activeLanguageWords.length > 0 ? (
-                <StyledForm autoComplete="off" onSubmit={(e) => this.isAnswerCorrect(e)}>
-                  <StyledRow>
-                    <div>{activeLanguageWords[index].firstWord}</div>
-                    <div>-</div>
-                    <Input placeholder="enter word" value={inputValue} onChange={this.handleChange} />
-                  </StyledRow>
-                  <Button>{isCorrect ? "next" : "check"}</Button>
-                </StyledForm>
-              ) : (
-                <h3>add words first</h3>
-              )}
-            </>
-          ) : (
-            <h3>add languages first</h3>
-          )}
-        </StyledWrapper>
-      </UserPageTemplate>
-    );
-  }
-}
+//   render() {
+//     const { languages, activeLanguageFirst, activeLanguageSecond } = this.props;
+//     const { index, inputValue, isCorrect, activeLanguageWords } = this.state;
 
-export default withReduxState(GuessWords);
+//     return (
+//       <UserPageTemplate>
+//         <StyledWrapper>
+//           {languages.length > 1 && Object.keys(activeLanguageFirst).length !== 0 && Object.keys(activeLanguageSecond).length !== 0 ? (
+//             <>
+//               <SelectLanguages />
+//               {activeLanguageWords.length > 0 ? (
+//                 <Form autoComplete="off" onSubmit={(e) => this.isAnswerCorrect(e)}>
+//                   <StyledRow>
+//                     <div>{activeLanguageWords[index].firstWord}</div>
+//                     <div>-</div>
+//                     <Input placeholder="enter word" value={inputValue} onChange={this.handleChange} />
+//                   </StyledRow>
+//                   <Button>{isCorrect ? "next" : "check"}</Button>
+//                 </Form>
+//               ) : (
+//                 <h3>add words first</h3>
+//               )}
+//             </>
+//           ) : (
+//             <h3>add languages first</h3>
+//           )}
+//         </StyledWrapper>
+//       </UserPageTemplate>
+//     );
+//   }
+// }
+
+// export default withReduxState(GuessWords);

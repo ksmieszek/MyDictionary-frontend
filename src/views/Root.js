@@ -14,6 +14,7 @@ import Texts from "views/Texts";
 import TextsDetails from "views/TextsDetails";
 import LoginPage from "views/LoginPage";
 import SignUpPage from "views/SignUpPage";
+import ScrollToTop from "utilities/ScrollToTop";
 
 class Root extends React.Component {
   render() {
@@ -21,6 +22,7 @@ class Root extends React.Component {
       <Provider store={store}>
         <MainTemplate>
           <BrowserRouter>
+            <ScrollToTop />
             <Switch>
               <Route exact path={routes.home} render={() => <Redirect to={routes.login} />} />
               <Route path={routes.login} component={LoginPage} />

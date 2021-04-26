@@ -8,12 +8,14 @@ const StyledWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  width: 90%;
+  margin-top: 50px;
 `;
 
-const WordList = ({ deleteWordsAction, activeLanguageFirst, activeLanguageSecond, words }) =>
-  words.length > 0 ? (
-    <StyledWrapper>
-      {words.map(({ _id: id, firstLanguage, firstWord, secondLanguage, secondWord }) => {
+const WordList = ({ deleteWordsAction, activeLanguageFirst, activeLanguageSecond, words }) => (
+  <StyledWrapper>
+    {words
+      .map(({ _id: id, firstLanguage, firstWord, secondLanguage, secondWord }) => {
         if (
           (activeLanguageFirst.name === firstLanguage || activeLanguageFirst.name === secondLanguage) &&
           (activeLanguageSecond.name === firstLanguage || activeLanguageSecond.name === secondLanguage)
@@ -30,11 +32,10 @@ const WordList = ({ deleteWordsAction, activeLanguageFirst, activeLanguageSecond
             />
           );
         else return null;
-      })}
-    </StyledWrapper>
-  ) : (
-    <h3>add words first</h3>
-  );
+      })
+      .reverse()}
+  </StyledWrapper>
+);
 
 const mapDispatchToProps = (dispatch) => ({
   deleteWordsAction: (wordsId) => dispatch(deleteWords(wordsId)),

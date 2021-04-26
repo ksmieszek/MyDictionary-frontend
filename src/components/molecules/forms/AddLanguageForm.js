@@ -4,13 +4,10 @@ import { addLanguage } from "actions/index";
 import styled from "styled-components";
 import Button from "components/atoms/Button";
 import Input from "components/atoms/Input";
+import Form from "components/molecules/forms/Form";
 
-const StyledForm = styled.form`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 50vw;
+const StyledInput = styled(Input)`
+  width: 60%;
 `;
 
 class AddLanguageForm extends React.Component {
@@ -24,24 +21,25 @@ class AddLanguageForm extends React.Component {
     });
   };
 
-  render() {
+  handleSubmit = (e) => {
+    e.preventDefault();
     const { addLanguageAction } = this.props;
 
+    this.setState({
+      newLanguageName: "",
+    });
+
+    addLanguageAction({
+      name: this.state.newLanguageName,
+    });
+  };
+
+  render() {
     return (
-      <StyledForm
-        onSubmit={(e) => {
-          e.preventDefault();
-          this.setState({
-            newLanguageName: "",
-          });
-          addLanguageAction({
-            name: this.state.newLanguageName,
-          });
-        }}
-      >
-        <Input name="newLanguageName" value={this.state.newLanguageName} onChange={(e) => this.handleChange(e)} />
-        <Button>add</Button>
-      </StyledForm>
+      <Form onSubmit={(e) => this.handleSubmit(e)}>
+        <StyledInput name="newLanguageName" value={this.state.newLanguageName} onChange={(e) => this.handleChange(e)} />
+        <Button save>zapisz</Button>
+      </Form>
     );
   }
 }

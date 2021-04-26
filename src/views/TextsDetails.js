@@ -2,14 +2,23 @@ import React from "react";
 import { connect } from "react-redux";
 import { deleteTexts } from "actions/index";
 import { Redirect } from "react-router-dom";
-import UserPageTemplate from "templates/UserPageTemplate";
-import styled from "styled-components";
 import routes from "routes/index";
+import styled from "styled-components";
+import DetailsTemplate from "templates/DetailsTemplate";
+import PreformattedText from "components/atoms/PreformattedText";
 
-const StydedWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+const StyledLanguage = styled.h2`
+  max-width: 80%;
+  margin-top: 40px;
+  font-family: "Rubik", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 400;
+  text-align: center;
+  word-wrap: break-word;
+
+  @media (min-width: 1024px) {
+    font-size: 2rem;
+  }
 `;
 
 class TextsDetails extends React.Component {
@@ -40,20 +49,15 @@ class TextsDetails extends React.Component {
       return <Redirect to={routes.texts} />;
     }
 
-    const { firstText, secondText, firstLanguage, secondLanguage, title } = this.state;
+    const { title, firstLanguage, secondLanguage, firstText, secondText } = this.state;
 
     return (
-      <UserPageTemplate>
-        <StydedWrapper>
-          Texts details
-          <button onClick={this.handleDelete}>DELETE</button>
-          <h2>{title}</h2>
-          <div>{firstLanguage}</div>
-          <pre>{firstText}</pre>
-          <div>{secondLanguage}</div>
-          <pre>{secondText}</pre>
-        </StydedWrapper>
-      </UserPageTemplate>
+      <DetailsTemplate title={title} handleDelete={this.handleDelete} route={routes.texts}>
+        <StyledLanguage>{firstLanguage}</StyledLanguage>
+        <PreformattedText>{firstText}</PreformattedText>
+        <StyledLanguage>{secondLanguage}</StyledLanguage>
+        <PreformattedText>{secondText}</PreformattedText>
+      </DetailsTemplate>
     );
   }
 }

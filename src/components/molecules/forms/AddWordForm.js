@@ -4,33 +4,13 @@ import { addWords } from "actions/index";
 import styled from "styled-components";
 import Button from "components/atoms/Button";
 import Input from "components/atoms/Input";
-
-const StyledWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-`;
-
-const StyledForm = styled.form`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 50vw;
-`;
+import Form from "components/molecules/forms/Form";
 
 const StyledValues = styled.div`
-  width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
-`;
-
-const StyledValue = styled.div`
-  width: 50%;
-  display: flex;
-  justify-content: center;
+  width: 100%;
 `;
 
 class AddWordForm extends React.Component {
@@ -45,38 +25,35 @@ class AddWordForm extends React.Component {
     });
   };
 
-  render() {
+  handleSubmit = (e) => {
+    e.preventDefault();
     const { addWordsAction, activeLanguageFirst, activeLanguageSecond } = this.props;
     const { firstWord, secondWord } = this.state;
 
+    this.setState({
+      firstWord: "",
+      secondWord: "",
+    });
+    addWordsAction({
+      firstWord: firstWord,
+      secondWord: secondWord,
+      firstLanguage: activeLanguageFirst.name,
+      secondLanguage: activeLanguageSecond.name,
+    });
+  };
+
+  render() {
+    const { activeLanguageFirst, activeLanguageSecond } = this.props;
+    const { firstWord, secondWord } = this.state;
+
     return (
-      <StyledWrapper>
-        <StyledForm
-          onSubmit={(e) => {
-            e.preventDefault();
-            this.setState({
-              firstWord: "",
-              secondWord: "",
-            });
-            addWordsAction({
-              firstWord: firstWord,
-              secondWord: secondWord,
-              firstLanguage: activeLanguageFirst.name,
-              secondLanguage: activeLanguageSecond.name,
-            });
-          }}
-        >
-          <StyledValues>
-            <StyledValue>
-              <Input name="firstWord" value={firstWord} onChange={(e) => this.handleChange(e)} />
-            </StyledValue>
-            <StyledValue>
-              <Input name="secondWord" value={secondWord} onChange={(e) => this.handleChange(e)} />
-            </StyledValue>
-          </StyledValues>
-          <Button>add</Button>
-        </StyledForm>
-      </StyledWrapper>
+      <Form onSubmit={(e) => this.handleSubmit(e)}>
+        <StyledValues>
+          <Input name="firstWord" value={firstWord} onChange={(e) => this.handleChange(e)} placeholder={activeLanguageFirst.name} />
+          <Input name="secondWord" value={secondWord} onChange={(e) => this.handleChange(e)} placeholder={activeLanguageSecond.name} />
+        </StyledValues>
+        <Button save>zapisz</Button>
+      </Form>
     );
   }
 }
