@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDom from "react-dom";
 import styled, { keyframes } from "styled-components";
 
 const fadeIn = keyframes`
@@ -99,8 +100,8 @@ const ModalTemplate = ({ children, open, close, title }) => {
   }
   document.body.style.overflow = "hidden";
 
-  return (
-    <StyledOverlay id="overlay" onClick={(e) => e.target.id === "overlay" && close()} onSubmit={close}>
+  return ReactDom.createPortal(
+    <StyledOverlay id="overlay" onSubmit={close} onClick={(e) => e.target.id === "overlay" && close()}>
       <StyledModal>
         <StyledHeader>
           <StyledParagraph>{title}</StyledParagraph>
@@ -108,7 +109,8 @@ const ModalTemplate = ({ children, open, close, title }) => {
         </StyledHeader>
         {children}
       </StyledModal>
-    </StyledOverlay>
+    </StyledOverlay>,
+    document.getElementById("modal")
   );
 };
 
