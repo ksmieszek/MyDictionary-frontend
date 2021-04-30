@@ -16,11 +16,20 @@ const StyledTextarea = styled(Textarea)`
 `;
 
 class AddTextForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.focusInput = React.createRef();
+  }
+
   state = {
     firstText: "",
     secondText: "",
     title: "",
   };
+
+  componentDidMount() {
+    this.focusInput.current.focus();
+  }
 
   handleChange = (e) => {
     this.setState({
@@ -54,7 +63,7 @@ class AddTextForm extends React.Component {
 
     return (
       <Form onSubmit={(e) => this.handleSubmit(e)}>
-        <StyledInput name="title" value={title} onChange={(e) => this.handleChange(e)} placeholder="Tytuł" />
+        <StyledInput name="title" value={title} onChange={(e) => this.handleChange(e)} placeholder="Tytuł" ref={this.focusInput} />
         <StyledTextarea name="firstText" value={firstText} onChange={(e) => this.handleChange(e)} placeholder={activeLanguageFirst.name} />
         <StyledTextarea name="secondText" value={secondText} onChange={(e) => this.handleChange(e)} placeholder={activeLanguageSecond.name} />
         <Button save>zapisz</Button>

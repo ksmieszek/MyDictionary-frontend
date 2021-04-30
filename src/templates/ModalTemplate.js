@@ -26,9 +26,9 @@ const StyledOverlay = styled.div`
 
 const StyledModal = styled.div`
   position: fixed;
-  top: 20%;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   width: 90%;
   max-width: 500px;
   max-height: 80%;
@@ -46,9 +46,10 @@ const StyledModal = styled.div`
     background: transparent;
   }
 
-  /* @media (min-width: 1024px) {
-    max-width: 600px;
-  } */
+  @media (min-width: 1440px) {
+    top: 20%;
+    transform: translate(-50%, 0);
+  }
 `;
 
 const StyledHeader = styled.div`

@@ -31,6 +31,11 @@ const StyledInput = styled(Input)`
 `;
 
 class AddPhotoForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.fileInput = React.createRef();
+  }
+
   state = {
     photoSource: {},
     title: "",
@@ -38,11 +43,12 @@ class AddPhotoForm extends React.Component {
     photoName: "",
   };
 
-  handleFileChange = (e) => {
-    if (e.target.files[0]) {
+  handleFileChange = () => {
+    console.log(this.fileInput);
+    if (this.fileInput.current.files[0]) {
       this.setState({
-        photoSource: e.target.files[0],
-        photoName: e.target.files[0].name,
+        photoSource: this.fileInput.current.files[0],
+        photoName: this.fileInput.current.files[0].name,
       });
     }
   };
@@ -95,7 +101,7 @@ class AddPhotoForm extends React.Component {
     return (
       <Form onSubmit={(e) => this.handleSubmit(e)}>
         <StyledFileWrapper>
-          <InputFile handleFileChange={this.handleFileChange} />
+          <InputFile ref={this.fileInput} handleFileChange={this.handleFileChange} />
           <StyledButton>Wybierz zdjęcie</StyledButton>
           <p>{photoName}</p>
         </StyledFileWrapper>

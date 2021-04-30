@@ -14,10 +14,19 @@ const StyledValues = styled.div`
 `;
 
 class AddWordForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.focusInput = React.createRef();
+  }
+
   state = {
     firstWord: "",
     secondWord: "",
   };
+
+  componentDidMount() {
+    this.focusInput.current.focus();
+  }
 
   handleChange = (e) => {
     this.setState({
@@ -49,7 +58,13 @@ class AddWordForm extends React.Component {
     return (
       <Form onSubmit={(e) => this.handleSubmit(e)}>
         <StyledValues>
-          <Input name="firstWord" value={firstWord} onChange={(e) => this.handleChange(e)} placeholder={activeLanguageFirst.name} />
+          <Input
+            name="firstWord"
+            value={firstWord}
+            onChange={(e) => this.handleChange(e)}
+            placeholder={activeLanguageFirst.name}
+            ref={this.focusInput}
+          />
           <Input name="secondWord" value={secondWord} onChange={(e) => this.handleChange(e)} placeholder={activeLanguageSecond.name} />
         </StyledValues>
         <Button save>zapisz</Button>

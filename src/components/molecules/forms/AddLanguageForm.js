@@ -11,9 +11,18 @@ const StyledInput = styled(Input)`
 `;
 
 class AddLanguageForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.focusInput = React.createRef();
+  }
+
   state = {
     newLanguageName: "",
   };
+
+  componentDidMount() {
+    this.focusInput.current.focus();
+  }
 
   handleChange = (e) => {
     this.setState({
@@ -37,7 +46,7 @@ class AddLanguageForm extends React.Component {
   render() {
     return (
       <Form onSubmit={(e) => this.handleSubmit(e)}>
-        <StyledInput name="newLanguageName" value={this.state.newLanguageName} onChange={(e) => this.handleChange(e)} />
+        <StyledInput name="newLanguageName" value={this.state.newLanguageName} onChange={(e) => this.handleChange(e)} ref={this.focusInput} />
         <Button save>zapisz</Button>
       </Form>
     );

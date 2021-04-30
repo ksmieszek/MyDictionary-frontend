@@ -13,6 +13,6 @@ const StyledInputFile = styled.input`
   cursor: pointer;
 `;
 
-const InputFile = (props) => <StyledInputFile type="file" accept="image/*" onChange={(e) => props.handleFileChange(e)}></StyledInputFile>;
+const InputFile = React.forwardRef((props, ref) => <StyledInputFile type="file" accept="image/*" ref={ref} onChange={props.handleFileChange} />);
 
 export default InputFile;
