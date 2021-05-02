@@ -72,22 +72,16 @@ export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const LOGOUT_FAILURE = "LOGOUT_FAILURE";
 
-export const ADD_TO_PROGRESS = "ADD_TO_PROGRESS";
-export const DELETE_FROM_PROGRESS = "DELETE_FROM_PROGRESS";
-
 export const login = (username, password) => (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
+
   return axios
     .post("http://localhost:9000/api/user/login", {
       username,
       password,
     })
     .then((payload) => {
-      console.log(payload);
       dispatch({ type: LOGIN_SUCCESS, payload });
-    })
-    .then(() => {
-      return true;
     })
     .catch((err) => {
       console.log(err);
@@ -101,10 +95,6 @@ export const logout = () => (dispatch) => {
 
 export const addWords = (words) => (dispatch, getState) => {
   dispatch({ type: ADD_WORDS_REQUEST });
-  dispatch({
-    type: ADD_TO_PROGRESS,
-    payload: ADD_WORDS_REQUEST,
-  });
 
   const { firstWord, secondWord, firstLanguage, secondLanguage } = words;
   return axios
@@ -122,27 +112,15 @@ export const addWords = (words) => (dispatch, getState) => {
           data,
         },
       });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: ADD_WORDS_REQUEST,
-      });
     })
     .catch((err) => {
       console.log(err);
       dispatch({ type: ADD_WORDS_FAILURE });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: ADD_WORDS_REQUEST,
-      });
     });
 };
 
 export const fetchWords = (firstLanguage, secondLanguage) => (dispatch, getState) => {
   dispatch({ type: FETCH_WORDS_REQUEST });
-  dispatch({
-    type: ADD_TO_PROGRESS,
-    payload: FETCH_WORDS_REQUEST,
-  });
 
   return axios
     .post("http://localhost:9000/api/show/words", {
@@ -157,26 +135,14 @@ export const fetchWords = (firstLanguage, secondLanguage) => (dispatch, getState
           data,
         },
       });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: FETCH_WORDS_REQUEST,
-      });
     })
     .catch((err) => {
       dispatch({ type: FETCH_WORDS_FAILURE });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: FETCH_WORDS_REQUEST,
-      });
     });
 };
 
 export const deleteWords = (wordsId) => (dispatch) => {
   dispatch({ type: DELETE_WORDS_REQUEST });
-  dispatch({
-    type: ADD_TO_PROGRESS,
-    payload: DELETE_WORDS_REQUEST,
-  });
 
   return axios
     .delete(`http://localhost:9000/api/delete/words/${wordsId}`)
@@ -187,18 +153,10 @@ export const deleteWords = (wordsId) => (dispatch) => {
           wordsId,
         },
       });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: DELETE_WORDS_REQUEST,
-      });
     })
     .catch((err) => {
       console.log(err);
       dispatch({ type: DELETE_WORDS_FAILURE });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: DELETE_WORDS_REQUEST,
-      });
     });
 };
 
@@ -226,10 +184,6 @@ export const addLanguage = ({ name }) => (dispatch, getState) => {
 
 export const fetchLanguages = () => (dispatch, getState) => {
   dispatch({ type: FETCH_LANGUAGES_REQUEST });
-  dispatch({
-    type: ADD_TO_PROGRESS,
-    payload: FETCH_LANGUAGES_REQUEST,
-  });
 
   return axios
     .post("http://localhost:9000/api/show/languages", {
@@ -242,26 +196,15 @@ export const fetchLanguages = () => (dispatch, getState) => {
           data,
         },
       });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: FETCH_LANGUAGES_REQUEST,
-      });
     })
     .catch((err) => {
+      console.log(err);
       dispatch({ type: FETCH_LANGUAGES_FAILURE });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: FETCH_LANGUAGES_REQUEST,
-      });
     });
 };
 
 export const deleteLanguage = (languageId) => (dispatch) => {
   dispatch({ type: DELETE_LANGUAGE_REQUEST });
-  dispatch({
-    type: ADD_TO_PROGRESS,
-    payload: DELETE_LANGUAGE_REQUEST + languageId,
-  });
 
   return axios
     .delete(`http://localhost:9000/api/delete/language/${languageId}`)
@@ -272,27 +215,41 @@ export const deleteLanguage = (languageId) => (dispatch) => {
           languageId,
         },
       });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: DELETE_LANGUAGE_REQUEST + languageId,
-      });
     })
     .catch((err) => {
       console.log(err);
       dispatch({ type: DELETE_LANGUAGE_FAILURE });
+    });
+};
+
+export const addToActiveLanguages = (newActiveLanguage) => (dispatch, getState) => {
+  const { _id: languageId, name, chosen } = newActiveLanguage;
+
+  dispatch({ type: ADD_ACTIVE_LANGUAGE_REQUEST });
+
+  return axios
+    .post("http://localhost:9000/api/add/active/language", {
+      languageId,
+      name,
+      chosen,
+      userID: getState().userID,
+    })
+    .then(({ data }) => {
       dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: DELETE_LANGUAGE_REQUEST + languageId,
+        type: ADD_ACTIVE_LANGUAGE_SUCCESS,
+        payload: {
+          data,
+        },
       });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({ type: ADD_ACTIVE_LANGUAGE_FAILURE });
     });
 };
 
 export const fetchActiveLanguages = () => (dispatch, getState) => {
   dispatch({ type: FETCH_ACTIVE_LANGUAGES_REQUEST });
-  dispatch({
-    type: ADD_TO_PROGRESS,
-    payload: FETCH_ACTIVE_LANGUAGES_REQUEST,
-  });
 
   return axios
     .post("http://localhost:9000/api/show/active/languages", {
@@ -305,56 +262,29 @@ export const fetchActiveLanguages = () => (dispatch, getState) => {
           data,
         },
       });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: FETCH_ACTIVE_LANGUAGES_REQUEST,
-      });
     })
     .catch((err) => {
+      console.log(err);
       dispatch({ type: FETCH_ACTIVE_LANGUAGES_FAILURE });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: FETCH_ACTIVE_LANGUAGES_REQUEST,
-      });
     });
 };
 
-export const addToActiveLanguages = (newActiveLanguage) => (dispatch, getState) => {
-  const { _id: languageId, name, chosen } = newActiveLanguage;
-
-  dispatch({ type: ADD_ACTIVE_LANGUAGE_REQUEST });
-  dispatch({
-    type: ADD_TO_PROGRESS,
-    payload: ADD_ACTIVE_LANGUAGE_REQUEST + languageId,
-  });
+export const deleteActiveLanguage = (activeLanguageId) => (dispatch) => {
+  dispatch({ type: DELETE_ACTIVE_LANGUAGES_REQUEST });
 
   return axios
-    .post("http://localhost:9000/api/add/active/language", {
-      languageId,
-      name,
-      chosen,
-      userID: getState().userID,
-    })
-    .then(({ data }) => {
-      console.log(data);
+    .delete(`http://localhost:9000/api/delete/active/language/${activeLanguageId}`)
+    .then(() => {
       dispatch({
-        type: ADD_ACTIVE_LANGUAGE_SUCCESS,
+        type: DELETE_ACTIVE_LANGUAGES_SUCCESS,
         payload: {
-          data,
+          activeLanguageId,
         },
-      });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: ADD_ACTIVE_LANGUAGE_REQUEST + languageId,
       });
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: ADD_ACTIVE_LANGUAGE_FAILURE });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: ADD_ACTIVE_LANGUAGE_REQUEST + languageId,
-      });
+      dispatch({ type: DELETE_ACTIVE_LANGUAGES_FAILURE });
     });
 };
 
@@ -362,10 +292,6 @@ export const updateActiveLanguage = (newActiveLanguage, activeLanguageId) => (di
   const { _id: languageId, name, chosen } = newActiveLanguage;
 
   dispatch({ type: UPDATE_ACTIVE_LANGUAGES_REQUEST });
-  dispatch({
-    type: ADD_TO_PROGRESS,
-    payload: UPDATE_ACTIVE_LANGUAGES_REQUEST + languageId,
-  });
 
   return axios
     .put(`http://localhost:9000/api/edit/active/language/${activeLanguageId}`, {
@@ -380,48 +306,10 @@ export const updateActiveLanguage = (newActiveLanguage, activeLanguageId) => (di
           data,
         },
       });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: UPDATE_ACTIVE_LANGUAGES_REQUEST + languageId,
-      });
-    })
-    .catch((err) => {
-      dispatch({ type: UPDATE_ACTIVE_LANGUAGES_FAILURE });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: UPDATE_ACTIVE_LANGUAGES_REQUEST + languageId,
-      });
-    });
-};
-
-export const deleteActiveLanguage = (activeLanguageId) => (dispatch) => {
-  dispatch({ type: DELETE_ACTIVE_LANGUAGES_REQUEST });
-  dispatch({
-    type: ADD_TO_PROGRESS,
-    payload: DELETE_ACTIVE_LANGUAGES_REQUEST + activeLanguageId,
-  });
-
-  return axios
-    .delete(`http://localhost:9000/api/delete/active/language/${activeLanguageId}`)
-    .then(() => {
-      dispatch({
-        type: DELETE_ACTIVE_LANGUAGES_SUCCESS,
-        payload: {
-          activeLanguageId,
-        },
-      });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: DELETE_ACTIVE_LANGUAGES_REQUEST + activeLanguageId,
-      });
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: DELETE_ACTIVE_LANGUAGES_FAILURE });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: DELETE_ACTIVE_LANGUAGES_REQUEST + activeLanguageId,
-      });
+      dispatch({ type: UPDATE_ACTIVE_LANGUAGES_FAILURE });
     });
 };
 
@@ -451,10 +339,6 @@ export const addPhoto = ({ photoSource, title, description }) => (dispatch, getS
 
 export const fetchPhotos = () => (dispatch, getState) => {
   dispatch({ type: FETCH_PHOTOS_REQUEST });
-  dispatch({
-    type: ADD_TO_PROGRESS,
-    payload: FETCH_PHOTOS_REQUEST,
-  });
 
   return axios
     .post("http://localhost:9000/api/show/photos", {
@@ -467,17 +351,10 @@ export const fetchPhotos = () => (dispatch, getState) => {
           data,
         },
       });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: FETCH_PHOTOS_REQUEST,
-      });
     })
     .catch((err) => {
+      console.log(err);
       dispatch({ type: FETCH_PHOTOS_FAILURE });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: FETCH_PHOTOS_REQUEST,
-      });
     });
 };
 
@@ -502,10 +379,6 @@ export const deletePhoto = (photoId) => (dispatch) => {
 
 export const addTexts = (texts) => (dispatch, getState) => {
   dispatch({ type: ADD_TEXTS_REQUEST });
-  dispatch({
-    type: ADD_TO_PROGRESS,
-    payload: ADD_TEXTS_REQUEST,
-  });
 
   const { title, firstText, secondText, firstLanguage, secondLanguage } = texts;
   return axios
@@ -524,27 +397,15 @@ export const addTexts = (texts) => (dispatch, getState) => {
           data,
         },
       });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: ADD_TEXTS_REQUEST,
-      });
     })
     .catch((err) => {
       console.log(err);
       dispatch({ type: ADD_TEXTS_FAILURE });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: ADD_TEXTS_REQUEST,
-      });
     });
 };
 
 export const fetchTexts = (firstLanguage, secondLanguage) => (dispatch, getState) => {
   dispatch({ type: FETCH_TEXTS_REQUEST });
-  dispatch({
-    type: ADD_TO_PROGRESS,
-    payload: FETCH_TEXTS_REQUEST,
-  });
 
   return axios
     .post("http://localhost:9000/api/show/texts", {
@@ -553,33 +414,20 @@ export const fetchTexts = (firstLanguage, secondLanguage) => (dispatch, getState
       userID: getState().userID,
     })
     .then(({ data }) => {
-      console.log(data);
       dispatch({
         type: FETCH_TEXTS_SUCCESS,
         payload: {
           data,
         },
       });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: FETCH_TEXTS_REQUEST,
-      });
     })
     .catch((err) => {
       dispatch({ type: FETCH_TEXTS_FAILURE });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: FETCH_TEXTS_REQUEST,
-      });
     });
 };
 
 export const deleteTexts = (textsId) => (dispatch) => {
   dispatch({ type: DELETE_TEXTS_REQUEST });
-  dispatch({
-    type: ADD_TO_PROGRESS,
-    payload: DELETE_TEXTS_REQUEST,
-  });
 
   return axios
     .delete(`http://localhost:9000/api/delete/texts/${textsId}`)
@@ -590,17 +438,9 @@ export const deleteTexts = (textsId) => (dispatch) => {
           textsId,
         },
       });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: DELETE_TEXTS_REQUEST,
-      });
     })
     .catch((err) => {
       console.log(err);
       dispatch({ type: DELETE_TEXTS_FAILURE });
-      dispatch({
-        type: DELETE_FROM_PROGRESS,
-        payload: DELETE_TEXTS_REQUEST,
-      });
     });
 };

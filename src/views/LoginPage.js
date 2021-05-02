@@ -10,7 +10,6 @@ import Hyperlink from "components/atoms/Hyperlink";
 
 class LoginPage extends React.Component {
   state = {
-    redirect: false,
     username: "",
     password: "",
   };
@@ -19,11 +18,7 @@ class LoginPage extends React.Component {
     e.preventDefault();
     const { username, password } = this.state;
     const { loginAction } = this.props;
-    loginAction(username, password).then((result) => {
-      if (result) {
-        this.setState({ redirect: true });
-      }
-    });
+    loginAction(username, password);
   };
 
   handleChange = (e) => {
@@ -33,14 +28,10 @@ class LoginPage extends React.Component {
   };
 
   render() {
-    const { username, password, redirect } = this.state;
+    const { username, password } = this.state;
+    const { userID } = this.props;
 
-    if (redirect) {
-      return <Redirect to={routes.words} />;
-    }
-    if (localStorage.getItem("userID")) {
-      return <Redirect to={routes.words} />;
-    }
+    if (userID) return <Redirect to={routes.words} />;
 
     return (
       <AuthorizationTemplate>
@@ -59,8 +50,12 @@ class LoginPage extends React.Component {
   }
 }
 
+const mapStateToProps = ({ userID }) => {
+  return { userID };
+};
+
 const mapDispatchToProps = (dispatch) => ({
   loginAction: (username, password) => dispatch(login(username, password)),
 });
 
-export default connect(null, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

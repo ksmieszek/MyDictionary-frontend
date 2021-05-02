@@ -7,7 +7,7 @@ const StyledWrapper = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
-  display: ${(props) => (props.inProgress.length === 0 ? "none" : "block")};
+  display: ${(props) => (props.loadingElements === 0 ? "none" : "block")};
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 9999;
 `;
@@ -43,16 +43,16 @@ const StyledLoadingIndicator = styled.div`
   }
 `;
 
-const LoadingScreen = ({ inProgress }) => {
+const LoadingScreen = ({ loadingElements }) => {
   return (
-    <StyledWrapper inProgress={inProgress}>
+    <StyledWrapper loadingElements={loadingElements}>
       <StyledLoadingIndicator />
     </StyledWrapper>
   );
 };
 
-const mapStateToProps = ({ inProgress }) => {
-  return { inProgress };
+const mapStateToProps = ({ loadingElements }) => {
+  return { loadingElements };
 };
 
 export default connect(mapStateToProps)(LoadingScreen);

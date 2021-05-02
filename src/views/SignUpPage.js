@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import routes from "routes/index";
 import AuthorizationTemplate from "templates/AuthorizationTemplate";
@@ -23,11 +24,12 @@ class SignUpPage extends React.Component {
         username,
         password,
       })
+      .then(() => {
+        this.setState({ redirect: true });
+      })
       .catch((err) => {
         console.log(err);
       });
-
-    this.setState({ redirect: true });
   };
 
   handleChange = (e) => {
@@ -38,13 +40,10 @@ class SignUpPage extends React.Component {
 
   render() {
     const { username, password, redirect } = this.state;
+    const { userID } = this.props;
 
-    if (redirect) {
-      return <Redirect to={routes.login} />;
-    }
-    if (localStorage.getItem("userID")) {
-      return <Redirect to={routes.words} />;
-    }
+    if (redirect) return <Redirect to={routes.login} />;
+    if (userID) return <Redirect to={routes.words} />;
 
     return (
       <AuthorizationTemplate>
@@ -63,4 +62,8 @@ class SignUpPage extends React.Component {
   }
 }
 
-export default SignUpPage;
+const mapStateToProps = ({ userID }) => {
+  return { userID };
+};
+
+export default connect(mapStateToProps)(SignUpPage);
