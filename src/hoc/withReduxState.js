@@ -1,5 +1,5 @@
 import React from "react";
-import { fetchLanguages, fetchActiveLanguages, addToActiveLanguages, deleteActiveLanguage } from "actions/index";
+import { fetchLanguages, fetchActiveLanguages, addActiveLanguages, deleteActiveLanguage } from "actions/index";
 import { connect } from "react-redux";
 
 const withReduxState = (ChildComponent, props) => {
@@ -19,13 +19,13 @@ const withReduxState = (ChildComponent, props) => {
     AddActiveLanguagesIfMissing = async () => {
       const { activeLanguageFirst, activeLanguageSecond } = this.props;
       if (Object.keys(activeLanguageFirst).length === 0 || Object.keys(activeLanguageSecond).length === 0) {
-        const { languages, addToActiveLanguagesAction, deleteActiveLanguageAction, fetchActiveLanguagesAction } = this.props;
+        const { languages, addActiveLanguagesAction, deleteActiveLanguageAction, fetchActiveLanguagesAction } = this.props;
         if (activeLanguageFirst._id !== undefined) await deleteActiveLanguageAction(activeLanguageFirst._id);
         if (activeLanguageSecond._id !== undefined) await deleteActiveLanguageAction(activeLanguageSecond._id);
         const newActiveLanguageFirst = Object.assign(languages[0], { chosen: "activeLanguageFirst" });
         const newActiveLanguageSecond = Object.assign(languages[1], { chosen: "activeLanguageSecond" });
-        await addToActiveLanguagesAction(newActiveLanguageFirst);
-        await addToActiveLanguagesAction(newActiveLanguageSecond);
+        await addActiveLanguagesAction(newActiveLanguageFirst);
+        await addActiveLanguagesAction(newActiveLanguageSecond);
         await fetchActiveLanguagesAction();
       }
     };
@@ -53,7 +53,7 @@ const withReduxState = (ChildComponent, props) => {
   const mapDispatchToProps = (dispatch) => ({
     fetchLanguagesAction: () => dispatch(fetchLanguages()),
     fetchActiveLanguagesAction: () => dispatch(fetchActiveLanguages()),
-    addToActiveLanguagesAction: (newSelectedLanguage) => dispatch(addToActiveLanguages(newSelectedLanguage)),
+    addActiveLanguagesAction: (newSelectedLanguage) => dispatch(addActiveLanguages(newSelectedLanguage)),
     deleteActiveLanguageAction: (languageId) => dispatch(deleteActiveLanguage(languageId)),
   });
 

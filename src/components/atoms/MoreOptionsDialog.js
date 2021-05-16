@@ -1,24 +1,54 @@
 import { useState } from "react";
-import styled, { css } from "styled-components";
-import MoreIcon from "assets/icons/more.svg";
+import styled, { css, keyframes } from "styled-components";
+import { ReactComponent as MoreIcon } from "assets/icons/more.svg";
 
-const StyledIcon = styled.div`
+const fadeOut = keyframes`
+  0% {
+    border-color:  #606060;
+  }
+  100% {
+     border-color: transparent;
+  }
+`;
+
+const StyledWrapper = styled.div`
   position: relative;
-  width: 10px;
-  height: 20px;
-  padding: 20px 10px;
-  background-image: url(${MoreIcon});
-  background-repeat: no-repeat;
-  background-size: 10px 20px;
-  background-position: 50% 50%;
+  display: flex;
+  align-items: center;
+`;
+
+const StyledMoreIcon = styled(MoreIcon)`
+  position: relative;
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  fill: #c0c0c0;
   cursor: pointer;
+  transition: background-color 0.1s ease;
+
+  &:hover {
+    fill: #fff;
+  }
+
+  &:active {
+    background-color: #606060;
+  }
+
+  ${(props) =>
+    props.animateborder &&
+    css`
+      animation: 0.2s linear ${fadeOut};
+    `}
 `;
 
 const StyledContentWrapper = styled.div`
   position: absolute;
   top: 50%;
   right: 9999px;
-  transform: translateY(-50%);
+  transform: translateY(calc(-50% + 20px));
+  padding: 5px;
   border-radius: 4px;
   background-color: white;
   color: black;
@@ -29,7 +59,7 @@ const StyledContentWrapper = styled.div`
   ${(props) =>
     props.visible &&
     css`
-      right: 35px;
+      right: 50px;
       opacity: 1;
     `}
 `;
@@ -38,7 +68,7 @@ const StyledArrowRight = styled.div`
   position: absolute;
   top: 50%;
   left: 100%;
-  transform: translateY(-50%);
+  transform: translateY(calc(-50% - 20px));
   width: 0;
   height: 0;
   border-top: 7px solid transparent;
@@ -48,14 +78,29 @@ const StyledArrowRight = styled.div`
 
 const MoreOptionsDialog = ({ children }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [animateBorder, setAnimateBorder] = useState(false);
+
+  const handleBorderAnimation = () => {
+    setAnimateBorder(true);
+    setTimeout(() => {
+      setAnimateBorder(false);
+    }, 200);
+  };
 
   return (
-    <StyledIcon onClick={() => setIsVisible(!isVisible)}>
+    <StyledWrapper>
+      <StyledMoreIcon
+        onClick={() => {
+          setIsVisible(!isVisible);
+          handleBorderAnimation();
+        }}
+        animateborder={animateBorder ? 1 : 0}
+      />
       <StyledContentWrapper visible={isVisible}>
         <StyledArrowRight />
         {children}
       </StyledContentWrapper>
-    </StyledIcon>
+    </StyledWrapper>
   );
 };
 

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { fetchPhotos } from "actions/index";
 import UserPageTemplate from "templates/UserPageTemplate";
-import AddPhotoForm from "components/molecules/forms/AddPhotoForm";
+import ModalTemplate from "templates/ModalTemplate";
+import PhotoForm from "components/molecules/forms/PhotoForm";
 import PhotosList from "components/molecules/lists/PhotosList";
 import Button from "components/atoms/Button";
-import ModalTemplate from "templates/ModalTemplate";
 
 const Photos = ({ photos, fetchPhotosAction }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +17,7 @@ const Photos = ({ photos, fetchPhotosAction }) => {
     <UserPageTemplate>
       <div>
         <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title="Nowe zdjęcie">
-          <AddPhotoForm />
+          <PhotoForm />
         </ModalTemplate>
         <Button add onClick={() => setIsOpen(true)} pulse={photos.length === 0}>
           Dodaj zdjęcie

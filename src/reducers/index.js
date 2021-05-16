@@ -53,6 +53,18 @@ import {
   // DELETE_TEXTS_REQUEST,
   DELETE_TEXTS_SUCCESS,
   // DELETE_TEXTS_FAILURE,
+  // UPDATE_LANGUAGE_REQUEST,
+  UPDATE_LANGUAGE_SUCCESS,
+  // UPDATE_LANGUAGE_FAILURE,
+  // UPDATE_WORDS_REQUEST,
+  UPDATE_WORDS_SUCCESS,
+  // UPDATE_WORDS_FAILURE,
+  // UPDATE_PHOTO_REQUEST,
+  UPDATE_PHOTO_SUCCESS,
+  // UPDATE_PHOTO_FAILURE,
+  // UPDATE_TEXTS_REQUEST,
+  UPDATE_TEXTS_SUCCESS,
+  // UPDATE_TEXTS_FAILURE,
 } from "actions/index";
 
 const initialState = {
@@ -118,6 +130,18 @@ const rootReducer = (state = initialState, action) => {
       }
       break;
 
+    case UPDATE_WORDS_SUCCESS:
+      state = {
+        ...state,
+        words: [
+          ...state.words.map((item) => {
+            if (item._id !== action.payload.data._id) return item;
+            else return action.payload.data;
+          }),
+        ],
+      };
+      break;
+
     case DELETE_WORDS_SUCCESS:
       state = {
         ...state,
@@ -139,20 +163,22 @@ const rootReducer = (state = initialState, action) => {
       };
       break;
 
+    case UPDATE_LANGUAGE_SUCCESS:
+      state = {
+        ...state,
+        languages: [
+          ...state.languages.map((item) => {
+            if (item._id !== action.payload.data._id) return item;
+            else return action.payload.data;
+          }),
+        ],
+      };
+      break;
+
     case DELETE_LANGUAGE_SUCCESS:
       state = {
         ...state,
         languages: [...state.languages.filter((item) => item._id !== action.payload.languageId)],
-      };
-      break;
-
-    case FETCH_ACTIVE_LANGUAGES_SUCCESS:
-      const firstActive = action.payload.data.find((item) => item.chosen === "activeLanguageFirst");
-      const secondActive = action.payload.data.find((item) => item.chosen === "activeLanguageSecond");
-      state = {
-        ...state,
-        activeLanguageFirst: firstActive !== undefined ? firstActive : {},
-        activeLanguageSecond: secondActive !== undefined ? secondActive : {},
       };
       break;
 
@@ -171,6 +197,16 @@ const rootReducer = (state = initialState, action) => {
         state = {
           ...state,
         };
+      break;
+
+    case FETCH_ACTIVE_LANGUAGES_SUCCESS:
+      const firstActive = action.payload.data.find((item) => item.chosen === "activeLanguageFirst");
+      const secondActive = action.payload.data.find((item) => item.chosen === "activeLanguageSecond");
+      state = {
+        ...state,
+        activeLanguageFirst: firstActive !== undefined ? firstActive : {},
+        activeLanguageSecond: secondActive !== undefined ? secondActive : {},
+      };
       break;
 
     case UPDATE_ACTIVE_LANGUAGES_SUCCESS:
@@ -212,6 +248,18 @@ const rootReducer = (state = initialState, action) => {
       };
       break;
 
+    case UPDATE_PHOTO_SUCCESS:
+      state = {
+        ...state,
+        photos: [
+          ...state.photos.map((item) => {
+            if (item._id !== action.payload.data._id) return item;
+            else return action.payload.data;
+          }),
+        ],
+      };
+      break;
+
     case DELETE_PHOTO_SUCCESS:
       state = {
         ...state,
@@ -238,6 +286,18 @@ const rootReducer = (state = initialState, action) => {
           texts: [...state.texts, ...action.payload.data],
         };
       }
+      break;
+
+    case UPDATE_TEXTS_SUCCESS:
+      state = {
+        ...state,
+        texts: [
+          ...state.texts.map((item) => {
+            if (item._id !== action.payload.data._id) return item;
+            else return action.payload.data;
+          }),
+        ],
+      };
       break;
 
     case DELETE_TEXTS_SUCCESS:

@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { addWords } from "actions/index";
+import { addWords, editWords } from "actions/index";
 import styled from "styled-components";
+import FormTemplate from "templates/FormTemplate";
 import Button from "components/atoms/Button";
 import Input from "components/atoms/Input";
-import Form from "components/molecules/forms/Form";
 
 const StyledValues = styled.div`
   display: flex;
@@ -13,18 +13,26 @@ const StyledValues = styled.div`
   width: 100%;
 `;
 
-class AddWordForm extends React.Component {
+class WordForm extends React.Component {
   constructor(props) {
     super(props);
     this.focusInput = React.createRef();
   }
 
   state = {
+    wordsId: "",
     firstWord: "",
     secondWord: "",
   };
 
   componentDidMount() {
+    if (this.props.edit) {
+      this.setState({
+        firstWord: this.props.edit.firstWord,
+        secondWord: this.props.edit.secondWord,
+        wordsId: this.props.edit.id,
+      });
+    }
     this.focusInput.current.focus();
   }
 
@@ -36,18 +44,24 @@ class AddWordForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { addWordsAction, activeLanguageFirst, activeLanguageSecond } = this.props;
-    const { firstWord, secondWord } = this.state;
+    const { addWordsAction, editWordsAction, activeLanguageFirst, activeLanguageSecond } = this.props;
+    const { firstWord, secondWord, wordsId } = this.state;
+
+    if (this.props.edit) {
+      editWordsAction({ firstWord, secondWord, wordsId });
+    } else {
+      addWordsAction({
+        firstWord: firstWord,
+        secondWord: secondWord,
+        firstLanguage: activeLanguageFirst.languageId,
+        secondLanguage: activeLanguageSecond.languageId,
+      });
+    }
 
     this.setState({
+      wordsId: "",
       firstWord: "",
       secondWord: "",
-    });
-    addWordsAction({
-      firstWord: firstWord,
-      secondWord: secondWord,
-      firstLanguage: activeLanguageFirst.name,
-      secondLanguage: activeLanguageSecond.name,
     });
   };
 
@@ -56,7 +70,7 @@ class AddWordForm extends React.Component {
     const { firstWord, secondWord } = this.state;
 
     return (
-      <Form onSubmit={(e) => this.handleSubmit(e)}>
+      <FormTemplate onSubmit={(e) => this.handleSubmit(e)}>
         <StyledValues>
           <Input
             name="firstWord"
@@ -68,13 +82,18 @@ class AddWordForm extends React.Component {
           <Input name="secondWord" value={secondWord} onChange={(e) => this.handleChange(e)} placeholder={activeLanguageSecond.name} />
         </StyledValues>
         <Button save>zapisz</Button>
-      </Form>
+      </FormTemplate>
     );
   }
 }
 
+const mapStateToProps = ({ activeLanguageFirst, activeLanguageSecond }) => {
+  return { activeLanguageFirst, activeLanguageSecond };
+};
+
 const mapDispatchToProps = (dispatch) => ({
   addWordsAction: (words) => dispatch(addWords(words)),
+  editWordsAction: (words) => dispatch(editWords(words)),
 });
 
-export default connect(null, mapDispatchToProps)(AddWordForm);
+export default connect(mapStateToProps, mapDispatchToProps)(WordForm);

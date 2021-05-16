@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import withReduxState from "hoc/withReduxState";
 import { useHistory } from "react-router-dom";
+import routes from "routes/index";
 import UserPageTemplate from "templates/UserPageTemplate";
-import SelectLanguages from "components/atoms/SelectLanguages";
-import AddTextForm from "components/molecules/forms/AddTextForm";
-import TextsList from "components/molecules/lists/TextsList";
 import ModalTemplate from "templates/ModalTemplate";
+import SelectLanguages from "components/atoms/SelectLanguages";
+import TextForm from "components/molecules/forms/TextForm";
+import TextsList from "components/molecules/lists/TextsList";
 import Button from "components/atoms/Button";
 import Info from "components/atoms/Info";
-import routes from "routes/index";
 
 const Texts = ({ activeLanguageFirst, activeLanguageSecond, languages, texts }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,12 +21,12 @@ const Texts = ({ activeLanguageFirst, activeLanguageSecond, languages, texts }) 
           <>
             <SelectLanguages />
             <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title="Nowy tekst">
-              <AddTextForm languages={languages} activeLanguageFirst={activeLanguageFirst} activeLanguageSecond={activeLanguageSecond} />
+              <TextForm activeLanguageFirst={activeLanguageFirst} activeLanguageSecond={activeLanguageSecond} />
             </ModalTemplate>
             <Button add onClick={() => setIsOpen(true)} pulse={texts.length === 0}>
               Dodaj tekst
             </Button>
-            <TextsList languages={languages} activeLanguageFirst={activeLanguageFirst} activeLanguageSecond={activeLanguageSecond} texts={texts} />
+            <TextsList activeLanguageFirst={activeLanguageFirst} activeLanguageSecond={activeLanguageSecond} texts={texts} />
           </>
         ) : (
           <Info>

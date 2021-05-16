@@ -1,7 +1,7 @@
 import React from "react";
 import withReduxState from "hoc/withReduxState";
 import { connect } from "react-redux";
-import { fetchWords, fetchTexts, updateActiveLanguage } from "actions/index";
+import { fetchWords, fetchTexts, editActiveLanguage } from "actions/index";
 import styled from "styled-components";
 
 const StyledWrapper = styled.div`
@@ -44,11 +44,6 @@ class SelectLanguages extends React.Component {
       this.fetchToState();
     }
   }
-  componentDidUpdate(prevProps) {
-    if (this.props.languages.length !== prevProps.languages.length) {
-      this.fetchToState();
-    }
-  }
 
   populateSelectList = (name) => {
     const { languages, activeLanguageFirst, activeLanguageSecond } = this.props;
@@ -75,23 +70,25 @@ class SelectLanguages extends React.Component {
   };
 
   changeActiveLanguage = async (e) => {
-    const { languages, updateActiveLanguageAction, activeLanguageFirst, activeLanguageSecond } = this.props;
+    const { languages, editActiveLanguageAction, activeLanguageFirst, activeLanguageSecond } = this.props;
     const newActiveLanguage = languages.find((item) => item.name === e.target.value);
     const activeLanguageId = e.target.name === "activeLanguageFirst" ? activeLanguageFirst._id : activeLanguageSecond._id;
     const newValues = {
+      _id: activeLanguageId,
+      languageId: newActiveLanguage._id,
       chosen: e.target.name,
     };
-    const finalObject = Object.assign(newActiveLanguage, newValues);
-    await updateActiveLanguageAction(finalObject, activeLanguageId);
+    const finalObject = { ...newActiveLanguage, ...newValues };
+    await editActiveLanguageAction(finalObject, activeLanguageId);
     this.fetchToState();
   };
 
   fetchToState = () => {
     const { fetchWordsAction, fetchTextsAction, activeLanguageFirst, activeLanguageSecond } = this.props;
-    fetchWordsAction(activeLanguageFirst.name, activeLanguageSecond.name);
-    fetchWordsAction(activeLanguageSecond.name, activeLanguageFirst.name);
-    fetchTextsAction(activeLanguageFirst.name, activeLanguageSecond.name);
-    fetchTextsAction(activeLanguageSecond.name, activeLanguageFirst.name);
+    fetchWordsAction(activeLanguageFirst.languageId, activeLanguageSecond.languageId);
+    fetchWordsAction(activeLanguageSecond.languageId, activeLanguageFirst.languageId);
+    fetchTextsAction(activeLanguageFirst.languageId, activeLanguageSecond.languageId);
+    fetchTextsAction(activeLanguageSecond.languageId, activeLanguageFirst.languageId);
   };
 
   render() {
@@ -117,7 +114,7 @@ class SelectLanguages extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
   fetchWordsAction: (firstLanguage, secondLanguage) => dispatch(fetchWords(firstLanguage, secondLanguage)),
   fetchTextsAction: (firstLanguage, secondLanguage) => dispatch(fetchTexts(firstLanguage, secondLanguage)),
-  updateActiveLanguageAction: (newSelectedLanguage, selectedId) => dispatch(updateActiveLanguage(newSelectedLanguage, selectedId)),
+  editActiveLanguageAction: (newSelectedLanguage, selectedId) => dispatch(editActiveLanguage(newSelectedLanguage, selectedId)),
 });
 
 export default withReduxState(connect(null, mapDispatchToProps)(SelectLanguages));

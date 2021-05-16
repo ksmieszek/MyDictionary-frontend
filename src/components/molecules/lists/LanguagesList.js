@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import {
   deleteLanguage,
   fetchActiveLanguages,
-  addToActiveLanguages,
+  addActiveLanguages,
   deleteActiveLanguage,
   fetchWords,
   deleteWords,
@@ -12,6 +12,8 @@ import {
 } from "actions/index";
 import styled from "styled-components";
 import LanguagePill from "components/molecules/pills/LanguagePill";
+import { useStore } from "react-redux";
+import OptionsMenu from "components/molecules/OptionsMenu";
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -23,40 +25,50 @@ const StyledWrapper = styled.div`
 `;
 
 const LanguagesList = (props) => {
-  const handleDeleteLanguage = async (languageId) => {
+  const [actionName, setActionName] = useState(undefined);
+  const [actionEnabled, setActionEnabled] = useState(false);
+  const store = useStore();
+
+  const handleDeleteLanguage = async (deletedLanguageId) => {
     const { deleteLanguageAction, deleteActiveLanguageAction, activeLanguageFirst, activeLanguageSecond } = props;
-    await deleteLanguageAction(languageId);
-    if (activeLanguageFirst.languageId === languageId) await deleteActiveLanguageAction(activeLanguageFirst._id);
-    else if (activeLanguageSecond.languageId === languageId) await deleteActiveLanguageAction(activeLanguageSecond._id);
-    await deleteConnectedDataToLanguage(languageId);
+    if (activeLanguageFirst.languageId === deletedLanguageId) await deleteActiveLanguageAction(activeLanguageFirst._id);
+    else if (activeLanguageSecond.languageId === deletedLanguageId) await deleteActiveLanguageAction(activeLanguageSecond._id);
+    await deleteLanguageAction(deletedLanguageId);
+    await deleteConnectedDataToLanguage(deletedLanguageId);
   };
 
-  const deleteConnectedDataToLanguage = async (languageId) => {
+  const deleteConnectedDataToLanguage = async (deletedLanguageId) => {
     const { languages, fetchWordsAction, deleteWordsAction, fetchTextsAction, deleteTextsAction } = props;
-    const deletedLanguage = languages.find((item) => item._id === languageId);
-
     await Promise.all(
       languages.map(async (item) => {
-        if (item.name === deletedLanguage.name) return;
-        await fetchWordsAction(deletedLanguage.name, item.name);
-        await fetchWordsAction(item.name, deletedLanguage.name);
-        await fetchTextsAction(deletedLanguage.name, item.name);
-        await fetchTextsAction(item.name, deletedLanguage.name);
+        if (item._id === deletedLanguageId) return;
+        await fetchWordsAction(deletedLanguageId, item._id);
+        await fetchWordsAction(item._id, deletedLanguageId);
+        await fetchTextsAction(deletedLanguageId, item._id);
+        await fetchTextsAction(item._id, deletedLanguageId);
       })
     );
 
-    props.words.forEach((item) => {
-      if (item.firstLanguage === deletedLanguage.name || item.secondLanguage === deletedLanguage.name) deleteWordsAction(item._id);
+    store.getState().words.forEach((item) => {
+      if (item.firstLanguage === deletedLanguageId || item.secondLanguage === deletedLanguageId) deleteWordsAction(item._id);
     });
-    props.texts.forEach((item) => {
-      if (item.firstLanguage === deletedLanguage.name || item.secondLanguage === deletedLanguage.name) deleteTextsAction(item._id);
+    store.getState().texts.forEach((item) => {
+      if (item.firstLanguage === deletedLanguageId || item.secondLanguage === deletedLanguageId) deleteTextsAction(item._id);
     });
   };
 
   return (
     <StyledWrapper>
+      <OptionsMenu actionName={actionName} setActionEnabled={setActionEnabled} setActionName={setActionName} />
       {props.languages.map(({ _id: id, name }) => (
-        <LanguagePill key={id} id={id} name={name} handleDeleteLanguage={handleDeleteLanguage} />
+        <LanguagePill
+          key={id}
+          id={id}
+          name={name}
+          handleDeleteLanguage={handleDeleteLanguage}
+          actionEnabled={actionEnabled}
+          actionName={actionName}
+        />
       ))}
     </StyledWrapper>
   );
@@ -65,7 +77,7 @@ const LanguagesList = (props) => {
 const mapDispatchToProps = (dispatch) => ({
   deleteLanguageAction: (languageId) => dispatch(deleteLanguage(languageId)),
   fetchActiveLanguagesAction: () => dispatch(fetchActiveLanguages()),
-  addToActiveLanguagesAction: (newSelectedLanguage) => dispatch(addToActiveLanguages(newSelectedLanguage)),
+  addActiveLanguagesAction: (newSelectedLanguage) => dispatch(addActiveLanguages(newSelectedLanguage)),
   deleteActiveLanguageAction: (activeLanguageId) => dispatch(deleteActiveLanguage(activeLanguageId)),
   fetchWordsAction: (firstLanguage, secondLanguage) => dispatch(fetchWords(firstLanguage, secondLanguage)),
   deleteWordsAction: (wordsId) => dispatch(deleteWords(wordsId)),

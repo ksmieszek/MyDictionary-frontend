@@ -34,8 +34,14 @@ const StyledTitle = styled.h1`
   }
 `;
 
-const StyledDeleteButton = styled.div`
+const StyledListItem = styled.div`
   padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #ddd;
+  }
 `;
 
 const StyledGoBackButtonWrapper = styled.div`
@@ -45,14 +51,29 @@ const StyledGoBackButtonWrapper = styled.div`
   margin-top: 50px;
 `;
 
-const DetailsTemplate = ({ title, handleDelete, route, children }) => {
+const DetailsTemplate = ({ title, route, children, setActionName, setIsOpen }) => {
   return (
     <UserPageTemplate>
       <StyledWrapper>
         <StyledHeader>
           <StyledTitle>{title}</StyledTitle>
           <MoreOptionsDialog>
-            <StyledDeleteButton onClick={handleDelete}>usuń</StyledDeleteButton>
+            <StyledListItem
+              onClick={() => {
+                setActionName("edit");
+                setIsOpen(true);
+              }}
+            >
+              edytuj
+            </StyledListItem>
+            <StyledListItem
+              onClick={() => {
+                setActionName("delete");
+                setIsOpen(true);
+              }}
+            >
+              usuń
+            </StyledListItem>
           </MoreOptionsDialog>
         </StyledHeader>
         {children}

@@ -1,15 +1,39 @@
 import { useState } from "react";
-import styled from "styled-components";
-import DeleteIcon from "components/atoms/DeleteIcon";
+import styled, { css } from "styled-components";
 import ModalTemplate from "templates/ModalTemplate";
 import Button from "components/atoms/Button";
+import WordForm from "components/molecules/forms/WordForm";
 
 const StyledWrapper = styled.div`
   position: relative;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
-  margin: 15px 5px;
+  margin: 25px 5px 0 5px;
+`;
+
+const StyledWordsRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  padding: 10px;
+  border-radius: 10px;
+  transition: all 0.1s ease;
+
+  ${(props) =>
+    props.actionName !== undefined &&
+    css`
+      &:hover {
+        transform: scale(1.1);
+        background-color: #17126a;
+        cursor: pointer;
+      }
+    `}
+
+  @media (min-width: 768px) {
+    max-width: 700px;
+  }
 `;
 
 const StyledWord = styled.div`
@@ -34,6 +58,7 @@ const StyledSecondWord = styled(StyledWord)`
 const StyledSeparator = styled.div`
   width: 40px;
   margin: auto;
+  text-align: center;
 `;
 
 const StyledParagraph = styled.p`
@@ -49,25 +74,34 @@ const StyledButton = styled(Button)`
   margin-top: 30px;
 `;
 
-const WordsPill = ({ id, firstWord, secondWord, deleteWordsAction }) => {
+const WordsPill = ({ id, firstWord, secondWord, deleteWordsAction, actionName, actionEnabled }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <StyledWrapper>
-      <StyledFirstWord>{firstWord}</StyledFirstWord>
-      <StyledSeparator>
-        <DeleteIcon onClick={() => setIsOpen(true)} />
-      </StyledSeparator>
-      <StyledSecondWord>{secondWord}</StyledSecondWord>
-      <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title={`Usunąć te słowa?`}>
-        <StyledParagraph>Czy na pewno chcesz usunąć parę słów:</StyledParagraph>
-        <StyledSecondParagraph>
-          {firstWord} - {secondWord}
-        </StyledSecondParagraph>
-        <StyledButton delete onClick={() => deleteWordsAction(id)}>
-          usuń
-        </StyledButton>
-      </ModalTemplate>
+      <StyledWordsRow actionName={actionName} onClick={() => actionEnabled && setIsOpen(true)}>
+        <StyledFirstWord>{firstWord}</StyledFirstWord>
+        <StyledSeparator>-</StyledSeparator>
+        <StyledSecondWord>{secondWord}</StyledSecondWord>
+      </StyledWordsRow>
+
+      {isOpen && actionName === "edit" && (
+        <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title={`Edytuj słowa ${firstWord} - ${secondWord}`}>
+          <WordForm edit={{ firstWord, secondWord, id }} />
+        </ModalTemplate>
+      )}
+
+      {isOpen && actionName === "delete" && (
+        <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title={`Usunąć te słowa?`}>
+          <StyledParagraph>Czy na pewno chcesz usunąć parę słów:</StyledParagraph>
+          <StyledSecondParagraph>
+            {firstWord} - {secondWord}
+          </StyledSecondParagraph>
+          <StyledButton delete onClick={() => deleteWordsAction(id)}>
+            usuń
+          </StyledButton>
+        </ModalTemplate>
+      )}
     </StyledWrapper>
   );
 };

@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import ListGridTemplate from "templates/ListGridTemplate";
 import TextsPill from "components/molecules/pills/TextsPill";
 
@@ -8,8 +7,8 @@ const TextsList = ({ activeLanguageFirst, activeLanguageSecond, texts }) => (
     {texts
       .map(({ _id: id, title, firstLanguage, secondLanguage }) => {
         if (
-          (activeLanguageFirst.name === firstLanguage || activeLanguageFirst.name === secondLanguage) &&
-          (activeLanguageSecond.name === firstLanguage || activeLanguageSecond.name === secondLanguage)
+          (activeLanguageFirst.languageId === firstLanguage || activeLanguageFirst.languageId === secondLanguage) &&
+          (activeLanguageSecond.languageId === firstLanguage || activeLanguageSecond.languageId === secondLanguage)
         )
           return <TextsPill key={id} id={id} title={title} />;
         else return null;
@@ -18,6 +17,4 @@ const TextsList = ({ activeLanguageFirst, activeLanguageSecond, texts }) => (
   </ListGridTemplate>
 );
 
-const mapDispatchToProps = (dispatch) => ({});
-
-export default connect(null, mapDispatchToProps)(TextsList);
+export default TextsList;

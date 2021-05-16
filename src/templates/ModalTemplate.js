@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDom from "react-dom";
 import styled, { keyframes } from "styled-components";
 
@@ -67,9 +66,6 @@ const StyledParagraph = styled.p`
 const StyledCloseIcon = styled.div`
   position: relative;
   align-self: flex-start;
-  /* top: 20px;
-  right: 18px; */
-  /* width: 20px; */
   padding: 10px;
   cursor: pointer;
 
@@ -102,7 +98,7 @@ const ModalTemplate = ({ children, open, close, title }) => {
   document.body.style.overflow = "hidden";
 
   return ReactDom.createPortal(
-    <StyledOverlay id="overlay" onSubmit={close} onClick={(e) => e.target.id === "overlay" && close()}>
+    <StyledOverlay id="overlay" onSubmit={close} onMouseDown={(e) => e.target.id === "overlay" && close()}>
       <StyledModal>
         <StyledHeader>
           <StyledParagraph>{title}</StyledParagraph>

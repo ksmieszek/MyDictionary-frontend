@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import withReduxState from "hoc/withReduxState";
 import { useHistory } from "react-router-dom";
+import routes from "routes/index";
 import UserPageTemplate from "templates/UserPageTemplate";
-import SelectLanguages from "components/atoms/SelectLanguages";
-import AddWordForm from "components/molecules/forms/AddWordForm";
-import WordList from "components/molecules/lists/WordList";
 import ModalTemplate from "templates/ModalTemplate";
+import SelectLanguages from "components/atoms/SelectLanguages";
+import WordForm from "components/molecules/forms/WordForm";
+import WordList from "components/molecules/lists/WordList";
 import Button from "components/atoms/Button";
 import Info from "components/atoms/Info";
-import routes from "routes/index";
 
 const Words = ({ activeLanguageFirst, activeLanguageSecond, languages, words }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +21,7 @@ const Words = ({ activeLanguageFirst, activeLanguageSecond, languages, words }) 
           <>
             <SelectLanguages />
             <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title="Nowe słowo">
-              <AddWordForm languages={languages} activeLanguageFirst={activeLanguageFirst} activeLanguageSecond={activeLanguageSecond} />
+              <WordForm />
             </ModalTemplate>
             <Button add onClick={() => setIsOpen(true)} pulse={words.length === 0}>
               Dodaj słowo

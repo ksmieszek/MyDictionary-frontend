@@ -72,6 +72,22 @@ export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const LOGOUT_FAILURE = "LOGOUT_FAILURE";
 
+export const UPDATE_LANGUAGE_REQUEST = "UPDATE_LANGUAGE_REQUEST";
+export const UPDATE_LANGUAGE_SUCCESS = "UPDATE_LANGUAGE_SUCCESS";
+export const UPDATE_LANGUAGE_FAILURE = "UPDATE_LANGUAGE_FAILURE";
+
+export const UPDATE_WORDS_REQUEST = "UPDATE_WORDS_REQUEST";
+export const UPDATE_WORDS_SUCCESS = "UPDATE_WORDS_SUCCESS";
+export const UPDATE_WORDS_FAILURE = "UPDATE_WORDS_FAILURE";
+
+export const UPDATE_PHOTO_REQUEST = "UPDATE_PHOTO_REQUEST";
+export const UPDATE_PHOTO_SUCCESS = "UPDATE_PHOTO_SUCCESS";
+export const UPDATE_PHOTO_FAILURE = "UPDATE_PHOTO_FAILURE";
+
+export const UPDATE_TEXTS_REQUEST = "UPDATE_TEXTS_REQUEST";
+export const UPDATE_TEXTS_SUCCESS = "UPDATE_TEXTS_SUCCESS";
+export const UPDATE_TEXTS_FAILURE = "UPDATE_TEXTS_FAILURE";
+
 export const login = (username, password) => (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
 
@@ -141,6 +157,32 @@ export const fetchWords = (firstLanguage, secondLanguage) => (dispatch, getState
     });
 };
 
+export const editWords =
+  ({ wordsId, firstWord, secondWord }) =>
+  (dispatch, getState) => {
+    dispatch({ type: UPDATE_WORDS_REQUEST });
+
+    return axios
+      .put(`http://localhost:9000/api/edit/words/${wordsId}`, {
+        _id: wordsId,
+        firstWord: firstWord,
+        secondWord: secondWord,
+        userID: getState().userID,
+      })
+      .then(({ data }) => {
+        dispatch({
+          type: UPDATE_WORDS_SUCCESS,
+          payload: {
+            data,
+          },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch({ type: UPDATE_WORDS_FAILURE });
+      });
+  };
+
 export const deleteWords = (wordsId) => (dispatch) => {
   dispatch({ type: DELETE_WORDS_REQUEST });
 
@@ -160,27 +202,29 @@ export const deleteWords = (wordsId) => (dispatch) => {
     });
 };
 
-export const addLanguage = ({ name }) => (dispatch, getState) => {
-  dispatch({ type: ADD_LANGUAGE_REQUEST });
+export const addLanguage =
+  ({ name }) =>
+  (dispatch, getState) => {
+    dispatch({ type: ADD_LANGUAGE_REQUEST });
 
-  return axios
-    .post("http://localhost:9000/api/add/language", {
-      name,
-      userID: getState().userID,
-    })
-    .then(({ data }) => {
-      dispatch({
-        type: ADD_LANGUAGE_SUCCESS,
-        payload: {
-          data,
-        },
+    return axios
+      .post("http://localhost:9000/api/add/language", {
+        name,
+        userID: getState().userID,
+      })
+      .then(({ data }) => {
+        dispatch({
+          type: ADD_LANGUAGE_SUCCESS,
+          payload: {
+            data,
+          },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch({ type: ADD_LANGUAGE_FAILURE });
       });
-    })
-    .catch((err) => {
-      console.log(err);
-      dispatch({ type: ADD_LANGUAGE_FAILURE });
-    });
-};
+  };
 
 export const fetchLanguages = () => (dispatch, getState) => {
   dispatch({ type: FETCH_LANGUAGES_REQUEST });
@@ -203,6 +247,29 @@ export const fetchLanguages = () => (dispatch, getState) => {
     });
 };
 
+export const editLanguage = (name, languageId) => (dispatch, getState) => {
+  dispatch({ type: UPDATE_LANGUAGE_REQUEST });
+
+  return axios
+    .put(`http://localhost:9000/api/edit/language/${languageId}`, {
+      _id: languageId,
+      name: name,
+      userID: getState().userID,
+    })
+    .then(({ data }) => {
+      dispatch({
+        type: UPDATE_LANGUAGE_SUCCESS,
+        payload: {
+          data,
+        },
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({ type: UPDATE_LANGUAGE_FAILURE });
+    });
+};
+
 export const deleteLanguage = (languageId) => (dispatch) => {
   dispatch({ type: DELETE_LANGUAGE_REQUEST });
 
@@ -222,7 +289,7 @@ export const deleteLanguage = (languageId) => (dispatch) => {
     });
 };
 
-export const addToActiveLanguages = (newActiveLanguage) => (dispatch, getState) => {
+export const addActiveLanguages = (newActiveLanguage) => (dispatch, getState) => {
   const { _id: languageId, name, chosen } = newActiveLanguage;
 
   dispatch({ type: ADD_ACTIVE_LANGUAGE_REQUEST });
@@ -269,27 +336,8 @@ export const fetchActiveLanguages = () => (dispatch, getState) => {
     });
 };
 
-export const deleteActiveLanguage = (activeLanguageId) => (dispatch) => {
-  dispatch({ type: DELETE_ACTIVE_LANGUAGES_REQUEST });
-
-  return axios
-    .delete(`http://localhost:9000/api/delete/active/language/${activeLanguageId}`)
-    .then(() => {
-      dispatch({
-        type: DELETE_ACTIVE_LANGUAGES_SUCCESS,
-        payload: {
-          activeLanguageId,
-        },
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      dispatch({ type: DELETE_ACTIVE_LANGUAGES_FAILURE });
-    });
-};
-
-export const updateActiveLanguage = (newActiveLanguage, activeLanguageId) => (dispatch) => {
-  const { _id: languageId, name, chosen } = newActiveLanguage;
+export const editActiveLanguage = (newActiveLanguage, activeLanguageId) => (dispatch) => {
+  const { languageId, name, chosen } = newActiveLanguage;
 
   dispatch({ type: UPDATE_ACTIVE_LANGUAGES_REQUEST });
 
@@ -313,29 +361,50 @@ export const updateActiveLanguage = (newActiveLanguage, activeLanguageId) => (di
     });
 };
 
-export const addPhoto = ({ photoSource, title, description }) => (dispatch, getState) => {
-  dispatch({ type: ADD_PHOTO_REQUEST });
+export const deleteActiveLanguage = (activeLanguageId) => (dispatch) => {
+  dispatch({ type: DELETE_ACTIVE_LANGUAGES_REQUEST });
 
   return axios
-    .post("http://localhost:9000/api/add/photo", {
-      photoSource,
-      title,
-      description,
-      userID: getState().userID,
-    })
-    .then(({ data }) => {
+    .delete(`http://localhost:9000/api/delete/active/language/${activeLanguageId}`)
+    .then(() => {
       dispatch({
-        type: ADD_PHOTO_SUCCESS,
+        type: DELETE_ACTIVE_LANGUAGES_SUCCESS,
         payload: {
-          data,
+          activeLanguageId,
         },
       });
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: ADD_PHOTO_FAILURE });
+      dispatch({ type: DELETE_ACTIVE_LANGUAGES_FAILURE });
     });
 };
+
+export const addPhoto =
+  ({ photoSource, title, description }) =>
+  (dispatch, getState) => {
+    dispatch({ type: ADD_PHOTO_REQUEST });
+
+    return axios
+      .post("http://localhost:9000/api/add/photo", {
+        photoSource,
+        title,
+        description,
+        userID: getState().userID,
+      })
+      .then(({ data }) => {
+        dispatch({
+          type: ADD_PHOTO_SUCCESS,
+          payload: {
+            data,
+          },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch({ type: ADD_PHOTO_FAILURE });
+      });
+  };
 
 export const fetchPhotos = () => (dispatch, getState) => {
   dispatch({ type: FETCH_PHOTOS_REQUEST });
@@ -357,6 +426,34 @@ export const fetchPhotos = () => (dispatch, getState) => {
       dispatch({ type: FETCH_PHOTOS_FAILURE });
     });
 };
+
+export const editPhoto =
+  ({ photoId, photoSource, photoName, title, description }) =>
+  (dispatch, getState) => {
+    dispatch({ type: UPDATE_PHOTO_REQUEST });
+
+    return axios
+      .put(`http://localhost:9000/api/edit/photo/${photoId}`, {
+        _id: photoId,
+        photoSource: photoSource,
+        photoName: photoName,
+        title: title,
+        description: description,
+        userID: getState().userID,
+      })
+      .then(({ data }) => {
+        dispatch({
+          type: UPDATE_PHOTO_SUCCESS,
+          payload: {
+            data,
+          },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch({ type: UPDATE_PHOTO_FAILURE });
+      });
+  };
 
 export const deletePhoto = (photoId) => (dispatch) => {
   dispatch({ type: DELETE_PHOTO_REQUEST });
@@ -425,6 +522,33 @@ export const fetchTexts = (firstLanguage, secondLanguage) => (dispatch, getState
       dispatch({ type: FETCH_TEXTS_FAILURE });
     });
 };
+
+export const editTexts =
+  ({ textsId, title, firstText, secondText }) =>
+  (dispatch, getState) => {
+    dispatch({ type: UPDATE_TEXTS_REQUEST });
+
+    return axios
+      .put(`http://localhost:9000/api/edit/texts/${textsId}`, {
+        _id: textsId,
+        title,
+        firstText,
+        secondText,
+        userID: getState().userID,
+      })
+      .then(({ data }) => {
+        dispatch({
+          type: UPDATE_TEXTS_SUCCESS,
+          payload: {
+            data,
+          },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch({ type: UPDATE_TEXTS_FAILURE });
+      });
+  };
 
 export const deleteTexts = (textsId) => (dispatch) => {
   dispatch({ type: DELETE_TEXTS_REQUEST });
