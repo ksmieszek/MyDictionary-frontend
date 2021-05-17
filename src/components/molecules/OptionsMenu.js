@@ -25,12 +25,12 @@ const StyledViewMoreIcon = styled(ViewMoreIcon)`
   width: 50px;
   height: 50px;
   padding: 10px;
-  fill: #fff;
+  fill: #ccc;
   cursor: pointer;
-  transition: all 0.5s ease;
+  transition: transform 0.5s ease;
 
   &:hover {
-    fill: #ccc;
+    fill: #fff;
   }
 
   ${(props) =>

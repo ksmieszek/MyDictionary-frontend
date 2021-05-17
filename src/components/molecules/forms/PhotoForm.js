@@ -60,7 +60,7 @@ class PhotoForm extends React.Component {
   }
 
   handleFileChange = () => {
-    if (this.fileInput.current.files[0].type.includes("image")) {
+    if (this.fileInput.current.files.length === 1 && this.fileInput.current.files[0].type.includes("image")) {
       const photoName = this.fileInput.current.files[0].name;
       const _this = this;
 

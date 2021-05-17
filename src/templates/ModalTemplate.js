@@ -78,7 +78,7 @@ const StyledCloseIcon = styled.div`
     height: 2px;
     display: block;
     border-radius: 25px;
-    background-color: #fff;
+    background-color: #ccc;
     content: "";
   }
 

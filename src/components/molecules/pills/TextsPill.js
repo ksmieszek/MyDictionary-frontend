@@ -24,6 +24,11 @@ const StyledWrapper = styled.div`
     width: 100%;
     max-width: 480px;
     border-radius: 20px;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 `;
 

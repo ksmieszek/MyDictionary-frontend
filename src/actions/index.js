@@ -524,7 +524,7 @@ export const fetchTexts = (firstLanguage, secondLanguage) => (dispatch, getState
 };
 
 export const editTexts =
-  ({ textsId, title, firstText, secondText }) =>
+  ({ textsId, title, firstText, secondText, firstLanguage, secondLanguage }) =>
   (dispatch, getState) => {
     dispatch({ type: UPDATE_TEXTS_REQUEST });
 
@@ -534,6 +534,8 @@ export const editTexts =
         title,
         firstText,
         secondText,
+        firstLanguage,
+        secondLanguage,
         userID: getState().userID,
       })
       .then(({ data }) => {

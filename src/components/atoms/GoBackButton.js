@@ -8,6 +8,7 @@ const StyledGoBackButton = styled.div`
   align-items: center;
   padding: 10px 10px 10px 0px;
   font-size: 1.4rem;
+  color: #ddd;
   cursor: pointer;
   user-select: none;
 `;

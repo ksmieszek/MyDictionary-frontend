@@ -51,7 +51,7 @@ class TextForm extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const { addTextsAction, editTextsAction, activeLanguageFirst, activeLanguageSecond } = this.props;
-    const { firstText, secondText, title, textsId } = this.state;
+    const { textsId, title, firstText, secondText } = this.state;
 
     if (this.props.edit) {
       editTextsAction({
@@ -59,6 +59,8 @@ class TextForm extends React.Component {
         title,
         firstText,
         secondText,
+        firstLanguage: activeLanguageFirst.languageId,
+        secondLanguage: activeLanguageSecond.languageId,
       });
       window.location.href = routes.texts;
     } else {

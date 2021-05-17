@@ -41,14 +41,23 @@ const TextsDetails = (props) => {
   useEffect(() => {
     if (props.texts) {
       const { _id: id, firstText, secondText, firstLanguage, secondLanguage, title } = props.texts;
-      const { languages } = props;
-      const firstLanguageName = languages.find((item) => item._id === firstLanguage).name;
-      const secondLanguageName = languages.find((item) => item._id === secondLanguage).name;
+      const { languages, activeLanguageFirst } = props;
+      let firstLanguageName = languages.find((item) => item._id === firstLanguage).name;
+      let secondLanguageName = languages.find((item) => item._id === secondLanguage).name;
+      let textFromFirstLanguage = firstText;
+      let textFromSecondLanguage = secondText;
+      if (activeLanguageFirst.languageId === secondLanguage) {
+        textFromFirstLanguage = secondText;
+        textFromSecondLanguage = firstText;
+        let temp = firstLanguageName;
+        firstLanguageName = secondLanguageName;
+        secondLanguageName = temp;
+      }
 
       setState({
         id,
-        firstText,
-        secondText,
+        firstText: textFromFirstLanguage,
+        secondText: textFromSecondLanguage,
         title,
         firstLanguageName,
         secondLanguageName,

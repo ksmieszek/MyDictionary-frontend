@@ -17,6 +17,11 @@ const StyledWrapper = styled.div`
 
   @media (min-width: 1440px) {
     margin: 0;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 `;
 

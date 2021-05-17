@@ -59,7 +59,7 @@ const LanguagesList = (props) => {
 
   return (
     <StyledWrapper>
-      <OptionsMenu actionName={actionName} setActionEnabled={setActionEnabled} setActionName={setActionName} />
+      {props.languages.length !== 0 && <OptionsMenu actionName={actionName} setActionEnabled={setActionEnabled} setActionName={setActionName} />}
       {props.languages.map(({ _id: id, name }) => (
         <LanguagePill
           key={id}

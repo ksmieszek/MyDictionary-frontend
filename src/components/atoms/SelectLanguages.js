@@ -3,6 +3,7 @@ import withReduxState from "hoc/withReduxState";
 import { connect } from "react-redux";
 import { fetchWords, fetchTexts, editActiveLanguage } from "actions/index";
 import styled from "styled-components";
+import { ReactComponent as SwapIcon } from "assets/icons/swap.svg";
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -35,6 +36,18 @@ const StyledSelect = styled.select`
   @media (min-width: 1024px) {
     padding: 8px;
     font-size: 1.6rem;
+  }
+`;
+
+const StyledSwapIcon = styled(SwapIcon)`
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  fill: #ddd;
+  cursor: pointer;
+
+  &:hover {
+    fill: #fff;
   }
 `;
 
@@ -91,6 +104,14 @@ class SelectLanguages extends React.Component {
     fetchTextsAction(activeLanguageSecond.languageId, activeLanguageFirst.languageId);
   };
 
+  swapActiveLanguages = () => {
+    const { activeLanguageFirst, activeLanguageSecond, editActiveLanguageAction } = this.props;
+    const newActiveLanguageFirst = { ...activeLanguageSecond, chosen: "activeLanguageFirst" };
+    const newActiveLanguageSecond = { ...activeLanguageFirst, chosen: "activeLanguageSecond" };
+    editActiveLanguageAction(newActiveLanguageFirst, newActiveLanguageSecond._id);
+    editActiveLanguageAction(newActiveLanguageSecond, newActiveLanguageFirst._id);
+  };
+
   render() {
     const { activeLanguageFirst, activeLanguageSecond } = this.props;
 
@@ -101,6 +122,7 @@ class SelectLanguages extends React.Component {
             {this.populateSelectList("activeLanguageFirst")}
           </StyledSelect>
         </StyledKey>
+        <StyledSwapIcon onClick={() => this.swapActiveLanguages()} />
         <StyledKey>
           <StyledSelect name="activeLanguageSecond" onChange={this.changeActiveLanguage} value={activeLanguageSecond.name}>
             {this.populateSelectList("activeLanguageSecond")}

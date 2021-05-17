@@ -19,27 +19,34 @@ const WordList = ({ deleteWordsAction, activeLanguageFirst, activeLanguageSecond
 
   return (
     <StyledWrapper>
-      <OptionsMenu setActionEnabled={setActionEnabled} actionName={actionName} setActionName={setActionName} />
+      {words.length !== 0 && <OptionsMenu setActionEnabled={setActionEnabled} actionName={actionName} setActionName={setActionName} />}
       {words
         .map(({ _id: id, firstLanguage, firstWord, secondLanguage, secondWord }) => {
           if (
             (activeLanguageFirst.languageId === firstLanguage || activeLanguageFirst.languageId === secondLanguage) &&
             (activeLanguageSecond.languageId === firstLanguage || activeLanguageSecond.languageId === secondLanguage)
-          )
+          ) {
+            let wordFromFirstLanguage = firstWord;
+            let wordFromSecondLanguage = secondWord;
+            if (activeLanguageFirst.languageId === secondLanguage) {
+              wordFromFirstLanguage = secondWord;
+              wordFromSecondLanguage = firstWord;
+            }
+
             return (
               <WordsPill
                 key={id}
                 id={id}
                 firstLanguage={firstLanguage}
-                firstWord={firstWord}
+                firstWord={wordFromFirstLanguage}
                 secondLanguage={secondLanguage}
-                secondWord={secondWord}
+                secondWord={wordFromSecondLanguage}
                 deleteWordsAction={deleteWordsAction}
                 actionEnabled={actionEnabled}
                 actionName={actionName}
               />
             );
-          else return null;
+          } else return null;
         })
         .reverse()}
     </StyledWrapper>

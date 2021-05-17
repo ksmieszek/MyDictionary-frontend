@@ -24,7 +24,7 @@ const StyledMoreIcon = styled(MoreIcon)`
   padding: 10px;
   border: 1px solid transparent;
   border-radius: 50%;
-  fill: #c0c0c0;
+  fill: #ddd;
   cursor: pointer;
   transition: background-color 0.1s ease;
 
