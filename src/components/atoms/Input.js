@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Input = styled.input`
-  width: 45%;
+  width: 100%;
   padding: 8px 13px;
   border: 1px solid #3c434a;
   border-radius: 4px;
@@ -13,8 +13,7 @@ const Input = styled.input`
 
   :focus,
   :active {
-    /* border: 1px solid rgb(47, 47, 251); */
-    border: 1px solid white;
+    border: 1px solid #4489ff;
   }
 
   @media (min-width: 1024px) {

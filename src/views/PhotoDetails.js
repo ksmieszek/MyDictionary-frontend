@@ -37,11 +37,11 @@ const PhotoDetails = (props) => {
 
   useEffect(() => {
     if (props.photo) {
-      const { _id: id, description, photoSource, title } = props.photo;
+      const { _id: id, photoSource, photoName, title, description } = props.photo;
       const decodedPhotoSource = atob(photoSource);
-      setState({ id, description, photoSource: decodedPhotoSource, title });
+      setState({ id, photoSource: decodedPhotoSource, photoName, description, title });
     }
-  }, []);
+  }, [props.photo]);
 
   const handleDelete = () => {
     const { deletePhotoAction } = props;
@@ -52,23 +52,25 @@ const PhotoDetails = (props) => {
   if (!props.photo) {
     return <Redirect to={routes.photos} />;
   } else {
-    const { title, photoSource, description, id } = state;
+    const { id, photoSource, photoName, title, description } = state;
     return (
       <DetailsTemplate title={title} route={routes.photos} setActionName={setActionName} setIsOpen={setIsOpen}>
         <StydedImage src={photoSource} alt="" />
         <StydedDescription>{description}</StydedDescription>
 
         {actionName === "edit" && (
-          <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title={`Edytuj zdjęcie`}>
-            <PhotoForm edit={{ photoSource, title, description, id }} />
+          <ModalTemplate open={isOpen} closeModal={() => setIsOpen(false)} title={`Edytuj zdjęcie`}>
+            <PhotoForm edit={{ id, photoSource, photoName, title, description }} />
           </ModalTemplate>
         )}
         {actionName === "delete" && (
-          <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title={`Usunąć zdjęcie?`}>
-            <StyledParagraph>Nie będzie możliwości cofnięcia tej akcji</StyledParagraph>
-            <StyledButton delete onClick={() => handleDelete()}>
-              usuń
-            </StyledButton>
+          <ModalTemplate open={isOpen} closeModal={() => setIsOpen(false)} title={`Usunąć zdjęcie?`}>
+            <>
+              <StyledParagraph>Nie będzie możliwości cofnięcia tej akcji</StyledParagraph>
+              <StyledButton delete onClick={() => handleDelete()}>
+                usuń
+              </StyledButton>
+            </>
           </ModalTemplate>
         )}
       </DetailsTemplate>

@@ -63,7 +63,7 @@ const TextsDetails = (props) => {
         secondLanguageName,
       });
     }
-  }, []);
+  }, [props]);
 
   const handleDelete = () => {
     const { deleteTextsAction } = props;
@@ -85,7 +85,7 @@ const TextsDetails = (props) => {
         <PreformattedText>{secondText}</PreformattedText>
 
         {actionName === "edit" && (
-          <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title={`Edytuj tekst`}>
+          <ModalTemplate open={isOpen} closeModal={() => setIsOpen(false)} title={`Edytuj tekst`}>
             <TextForm
               edit={{ title, firstText, secondText, id }}
               activeLanguageFirst={activeLanguageFirst}
@@ -94,11 +94,13 @@ const TextsDetails = (props) => {
           </ModalTemplate>
         )}
         {actionName === "delete" && (
-          <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title={`Usunąć tekst?`}>
-            <StyledParagraph>Nie będzie możliwości cofnięcia tej akcji</StyledParagraph>
-            <StyledButton delete onClick={() => handleDelete()}>
-              usuń
-            </StyledButton>
+          <ModalTemplate open={isOpen} closeModal={() => setIsOpen(false)} title={`Usunąć tekst?`}>
+            <>
+              <StyledParagraph>Nie będzie możliwości cofnięcia tej akcji</StyledParagraph>
+              <StyledButton delete onClick={() => handleDelete()}>
+                usuń
+              </StyledButton>
+            </>
           </ModalTemplate>
         )}
       </DetailsTemplate>

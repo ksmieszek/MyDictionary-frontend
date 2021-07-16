@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { addPhoto, editPhoto } from "actions/index";
+import { useHistory } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import routes from "routes/index";
 import Compressor from "compressorjs";
 import styled from "styled-components";
@@ -9,8 +13,13 @@ import Button from "components/atoms/Button";
 import Input from "components/atoms/Input";
 import InputFile from "components/atoms/InputFile";
 import Textarea from "components/atoms/Textarea";
+import ErrorMessageWrapper from "components/atoms/ErrorMessageWrapper";
 
-const StyledFileWrapper = styled.div`
+const StyledFieldWrapper = styled.div`
+  width: 90%;
+`;
+
+const StyledFileWrapper = styled(StyledFieldWrapper)`
   position: relative;
   display: flex;
   align-items: center;
@@ -26,60 +35,51 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const StyledInput = styled(Input)`
-  width: 90%;
-  margin-bottom: 20px;
-`;
+const schema = yup.object().shape({
+  photoId: yup.string(),
+  photoSource: yup.string().required(),
+  photoName: yup.string().required(),
+  title: yup.string().max(40, "tytuł nie powinien przekraczać 40 znaków").trim().required("tytuł jest wymagany"),
+  description: yup.string().max(200, "opis nie powinien przekraczać 200 znaków").required("opis jest wymagany"),
+});
 
-class PhotoForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.fileInput = React.createRef();
-  }
+const PhotoForm = (props) => {
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      photoId: props.edit?.id || "",
+      photoSource: btoa(props.edit?.photoSource),
+      photoName: props.edit?.photoName || "",
+      title: props.edit?.title || "",
+      description: props.edit?.description || "",
+    },
+  });
+  let history = useHistory();
+  const watchFileChange = watch("picture");
 
-  state = {
-    photoId: "",
-    photoSource: {},
-    title: "",
-    description: "",
-    photoName: "",
-  };
-
-  componentDidMount() {
-    if (this.props.edit) {
-      const { id, photoSource, title, description, photoName } = this.props.edit;
-      this.setState({
-        photoId: id,
-        photoSource: btoa(photoSource),
-        title,
-        description,
-        photoName,
-      });
-    }
-    this.fileInput.current.focus();
-  }
-
-  handleFileChange = () => {
-    if (this.fileInput.current.files.length === 1 && this.fileInput.current.files[0].type.includes("image")) {
-      const photoName = this.fileInput.current.files[0].name;
-      const _this = this;
-
-      new Compressor(this.fileInput.current.files[0], {
+  useEffect(() => {
+    if (watchFileChange !== undefined && watchFileChange.length === 1 && watchFileChange[0].type.includes("image")) {
+      const photoName = watchFileChange[0].name;
+      new Compressor(watchFileChange[0], {
         convertSize: 1,
         quality: 0.6,
         maxWidth: 600,
         maxHeight: 400,
-
         success(result) {
           const CompressedphotoSource = result;
           const reader = new FileReader();
           reader.readAsDataURL(CompressedphotoSource);
           reader.onload = () => {
             const encodedPhotoSource = btoa(reader.result);
-            _this.setState({
-              photoSource: encodedPhotoSource,
-              photoName,
-            });
+            setValue("photoName", photoName);
+            setValue("photoSource", encodedPhotoSource);
           };
         },
         error(err) {
@@ -87,61 +87,57 @@ class PhotoForm extends React.Component {
         },
       });
     }
-  };
+  }, [watchFileChange, setValue]);
 
-  handleTextChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-  };
+  const onSubmit = (data) => {
+    const { addPhotoAction, editPhotoAction } = props;
+    const { photoSource, title, description, photoId, photoName } = data;
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const { addPhotoAction, editPhotoAction } = this.props;
-    const { photoSource, title, description, photoId, photoName } = this.state;
-    if (this.props.edit) {
+    if (props.edit) {
       editPhotoAction({
         photoId,
         photoSource,
+        photoName,
         title,
         description,
-        photoName,
       });
-      window.location.href = routes.photos;
+      props.closeModal();
+      history.push(routes.photos);
     } else {
       addPhotoAction({
         photoSource,
+        photoName,
         title,
         description,
       });
+      props.closeModal();
     }
-
-    this.setState({
-      photoId: "",
-      photoSource: {},
-      title: "",
-      description: "",
-      photoName: "",
-    });
   };
 
-  render() {
-    const { photoName, title, description } = this.state;
-
-    return (
-      <FormTemplate onSubmit={(e) => this.handleSubmit(e)}>
-        <StyledFileWrapper>
-          <InputFile ref={this.fileInput} handleFileChange={this.handleFileChange} />
-          <StyledButton>Wybierz zdjęcie</StyledButton>
-          <p>{photoName}</p>
-        </StyledFileWrapper>
-        <StyledInput name="title" value={title} onChange={(e) => this.handleTextChange(e)} placeholder="Tytuł" />
-        <Textarea name="description" value={description} onChange={(e) => this.handleTextChange(e)} placeholder="Opis"></Textarea>
-        <Button save>zapisz</Button>
-      </FormTemplate>
-    );
-  }
-}
+  return (
+    <FormTemplate onSubmit={handleSubmit(onSubmit)}>
+      <StyledFileWrapper>
+        <InputFile {...register("picture")} />
+        <StyledButton>Wybierz zdjęcie</StyledButton>
+        {watchFileChange === undefined || watchFileChange?.length === 0 ? <p>{getValues("photoName")}</p> : <p>{watchFileChange[0]?.name}</p>}
+        {errors.photoName && watchFileChange?.length === 0 && getValues("photoName") === "" && (
+          <ErrorMessageWrapper>zdjęcie jest wymagane</ErrorMessageWrapper>
+        )}
+      </StyledFileWrapper>
+      <StyledFieldWrapper>
+        <Input {...register("title")} placeholder="Tytuł" />
+        {errors.title && <ErrorMessageWrapper>{errors.title?.message}</ErrorMessageWrapper>}
+      </StyledFieldWrapper>
+      <StyledFieldWrapper>
+        <Textarea {...register("description")} placeholder="Opis" />
+        {errors.description && <ErrorMessageWrapper>{errors.description?.message}</ErrorMessageWrapper>}
+      </StyledFieldWrapper>
+      <Button save type="submit">
+        zapisz
+      </Button>
+    </FormTemplate>
+  );
+};
 
 const mapDispatchToProps = (dispatch) => ({
   addPhotoAction: (photo) => dispatch(addPhoto(photo)),

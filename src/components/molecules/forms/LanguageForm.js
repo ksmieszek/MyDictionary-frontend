@@ -1,48 +1,47 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { addLanguage, editLanguage, editActiveLanguage } from "actions/index";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import styled from "styled-components";
 import FormTemplate from "templates/FormTemplate";
 import Button from "components/atoms/Button";
 import Input from "components/atoms/Input";
+import ErrorMessageWrapper from "components/atoms/ErrorMessageWrapper";
 
-const StyledInput = styled(Input)`
+const StyledFieldWrapper = styled.div`
   width: 60%;
 `;
 
-class LanguageForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.focusInput = React.createRef();
-  }
+const schema = yup.object().shape({
+  languageId: yup.string(),
+  languageName: yup.string().max(20, "nazwa nie powinna przekraczać 20 znaków").trim().required("nazwa języka jest wymagana"),
+});
 
-  state = {
-    languageId: "",
-    languageName: "",
-  };
+const LanguageForm = (props) => {
+  const {
+    register,
+    handleSubmit,
+    setFocus,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      languageId: props.edit?.id || "",
+      languageName: props.edit?.name || "",
+    },
+  });
 
-  componentDidMount() {
-    if (this.props.edit) {
-      this.setState({
-        languageName: this.props.edit.name,
-        languageId: this.props.edit.id,
-      });
-    }
-    this.focusInput.current.focus();
-  }
+  useEffect(() => {
+    setFocus("languageName");
+  }, [setFocus]);
 
-  handleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-  };
+  const onSubmit = (data) => {
+    const { addLanguageAction, editLanguageAction, activeLanguageFirst, activeLanguageSecond, editActiveLanguageAction } = props;
+    const { languageName, languageId } = data;
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const { addLanguageAction, editLanguageAction, activeLanguageFirst, activeLanguageSecond, editActiveLanguageAction } = this.props;
-    const { languageId, languageName } = this.state;
-
-    if (this.props.edit) {
+    if (props.edit) {
       editLanguageAction(languageName, languageId);
 
       [activeLanguageFirst, activeLanguageSecond].forEach((item) => {
@@ -53,24 +52,24 @@ class LanguageForm extends React.Component {
       });
     } else {
       addLanguageAction({
-        name: this.state.languageName,
+        name: languageName,
       });
     }
-
-    this.setState({
-      languageName: "",
-    });
+    props.closeModal();
   };
 
-  render() {
-    return (
-      <FormTemplate onSubmit={(e) => this.handleSubmit(e)}>
-        <StyledInput name="languageName" value={this.state.languageName} onChange={(e) => this.handleChange(e)} ref={this.focusInput} />
-        <Button save>zapisz</Button>
-      </FormTemplate>
-    );
-  }
-}
+  return (
+    <FormTemplate onSubmit={handleSubmit(onSubmit)}>
+      <StyledFieldWrapper>
+        <Input {...register("languageName")} />
+        {errors.languageName && <ErrorMessageWrapper>{errors.languageName?.message}</ErrorMessageWrapper>}
+      </StyledFieldWrapper>
+      <Button save type="submit">
+        zapisz
+      </Button>
+    </FormTemplate>
+  );
+};
 
 const mapStateToProps = ({ activeLanguageFirst, activeLanguageSecond }) => {
   return { activeLanguageFirst, activeLanguageSecond };

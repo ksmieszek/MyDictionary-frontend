@@ -65,6 +65,9 @@ import {
   // UPDATE_TEXTS_REQUEST,
   UPDATE_TEXTS_SUCCESS,
   // UPDATE_TEXTS_FAILURE,
+  // SIGNUP_REQUEST,
+  // SIGNUP_SUCCESS,
+  // SIGNUP_FAILURE,
 } from "actions/index";
 
 const initialState = {

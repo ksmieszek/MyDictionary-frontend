@@ -1,12 +1,13 @@
+import React from "react";
 import ReactDom from "react-dom";
 import styled, { keyframes } from "styled-components";
 
 const fadeIn = keyframes`
-  0% {
+  from {
     opacity: 0;
     transform: translateY(-20px);
   }
-  100% {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
@@ -90,21 +91,20 @@ const StyledCloseIcon = styled.div`
   }
 `;
 
-const ModalTemplate = ({ children, open, close, title }) => {
+const ModalTemplate = ({ children, open, closeModal, title }) => {
   if (!open) {
     document.body.style.overflow = "unset";
     return null;
   }
   document.body.style.overflow = "hidden";
-
   return ReactDom.createPortal(
-    <StyledOverlay id="overlay" onSubmit={close} onMouseDown={(e) => e.target.id === "overlay" && close()}>
+    <StyledOverlay id="overlay" onMouseDown={(e) => e.target.id === "overlay" && closeModal()}>
       <StyledModal>
         <StyledHeader>
           <StyledParagraph>{title}</StyledParagraph>
-          <StyledCloseIcon onClick={close} />
+          <StyledCloseIcon onClick={closeModal} />
         </StyledHeader>
-        {children}
+        {React.cloneElement(children, { closeModal })}
       </StyledModal>
     </StyledOverlay>,
     document.getElementById("modal")

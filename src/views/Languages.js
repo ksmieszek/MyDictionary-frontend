@@ -12,7 +12,7 @@ const Languages = ({ languages, activeLanguageFirst, activeLanguageSecond, words
   return (
     <UserPageTemplate>
       <div>
-        <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title="Nowy język">
+        <ModalTemplate open={isOpen} closeModal={() => setIsOpen(false)} title="Nowy język">
           <LanguageForm />
         </ModalTemplate>
         <Button add onClick={() => setIsOpen(true)} pulse={languages.length < 2}>

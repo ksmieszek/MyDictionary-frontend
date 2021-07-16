@@ -20,7 +20,7 @@ const Words = ({ activeLanguageFirst, activeLanguageSecond, languages, words }) 
         {languages.length > 1 && Object.keys(activeLanguageFirst).length !== 0 && Object.keys(activeLanguageSecond).length !== 0 ? (
           <>
             <SelectLanguages />
-            <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title="Nowe słowo">
+            <ModalTemplate open={isOpen} closeModal={() => setIsOpen(false)} title="Nowe słowo">
               <WordForm />
             </ModalTemplate>
             <Button add onClick={() => setIsOpen(true)} pulse={words.length === 0}>

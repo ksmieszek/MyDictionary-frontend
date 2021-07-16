@@ -56,16 +56,18 @@ const LanguagePill = ({ id, name, handleDeleteLanguage, actionName, actionEnable
       </StyledLanguageName>
 
       {isOpen && actionName === "edit" && (
-        <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title={`Edytuj język ${name}`}>
+        <ModalTemplate open={isOpen} closeModal={() => setIsOpen(false)} title={`Edytuj język ${name}`}>
           <LanguageForm edit={{ name, id }} />
         </ModalTemplate>
       )}
       {isOpen && actionName === "delete" && (
-        <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title={`Usunąć język ${name}?`}>
-          <StyledParagraph>Usuwając język, usuwasz również wszystkie dane (słowa, teksty) z nim powiązane.</StyledParagraph>
-          <StyledButton delete onClick={() => handleDeleteLanguage(id)}>
-            usuń
-          </StyledButton>
+        <ModalTemplate open={isOpen} closeModal={() => setIsOpen(false)} title={`Usunąć język ${name}?`}>
+          <>
+            <StyledParagraph>Usuwając język, usuwasz również wszystkie dane (słowa, teksty) z nim powiązane.</StyledParagraph>
+            <StyledButton delete onClick={() => handleDeleteLanguage(id)}>
+              usuń
+            </StyledButton>
+          </>
         </ModalTemplate>
       )}
     </StyledWrapper>

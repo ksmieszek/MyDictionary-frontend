@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Button from "components/atoms/Button";
-import Input from "components/atoms/Input";
 import Logo from "components/atoms/Logo";
 
 const StyledWrapper = styled.div`
@@ -13,7 +12,7 @@ const StyledWrapper = styled.div`
   height: 100vh;
 `;
 
-export const StyledLogo = styled(Logo)`
+const StyledLogo = styled(Logo)`
   width: 100px;
   height: 100px;
   margin-bottom: 20px;
@@ -30,19 +29,24 @@ export const StyledForm = styled.form`
   width: 90%;
 `;
 
-export const StyledInput = styled(Input)`
+export const StyledFieldWrapper = styled.div`
   width: 100%;
   max-width: 320px;
-  margin-bottom: 10px;
+  margin-top: 10px;
 `;
 
 export const StyledButton = styled(Button)`
   width: 100%;
   max-width: 320px;
-  margin-top: 10px;
+  margin-top: 20px;
   margin-bottom: 30px;
 `;
 
-const AuthorizationTemplate = ({ children }) => <StyledWrapper>{children}</StyledWrapper>;
+const AuthorizationTemplate = ({ children }) => (
+  <StyledWrapper>
+    <StyledLogo />
+    {children}
+  </StyledWrapper>
+);
 
 export default AuthorizationTemplate;

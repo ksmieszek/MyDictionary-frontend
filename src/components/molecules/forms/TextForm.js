@@ -1,100 +1,100 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { addTexts, editTexts } from "actions/index";
+import { useHistory } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import routes from "routes/index";
 import styled from "styled-components";
 import FormTemplate from "templates/FormTemplate";
 import Button from "components/atoms/Button";
 import Input from "components/atoms/Input";
 import Textarea from "components/atoms/Textarea";
+import ErrorMessageWrapper from "components/atoms/ErrorMessageWrapper";
 
-const StyledInput = styled(Input)`
+const StyledFieldWrapper = styled.div`
   width: 90%;
 `;
 
-const StyledTextarea = styled(Textarea)`
-  margin-top: 20px;
-`;
+const schema = yup.object().shape({
+  textsId: yup.string(),
+  title: yup.string().max(30, "tytuł nie powinien przekraczać 30 znaków").trim().required("tytuł jest wymagany"),
+  firstText: yup.string().max(200, "tekst nie powinien przekraczać 200 znaków").required("tekst jest wymagany"),
+  secondText: yup.string().max(200, "tekst nie powinien przekraczać 200 znaków").required("tekst jest wymagany"),
+});
 
-class TextForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.focusInput = React.createRef();
-  }
+const TextForm = (props) => {
+  const {
+    register,
+    handleSubmit,
+    setFocus,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      textsId: props.edit?.id || "",
+      title: props.edit?.title || "",
+      firstText: props.edit?.firstText || "",
+      secondText: props.edit?.secondText || "",
+      firstLanguage: props.activeLanguageFirst.languageId || "",
+      secondLanguage: props.activeLanguageSecond.languageId || "",
+    },
+  });
+  let history = useHistory();
 
-  state = {
-    textsId: "",
-    firstText: "",
-    secondText: "",
-    title: "",
-  };
+  useEffect(() => {
+    setFocus("title");
+  }, [setFocus]);
 
-  componentDidMount() {
-    if (this.props.edit) {
-      const { id, title, firstText, secondText } = this.props.edit;
-      this.setState({
-        textsId: id,
-        title,
-        firstText,
-        secondText,
-      });
-    }
-    this.focusInput.current.focus();
-  }
+  const onSubmit = (data) => {
+    const { addTextsAction, editTextsAction } = props;
+    const { textsId, title, firstText, secondText, firstLanguage, secondLanguage } = data;
 
-  handleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const { addTextsAction, editTextsAction, activeLanguageFirst, activeLanguageSecond } = this.props;
-    const { textsId, title, firstText, secondText } = this.state;
-
-    if (this.props.edit) {
+    if (props.edit) {
       editTextsAction({
         textsId,
         title,
         firstText,
         secondText,
-        firstLanguage: activeLanguageFirst.languageId,
-        secondLanguage: activeLanguageSecond.languageId,
+        firstLanguage,
+        secondLanguage,
       });
-      window.location.href = routes.texts;
+      props.closeModal();
+      history.push(routes.texts);
     } else {
       addTextsAction({
         title,
         firstText,
         secondText,
-        firstLanguage: activeLanguageFirst.languageId,
-        secondLanguage: activeLanguageSecond.languageId,
+        firstLanguage,
+        secondLanguage,
       });
+      props.closeModal();
     }
-
-    this.setState({
-      textsId: "",
-      firstText: "",
-      secondText: "",
-      title: "",
-    });
   };
 
-  render() {
-    const { activeLanguageFirst, activeLanguageSecond } = this.props;
-    const { firstText, secondText, title } = this.state;
-
-    return (
-      <FormTemplate onSubmit={(e) => this.handleSubmit(e)}>
-        <StyledInput name="title" value={title} onChange={(e) => this.handleChange(e)} placeholder="Tytuł" ref={this.focusInput} />
-        <StyledTextarea name="firstText" value={firstText} onChange={(e) => this.handleChange(e)} placeholder={activeLanguageFirst.name} />
-        <StyledTextarea name="secondText" value={secondText} onChange={(e) => this.handleChange(e)} placeholder={activeLanguageSecond.name} />
-        <Button save>zapisz</Button>
-      </FormTemplate>
-    );
-  }
-}
+  const { activeLanguageFirst, activeLanguageSecond } = props;
+  return (
+    <FormTemplate onSubmit={handleSubmit(onSubmit)}>
+      <StyledFieldWrapper>
+        <Input {...register("title")} placeholder="Tytuł" />
+        {errors.title && <ErrorMessageWrapper>{errors.title?.message}</ErrorMessageWrapper>}
+      </StyledFieldWrapper>
+      <StyledFieldWrapper>
+        <Textarea {...register("firstText")} placeholder={activeLanguageFirst.name} />
+        {errors.firstText && <ErrorMessageWrapper>{errors.firstText?.message}</ErrorMessageWrapper>}
+      </StyledFieldWrapper>
+      <StyledFieldWrapper>
+        <Textarea {...register("secondText")} placeholder={activeLanguageSecond.name} />
+        {errors.secondText && <ErrorMessageWrapper>{errors.secondText?.message}</ErrorMessageWrapper>}
+      </StyledFieldWrapper>
+      <Button save type="submit">
+        zapisz
+      </Button>
+    </FormTemplate>
+  );
+};
 
 const mapDispatchToProps = (dispatch) => ({
   addTextsAction: (texts) => dispatch(addTexts(texts)),

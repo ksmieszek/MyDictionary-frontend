@@ -11,12 +11,12 @@ const Photos = ({ photos, fetchPhotosAction }) => {
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
     if (photos.length === 0) fetchPhotosAction();
-  }, []);
+  }, [fetchPhotosAction, photos.length]);
 
   return (
     <UserPageTemplate>
       <div>
-        <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title="Nowe zdjęcie">
+        <ModalTemplate open={isOpen} closeModal={() => setIsOpen(false)} title="Nowe zdjęcie">
           <PhotoForm />
         </ModalTemplate>
         <Button add onClick={() => setIsOpen(true)} pulse={photos.length === 0}>

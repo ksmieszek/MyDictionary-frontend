@@ -18,7 +18,7 @@ const StyledInput = styled.input`
 const InputFile = React.forwardRef((props, ref) => (
   <>
     <StyledLabel htmlFor="file-upload"></StyledLabel>
-    <StyledInput id="file-upload" type="file" accept="image/*" ref={ref} onChange={props.handleFileChange} />
+    <StyledInput {...props} ref={ref} id="file-upload" type="file" accept="image/*" />
   </>
 ));
 

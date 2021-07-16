@@ -86,20 +86,22 @@ const WordsPill = ({ id, firstWord, secondWord, deleteWordsAction, actionName, a
       </StyledWordsRow>
 
       {isOpen && actionName === "edit" && (
-        <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title={`Edytuj słowa ${firstWord} - ${secondWord}`}>
+        <ModalTemplate open={isOpen} closeModal={() => setIsOpen(false)} title={`Edytuj słowa ${firstWord} - ${secondWord}`}>
           <WordForm edit={{ firstWord, secondWord, id }} />
         </ModalTemplate>
       )}
 
       {isOpen && actionName === "delete" && (
-        <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title={`Usunąć te słowa?`}>
-          <StyledParagraph>Czy na pewno chcesz usunąć parę słów:</StyledParagraph>
-          <StyledSecondParagraph>
-            {firstWord} - {secondWord}
-          </StyledSecondParagraph>
-          <StyledButton delete onClick={() => deleteWordsAction(id)}>
-            usuń
-          </StyledButton>
+        <ModalTemplate open={isOpen} closeModal={() => setIsOpen(false)} title={`Usunąć te słowa?`}>
+          <>
+            <StyledParagraph>Czy na pewno chcesz usunąć parę słów:</StyledParagraph>
+            <StyledSecondParagraph>
+              {firstWord} - {secondWord}
+            </StyledSecondParagraph>
+            <StyledButton delete onClick={() => deleteWordsAction(id)}>
+              usuń
+            </StyledButton>
+          </>
         </ModalTemplate>
       )}
     </StyledWrapper>

@@ -20,7 +20,7 @@ const Texts = ({ activeLanguageFirst, activeLanguageSecond, languages, texts }) 
         {languages.length > 1 && Object.keys(activeLanguageFirst).length !== 0 && Object.keys(activeLanguageSecond).length !== 0 ? (
           <>
             <SelectLanguages />
-            <ModalTemplate open={isOpen} close={() => setIsOpen(false)} title="Nowy tekst">
+            <ModalTemplate open={isOpen} closeModal={() => setIsOpen(false)} title="Nowy tekst">
               <TextForm activeLanguageFirst={activeLanguageFirst} activeLanguageSecond={activeLanguageSecond} />
             </ModalTemplate>
             <Button add onClick={() => setIsOpen(true)} pulse={texts.length === 0}>

@@ -88,6 +88,28 @@ export const UPDATE_TEXTS_REQUEST = "UPDATE_TEXTS_REQUEST";
 export const UPDATE_TEXTS_SUCCESS = "UPDATE_TEXTS_SUCCESS";
 export const UPDATE_TEXTS_FAILURE = "UPDATE_TEXTS_FAILURE";
 
+export const SIGNUP_REQUEST = "SIGNUP_REQUEST";
+export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
+export const SIGNUP_FAILURE = "SIGNUP_FAILURE";
+
+//dispathcowalo sie to jak sie cos chyba zmienialo w reduxie
+export const signUp = (username, password) => (dispatch) => {
+  dispatch({ type: SIGNUP_REQUEST });
+
+  return axios
+    .post("http://localhost:9000/api/user/register", {
+      username,
+      password,
+    })
+    .then((payload) => {
+      dispatch({ type: SIGNUP_SUCCESS });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({ type: SIGNUP_FAILURE });
+    });
+};
+
 export const login = (username, password) => (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
 
@@ -140,8 +162,8 @@ export const fetchWords = (firstLanguage, secondLanguage) => (dispatch, getState
 
   return axios
     .post("http://localhost:9000/api/show/words", {
-      firstLanguage: firstLanguage,
-      secondLanguage: secondLanguage,
+      firstLanguage,
+      secondLanguage,
       userID: getState().userID,
     })
     .then(({ data }) => {
@@ -158,15 +180,17 @@ export const fetchWords = (firstLanguage, secondLanguage) => (dispatch, getState
 };
 
 export const editWords =
-  ({ wordsId, firstWord, secondWord }) =>
+  ({ wordsId, firstWord, secondWord, firstLanguage, secondLanguage }) =>
   (dispatch, getState) => {
     dispatch({ type: UPDATE_WORDS_REQUEST });
 
     return axios
       .put(`http://localhost:9000/api/edit/words/${wordsId}`, {
         _id: wordsId,
-        firstWord: firstWord,
-        secondWord: secondWord,
+        firstWord,
+        secondWord,
+        firstLanguage,
+        secondLanguage,
         userID: getState().userID,
       })
       .then(({ data }) => {
@@ -253,7 +277,7 @@ export const editLanguage = (name, languageId) => (dispatch, getState) => {
   return axios
     .put(`http://localhost:9000/api/edit/language/${languageId}`, {
       _id: languageId,
-      name: name,
+      name,
       userID: getState().userID,
     })
     .then(({ data }) => {
@@ -343,9 +367,9 @@ export const editActiveLanguage = (newActiveLanguage, activeLanguageId) => (disp
 
   return axios
     .put(`http://localhost:9000/api/edit/active/language/${activeLanguageId}`, {
-      languageId: languageId,
-      name: name,
-      chosen: chosen,
+      languageId,
+      name,
+      chosen,
     })
     .then(({ data }) => {
       dispatch({
@@ -381,13 +405,14 @@ export const deleteActiveLanguage = (activeLanguageId) => (dispatch) => {
 };
 
 export const addPhoto =
-  ({ photoSource, title, description }) =>
+  ({ photoSource, photoName, title, description }) =>
   (dispatch, getState) => {
     dispatch({ type: ADD_PHOTO_REQUEST });
 
     return axios
       .post("http://localhost:9000/api/add/photo", {
         photoSource,
+        photoName,
         title,
         description,
         userID: getState().userID,
@@ -435,10 +460,10 @@ export const editPhoto =
     return axios
       .put(`http://localhost:9000/api/edit/photo/${photoId}`, {
         _id: photoId,
-        photoSource: photoSource,
-        photoName: photoName,
-        title: title,
-        description: description,
+        photoSource,
+        photoName,
+        title,
+        description,
         userID: getState().userID,
       })
       .then(({ data }) => {
@@ -506,8 +531,8 @@ export const fetchTexts = (firstLanguage, secondLanguage) => (dispatch, getState
 
   return axios
     .post("http://localhost:9000/api/show/texts", {
-      firstLanguage: firstLanguage,
-      secondLanguage: secondLanguage,
+      firstLanguage,
+      secondLanguage,
       userID: getState().userID,
     })
     .then(({ data }) => {

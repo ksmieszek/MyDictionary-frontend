@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 const Textarea = styled.textarea`
-  width: 90%;
+  width: 100%;
   height: 120px;
+  margin-top: 20px;
   padding: 8px 13px;
   border: 1px solid #3c434a;
   border-radius: 4px;
@@ -15,7 +16,7 @@ const Textarea = styled.textarea`
   resize: none;
 
   :focus {
-    border: 1px solid white;
+    border: 1px solid #4489ff;
   }
 
   @media (min-width: 1024px) {
