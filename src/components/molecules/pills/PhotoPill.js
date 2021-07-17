@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import styled from "styled-components";
 
-const StyledWrapper = styled.div`
+const StyledWrapper = styled.figure`
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -25,7 +25,7 @@ const StyledWrapper = styled.div`
   }
 `;
 
-const StyledTitle = styled.p`
+const StyledTitle = styled.figcaption`
   width: 100%;
   padding: 13px 15px;
   background-color: #17126a;

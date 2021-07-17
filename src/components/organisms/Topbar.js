@@ -6,7 +6,7 @@ import styled, { css } from "styled-components";
 import routes from "routes/index";
 import Logo from "components/atoms/Logo";
 
-const StyledWrapper = styled.div`
+const StyledWrapper = styled.header`
   position: fixed;
   left: 0;
   right: 0;
@@ -24,7 +24,7 @@ const StyledWrapper = styled.div`
   }
 `;
 
-const StyledNav = styled.div`
+const StyledNav = styled.nav`
   position: relative;
   width: 100%;
   max-width: 1600px;
@@ -54,6 +54,7 @@ const StyledListWrapper = styled.ul`
   transition: all 0.3s ease;
   background-color: #0a0733;
   opacity: 0;
+  overflow-y: scroll;
 
   ${(props) =>
     props.expanded &&
@@ -88,6 +89,20 @@ const StyledNavItem = styled.li`
   justify-content: center;
   align-items: center;
   list-style: none;
+
+  ${(props) =>
+    props.last &&
+    css`
+      margin-top: auto;
+      padding-top: 50px;
+
+      @media (min-width: 1440px) {
+        position: absolute;
+        right: 0;
+        margin-top: 0;
+        padding-top: 0;
+      }
+    `}
 `;
 
 const StyledNavItemLink = styled(Link)`
@@ -113,16 +128,8 @@ const StyledNavItemLink = styled(Link)`
   ${(props) =>
     props.last &&
     css`
-      position: absolute;
-      bottom: 0;
-
       @media (min-width: 1024px) {
         font-size: 1.8rem;
-      }
-
-      @media (min-width: 1440px) {
-        right: 0;
-        width: auto;
       }
     `}
 `;
@@ -208,12 +215,6 @@ class Header extends React.Component {
     this.setState((prevState) => ({
       expanded: !prevState.expanded,
     }));
-
-    if (this.state.expanded) {
-      document.body.style.overflow = "unset";
-    } else {
-      document.body.style.overflow = "hidden";
-    }
   };
 
   render() {
@@ -245,7 +246,7 @@ class Header extends React.Component {
             {/* <StyledNavItem>
               <StyledNavItemLink to={routes.quizWords}>Vocabulary quiz</StyledNavItemLink>
             </StyledNavItem> */}
-            <StyledNavItem>
+            <StyledNavItem last="true">
               <StyledNavItemLink onClick={logoutAction} to={routes.login} last="true">
                 Wyloguj
               </StyledNavItemLink>
