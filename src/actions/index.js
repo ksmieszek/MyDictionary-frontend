@@ -97,7 +97,7 @@ export const signUp = (username, password) => (dispatch) => {
   dispatch({ type: SIGNUP_REQUEST });
 
   return axios
-    .post("http://localhost:9000/api/user/register", {
+    .post("http://localhost:1337/user/register", {
       username,
       password,
     })
@@ -114,7 +114,7 @@ export const login = (username, password) => (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
 
   return axios
-    .post("http://localhost:9000/api/user/login", {
+    .post("http://localhost:1337/user/login", {
       username,
       password,
     })
@@ -136,7 +136,7 @@ export const addWords = (words) => (dispatch, getState) => {
 
   const { firstWord, secondWord, firstLanguage, secondLanguage } = words;
   return axios
-    .post("http://localhost:9000/api/add/words", {
+    .post("http://localhost:1337/add/words", {
       firstWord,
       secondWord,
       firstLanguage,
@@ -161,7 +161,7 @@ export const fetchWords = (firstLanguage, secondLanguage) => (dispatch, getState
   dispatch({ type: FETCH_WORDS_REQUEST });
 
   return axios
-    .post("http://localhost:9000/api/show/words", {
+    .post("http://localhost:1337/show/words", {
       firstLanguage,
       secondLanguage,
       userID: getState().userID,
@@ -185,7 +185,7 @@ export const editWords =
     dispatch({ type: UPDATE_WORDS_REQUEST });
 
     return axios
-      .put(`http://localhost:9000/api/edit/words/${wordsId}`, {
+      .put(`http://localhost:1337/edit/words/${wordsId}`, {
         _id: wordsId,
         firstWord,
         secondWord,
@@ -211,7 +211,7 @@ export const deleteWords = (wordsId) => (dispatch) => {
   dispatch({ type: DELETE_WORDS_REQUEST });
 
   return axios
-    .delete(`http://localhost:9000/api/delete/words/${wordsId}`)
+    .delete(`http://localhost:1337/delete/words/${wordsId}`)
     .then(() => {
       dispatch({
         type: DELETE_WORDS_SUCCESS,
@@ -232,7 +232,7 @@ export const addLanguage =
     dispatch({ type: ADD_LANGUAGE_REQUEST });
 
     return axios
-      .post("http://localhost:9000/api/add/language", {
+      .post("http://localhost:1337/add/language", {
         name,
         userID: getState().userID,
       })
@@ -254,7 +254,7 @@ export const fetchLanguages = () => (dispatch, getState) => {
   dispatch({ type: FETCH_LANGUAGES_REQUEST });
 
   return axios
-    .post("http://localhost:9000/api/show/languages", {
+    .post("http://localhost:1337/show/languages", {
       userID: getState().userID,
     })
     .then(({ data }) => {
@@ -275,7 +275,7 @@ export const editLanguage = (name, languageId) => (dispatch, getState) => {
   dispatch({ type: UPDATE_LANGUAGE_REQUEST });
 
   return axios
-    .put(`http://localhost:9000/api/edit/language/${languageId}`, {
+    .put(`http://localhost:1337/edit/language/${languageId}`, {
       _id: languageId,
       name,
       userID: getState().userID,
@@ -298,7 +298,7 @@ export const deleteLanguage = (languageId) => (dispatch) => {
   dispatch({ type: DELETE_LANGUAGE_REQUEST });
 
   return axios
-    .delete(`http://localhost:9000/api/delete/language/${languageId}`)
+    .delete(`http://localhost:1337/delete/language/${languageId}`)
     .then(() => {
       dispatch({
         type: DELETE_LANGUAGE_SUCCESS,
@@ -319,7 +319,7 @@ export const addActiveLanguages = (newActiveLanguage) => (dispatch, getState) =>
   dispatch({ type: ADD_ACTIVE_LANGUAGE_REQUEST });
 
   return axios
-    .post("http://localhost:9000/api/add/active/language", {
+    .post("http://localhost:1337/add/active/language", {
       languageId,
       name,
       chosen,
@@ -343,7 +343,7 @@ export const fetchActiveLanguages = () => (dispatch, getState) => {
   dispatch({ type: FETCH_ACTIVE_LANGUAGES_REQUEST });
 
   return axios
-    .post("http://localhost:9000/api/show/active/languages", {
+    .post("http://localhost:1337/show/active/languages", {
       userID: getState().userID,
     })
     .then(({ data }) => {
@@ -366,7 +366,7 @@ export const editActiveLanguage = (newActiveLanguage, activeLanguageId) => (disp
   dispatch({ type: UPDATE_ACTIVE_LANGUAGES_REQUEST });
 
   return axios
-    .put(`http://localhost:9000/api/edit/active/language/${activeLanguageId}`, {
+    .put(`http://localhost:1337/edit/active/language/${activeLanguageId}`, {
       languageId,
       name,
       chosen,
@@ -389,7 +389,7 @@ export const deleteActiveLanguage = (activeLanguageId) => (dispatch) => {
   dispatch({ type: DELETE_ACTIVE_LANGUAGES_REQUEST });
 
   return axios
-    .delete(`http://localhost:9000/api/delete/active/language/${activeLanguageId}`)
+    .delete(`http://localhost:1337/delete/active/language/${activeLanguageId}`)
     .then(() => {
       dispatch({
         type: DELETE_ACTIVE_LANGUAGES_SUCCESS,
@@ -410,7 +410,7 @@ export const addPhoto =
     dispatch({ type: ADD_PHOTO_REQUEST });
 
     return axios
-      .post("http://localhost:9000/api/add/photo", {
+      .post("http://localhost:1337/add/photo", {
         photoSource,
         photoName,
         title,
@@ -435,7 +435,7 @@ export const fetchPhotos = () => (dispatch, getState) => {
   dispatch({ type: FETCH_PHOTOS_REQUEST });
 
   return axios
-    .post("http://localhost:9000/api/show/photos", {
+    .post("http://localhost:1337/show/photos", {
       userID: getState().userID,
     })
     .then(({ data }) => {
@@ -458,7 +458,7 @@ export const editPhoto =
     dispatch({ type: UPDATE_PHOTO_REQUEST });
 
     return axios
-      .put(`http://localhost:9000/api/edit/photo/${photoId}`, {
+      .put(`http://localhost:1337/edit/photo/${photoId}`, {
         _id: photoId,
         photoSource,
         photoName,
@@ -484,7 +484,7 @@ export const deletePhoto = (photoId) => (dispatch) => {
   dispatch({ type: DELETE_PHOTO_REQUEST });
 
   return axios
-    .delete(`http://localhost:9000/api/delete/photo/${photoId}`)
+    .delete(`http://localhost:1337/delete/photo/${photoId}`)
     .then(() => {
       dispatch({
         type: DELETE_PHOTO_SUCCESS,
@@ -504,7 +504,7 @@ export const addTexts = (texts) => (dispatch, getState) => {
 
   const { title, firstText, secondText, firstLanguage, secondLanguage } = texts;
   return axios
-    .post("http://localhost:9000/api/add/texts", {
+    .post("http://localhost:1337/add/texts", {
       title,
       firstText,
       secondText,
@@ -530,7 +530,7 @@ export const fetchTexts = (firstLanguage, secondLanguage) => (dispatch, getState
   dispatch({ type: FETCH_TEXTS_REQUEST });
 
   return axios
-    .post("http://localhost:9000/api/show/texts", {
+    .post("http://localhost:1337/show/texts", {
       firstLanguage,
       secondLanguage,
       userID: getState().userID,
@@ -554,7 +554,7 @@ export const editTexts =
     dispatch({ type: UPDATE_TEXTS_REQUEST });
 
     return axios
-      .put(`http://localhost:9000/api/edit/texts/${textsId}`, {
+      .put(`http://localhost:1337/edit/texts/${textsId}`, {
         _id: textsId,
         title,
         firstText,
@@ -581,7 +581,7 @@ export const deleteTexts = (textsId) => (dispatch) => {
   dispatch({ type: DELETE_TEXTS_REQUEST });
 
   return axios
-    .delete(`http://localhost:9000/api/delete/texts/${textsId}`)
+    .delete(`http://localhost:1337/delete/texts/${textsId}`)
     .then(() => {
       dispatch({
         type: DELETE_TEXTS_SUCCESS,

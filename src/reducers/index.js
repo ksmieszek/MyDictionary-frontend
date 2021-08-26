@@ -91,10 +91,10 @@ const rootReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case LOGIN_SUCCESS:
-      localStorage.setItem("userID", `${action.payload.data._id}`);
+      localStorage.setItem("userID", `${action.payload.data[0]._id}`);
       state = {
         ...state,
-        userID: action.payload.data._id,
+        userID: action.payload.data[0]._id,
       };
       break;
 
