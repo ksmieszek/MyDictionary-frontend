@@ -15,7 +15,7 @@ const SignUpPage = (props) => {
       <StyledHeading>Zarejestruj się</StyledHeading>
       <SignUpForm />
       <Paragraph>
-        Posiadasz już konto? <Hyperlink href={routes.login}>Zaloguj się</Hyperlink>
+        Posiadasz już konto? <Hyperlink to={routes.login}>Zaloguj się</Hyperlink>
       </Paragraph>
     </AuthorizationTemplate>
   );

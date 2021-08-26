@@ -15,7 +15,7 @@ const LoginPage = (props) => {
       <StyledHeading>Zaloguj się</StyledHeading>
       <LoginForm />
       <Paragraph>
-        Nie masz konta? <Hyperlink href={routes.signup}>Zarejestruj się</Hyperlink>
+        Nie masz konta? <Hyperlink to={routes.signup}>Zarejestruj się</Hyperlink>
       </Paragraph>
     </AuthorizationTemplate>
   );
