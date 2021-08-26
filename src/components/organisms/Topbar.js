@@ -156,36 +156,32 @@ const StyledHamburgerLine = styled.div`
   position: relative;
   width: 100%;
   height: 2px;
-  background-color: white;
+  background-color: #ccc;
 
   ::before,
   ::after {
     position: absolute;
-    width: 100%;
+    top: 0;
+    left: 50%;
+    width: 70%;
     height: 2px;
     display: block;
     content: "";
-    background-color: white;
+    background-color: #ccc;
     transition: all 0.3s ease;
-
-    @media (min-width: 1024px) {
-      height: 3px;
-    }
   }
   ::before {
-    transform: translateY(-7px);
+    transform: translate(-50%, -7px);
 
     @media (min-width: 1024px) {
-      transform: translateY(-9px);
-      height: 3px;
+      transform: translate(-50%, -8px);
     }
   }
   ::after {
-    transform: translateY(7px);
+    transform: translate(-50%, 7px);
 
     @media (min-width: 1024px) {
-      transform: translateY(9px);
-      height: 3px;
+      transform: translate(-50%, 8px);
     }
   }
 
@@ -194,16 +190,12 @@ const StyledHamburgerLine = styled.div`
     css`
       background-color: transparent;
       ::before {
-        transform: translateY(0) rotate(-45deg);
+        transform: translate(-50%, 0) rotate(-45deg);
       }
       ::after {
-        transform: translateY(0) rotate(45deg);
+        transform: translate(-50%, 0) rotate(45deg);
       }
     `}
-
-  @media (min-width: 1024px) {
-    height: 3px;
-  }
 `;
 
 class Header extends React.Component {
