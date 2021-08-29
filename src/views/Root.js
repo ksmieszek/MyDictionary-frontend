@@ -5,7 +5,6 @@ import store from "store/index";
 import routes from "routes/index";
 import ProtectedRoute from "routes/ProtectedRoute";
 import MainTemplate from "templates/MainTemplate";
-import GuessWord from "views/GuessWord";
 import Words from "views/Words";
 import Languages from "views/Languages";
 import Photos from "views/Photos";
@@ -27,7 +26,6 @@ class Root extends React.Component {
               <Route exact path={routes.home} render={() => <Redirect to={routes.login} />} />
               <Route path={routes.login} component={LoginPage} />
               <Route path={routes.signup} component={SignUpPage} />
-              <ProtectedRoute path={routes.quizWords} component={GuessWord} />
               <ProtectedRoute path={routes.words} component={Words} />
               <ProtectedRoute path={routes.languages} component={Languages} />
               <ProtectedRoute path={routes.photos} component={Photos} />

@@ -235,9 +235,6 @@ class Header extends React.Component {
             <StyledNavItem>
               <StyledNavItemLink to={routes.languages}>Języki</StyledNavItemLink>
             </StyledNavItem>
-            {/* <StyledNavItem>
-              <StyledNavItemLink to={routes.quizWords}>Vocabulary quiz</StyledNavItemLink>
-            </StyledNavItem> */}
             <StyledNavItem last="true">
               <StyledNavItemLink onClick={logoutAction} to={routes.login} last="true">
                 Wyloguj

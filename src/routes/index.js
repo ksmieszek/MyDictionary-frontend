@@ -2,7 +2,6 @@ const routes = {
   home: "/",
   login: "/login",
   signup: "/signup",
-  quizWords: "/quiz/words",
   words: "/words",
   languages: "/languages",
   photos: "/photos",
