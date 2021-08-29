@@ -1,100 +1,8 @@
 import axios from "axios";
+import action from "utilities/ReduxActionNames";
 
-export const FETCH_WORDS_REQUEST = "FETCH_WORDS_REQUEST";
-export const FETCH_WORDS_SUCCESS = "FETCH_WORDS_SUCCESS";
-export const FETCH_WORDS_FAILURE = "FETCH_WORDS_FAILURE";
-
-export const ADD_WORDS_REQUEST = "ADD_WORDS_REQUEST";
-export const ADD_WORDS_SUCCESS = "ADD_WORDS_SUCCESS";
-export const ADD_WORDS_FAILURE = "ADD_WORDS_FAILURE";
-
-export const DELETE_WORDS_REQUEST = "DELETE_WORDS_REQUEST";
-export const DELETE_WORDS_SUCCESS = "DELETE_WORDS_SUCCESS";
-export const DELETE_WORDS_FAILURE = "DELETE_WORDS_FAILURE";
-
-export const FETCH_LANGUAGES_REQUEST = "FETCH_LANGUAGES_REQUEST";
-export const FETCH_LANGUAGES_SUCCESS = "FETCH_LANGUAGES_SUCCESS";
-export const FETCH_LANGUAGES_FAILURE = "FETCH_LANGUAGES_FAILURE";
-
-export const ADD_LANGUAGE_REQUEST = "ADD_LANGUAGE_REQUEST";
-export const ADD_LANGUAGE_SUCCESS = "ADD_LANGUAGE_SUCCESS";
-export const ADD_LANGUAGE_FAILURE = "ADD_LANGUAGE_FAILURE";
-
-export const DELETE_LANGUAGE_REQUEST = "DELETE_LANGUAGE_REQUEST";
-export const DELETE_LANGUAGE_SUCCESS = "DELETE_LANGUAGE_SUCCESS";
-export const DELETE_LANGUAGE_FAILURE = "DELETE_LANGUAGE_FAILURE";
-
-export const FETCH_ACTIVE_LANGUAGES_REQUEST = "FETCH_ACTIVE_LANGUAGES_REQUEST";
-export const FETCH_ACTIVE_LANGUAGES_SUCCESS = "FETCH_ACTIVE_LANGUAGES_SUCCESS";
-export const FETCH_ACTIVE_LANGUAGES_FAILURE = "FETCH_ACTIVE_LANGUAGES_FAILURE";
-
-export const ADD_ACTIVE_LANGUAGE_REQUEST = "ADD_ACTIVE_LANGUAGE_REQUEST";
-export const ADD_ACTIVE_LANGUAGE_SUCCESS = "ADD_ACTIVE_LANGUAGE_SUCCESS";
-export const ADD_ACTIVE_LANGUAGE_FAILURE = "ADD_ACTIVE_LANGUAGE_FAILURE";
-
-export const UPDATE_ACTIVE_LANGUAGES_REQUEST = "UPDATE_ACTIVE_LANGUAGES_REQUEST";
-export const UPDATE_ACTIVE_LANGUAGES_SUCCESS = "UPDATE_ACTIVE_LANGUAGES_SUCCESS";
-export const UPDATE_ACTIVE_LANGUAGES_FAILURE = "UPDATE_ACTIVE_LANGUAGES_FAILURE";
-
-export const DELETE_ACTIVE_LANGUAGES_REQUEST = "DELETE_ACTIVE_LANGUAGES_REQUEST";
-export const DELETE_ACTIVE_LANGUAGES_SUCCESS = "DELETE_ACTIVE_LANGUAGES_SUCCESS";
-export const DELETE_ACTIVE_LANGUAGES_FAILURE = "DELETE_ACTIVE_LANGUAGES_FAILURE";
-
-export const ADD_PHOTO_REQUEST = "ADD_PHOTO_REQUEST";
-export const ADD_PHOTO_SUCCESS = "ADD_PHOTO_SUCCESS";
-export const ADD_PHOTO_FAILURE = "ADD_PHOTO_FAILURE";
-
-export const FETCH_PHOTOS_REQUEST = "FETCH_PHOTOS_REQUEST";
-export const FETCH_PHOTOS_SUCCESS = "FETCH_PHOTOS_SUCCESS";
-export const FETCH_PHOTOS_FAILURE = "FETCH_PHOTOS_FAILURE";
-
-export const DELETE_PHOTO_REQUEST = "DELETE_PHOTO_REQUEST";
-export const DELETE_PHOTO_SUCCESS = "DELETE_PHOTO_SUCCESS";
-export const DELETE_PHOTO_FAILURE = "DELETE_PHOTO_FAILURE";
-
-export const ADD_TEXTS_REQUEST = "ADD_TEXTS_REQUEST";
-export const ADD_TEXTS_SUCCESS = "ADD_TEXTS_SUCCESS";
-export const ADD_TEXTS_FAILURE = "ADD_TEXTS_FAILURE";
-
-export const FETCH_TEXTS_REQUEST = "FETCH_TEXTS_REQUEST";
-export const FETCH_TEXTS_SUCCESS = "FETCH_TEXTS_SUCCESS";
-export const FETCH_TEXTS_FAILURE = "FETCH_TEXTS_FAILURE";
-
-export const DELETE_TEXTS_REQUEST = "DELETE_TEXTS_REQUEST";
-export const DELETE_TEXTS_SUCCESS = "DELETE_TEXTS_SUCCESS";
-export const DELETE_TEXTS_FAILURE = "DELETE_TEXTS_FAILURE";
-
-export const LOGIN_REQUEST = "LOGIN_REQUEST";
-export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
-export const LOGIN_FAILURE = "LOGIN_FAILURE";
-
-export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
-export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
-export const LOGOUT_FAILURE = "LOGOUT_FAILURE";
-
-export const UPDATE_LANGUAGE_REQUEST = "UPDATE_LANGUAGE_REQUEST";
-export const UPDATE_LANGUAGE_SUCCESS = "UPDATE_LANGUAGE_SUCCESS";
-export const UPDATE_LANGUAGE_FAILURE = "UPDATE_LANGUAGE_FAILURE";
-
-export const UPDATE_WORDS_REQUEST = "UPDATE_WORDS_REQUEST";
-export const UPDATE_WORDS_SUCCESS = "UPDATE_WORDS_SUCCESS";
-export const UPDATE_WORDS_FAILURE = "UPDATE_WORDS_FAILURE";
-
-export const UPDATE_PHOTO_REQUEST = "UPDATE_PHOTO_REQUEST";
-export const UPDATE_PHOTO_SUCCESS = "UPDATE_PHOTO_SUCCESS";
-export const UPDATE_PHOTO_FAILURE = "UPDATE_PHOTO_FAILURE";
-
-export const UPDATE_TEXTS_REQUEST = "UPDATE_TEXTS_REQUEST";
-export const UPDATE_TEXTS_SUCCESS = "UPDATE_TEXTS_SUCCESS";
-export const UPDATE_TEXTS_FAILURE = "UPDATE_TEXTS_FAILURE";
-
-export const SIGNUP_REQUEST = "SIGNUP_REQUEST";
-export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
-export const SIGNUP_FAILURE = "SIGNUP_FAILURE";
-
-//dispathcowalo sie to jak sie cos chyba zmienialo w reduxie
 export const signUp = (username, password) => (dispatch) => {
-  dispatch({ type: SIGNUP_REQUEST });
+  dispatch({ type: action.SIGNUP_REQUEST });
 
   return axios
     .post("http://localhost:1337/user/register", {
@@ -102,16 +10,16 @@ export const signUp = (username, password) => (dispatch) => {
       password,
     })
     .then((payload) => {
-      dispatch({ type: SIGNUP_SUCCESS });
+      dispatch({ type: action.SIGNUP_SUCCESS });
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: SIGNUP_FAILURE });
+      dispatch({ type: action.SIGNUP_FAILURE });
     });
 };
 
 export const login = (username, password) => (dispatch) => {
-  dispatch({ type: LOGIN_REQUEST });
+  dispatch({ type: action.LOGIN_REQUEST });
 
   return axios
     .post("http://localhost:1337/user/login", {
@@ -119,20 +27,20 @@ export const login = (username, password) => (dispatch) => {
       password,
     })
     .then((payload) => {
-      dispatch({ type: LOGIN_SUCCESS, payload });
+      dispatch({ type: action.LOGIN_SUCCESS, payload });
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: LOGIN_FAILURE });
+      dispatch({ type: action.LOGIN_FAILURE });
     });
 };
 
 export const logout = () => (dispatch) => {
-  return dispatch({ type: LOGOUT_SUCCESS, undefined });
+  return dispatch({ type: action.LOGOUT_SUCCESS, undefined });
 };
 
 export const addWords = (words) => (dispatch, getState) => {
-  dispatch({ type: ADD_WORDS_REQUEST });
+  dispatch({ type: action.ADD_WORDS_REQUEST });
 
   const { firstWord, secondWord, firstLanguage, secondLanguage } = words;
   return axios
@@ -145,7 +53,7 @@ export const addWords = (words) => (dispatch, getState) => {
     })
     .then(({ data }) => {
       dispatch({
-        type: ADD_WORDS_SUCCESS,
+        type: action.ADD_WORDS_SUCCESS,
         payload: {
           data,
         },
@@ -153,12 +61,12 @@ export const addWords = (words) => (dispatch, getState) => {
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: ADD_WORDS_FAILURE });
+      dispatch({ type: action.ADD_WORDS_FAILURE });
     });
 };
 
 export const fetchWords = (firstLanguage, secondLanguage) => (dispatch, getState) => {
-  dispatch({ type: FETCH_WORDS_REQUEST });
+  dispatch({ type: action.FETCH_WORDS_REQUEST });
 
   return axios
     .post("http://localhost:1337/show/words", {
@@ -168,21 +76,21 @@ export const fetchWords = (firstLanguage, secondLanguage) => (dispatch, getState
     })
     .then(({ data }) => {
       dispatch({
-        type: FETCH_WORDS_SUCCESS,
+        type: action.FETCH_WORDS_SUCCESS,
         payload: {
           data,
         },
       });
     })
     .catch((err) => {
-      dispatch({ type: FETCH_WORDS_FAILURE });
+      dispatch({ type: action.FETCH_WORDS_FAILURE });
     });
 };
 
 export const editWords =
   ({ wordsId, firstWord, secondWord, firstLanguage, secondLanguage }) =>
   (dispatch, getState) => {
-    dispatch({ type: UPDATE_WORDS_REQUEST });
+    dispatch({ type: action.UPDATE_WORDS_REQUEST });
 
     return axios
       .put(`http://localhost:1337/edit/words/${wordsId}`, {
@@ -195,7 +103,7 @@ export const editWords =
       })
       .then(({ data }) => {
         dispatch({
-          type: UPDATE_WORDS_SUCCESS,
+          type: action.UPDATE_WORDS_SUCCESS,
           payload: {
             data,
           },
@@ -203,18 +111,18 @@ export const editWords =
       })
       .catch((err) => {
         console.log(err);
-        dispatch({ type: UPDATE_WORDS_FAILURE });
+        dispatch({ type: action.UPDATE_WORDS_FAILURE });
       });
   };
 
 export const deleteWords = (wordsId) => (dispatch) => {
-  dispatch({ type: DELETE_WORDS_REQUEST });
+  dispatch({ type: action.DELETE_WORDS_REQUEST });
 
   return axios
     .delete(`http://localhost:1337/delete/words/${wordsId}`)
     .then(() => {
       dispatch({
-        type: DELETE_WORDS_SUCCESS,
+        type: action.DELETE_WORDS_SUCCESS,
         payload: {
           wordsId,
         },
@@ -222,14 +130,14 @@ export const deleteWords = (wordsId) => (dispatch) => {
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: DELETE_WORDS_FAILURE });
+      dispatch({ type: action.DELETE_WORDS_FAILURE });
     });
 };
 
 export const addLanguage =
   ({ name }) =>
   (dispatch, getState) => {
-    dispatch({ type: ADD_LANGUAGE_REQUEST });
+    dispatch({ type: action.ADD_LANGUAGE_REQUEST });
 
     return axios
       .post("http://localhost:1337/add/language", {
@@ -238,7 +146,7 @@ export const addLanguage =
       })
       .then(({ data }) => {
         dispatch({
-          type: ADD_LANGUAGE_SUCCESS,
+          type: action.ADD_LANGUAGE_SUCCESS,
           payload: {
             data,
           },
@@ -246,12 +154,12 @@ export const addLanguage =
       })
       .catch((err) => {
         console.log(err);
-        dispatch({ type: ADD_LANGUAGE_FAILURE });
+        dispatch({ type: action.ADD_LANGUAGE_FAILURE });
       });
   };
 
 export const fetchLanguages = () => (dispatch, getState) => {
-  dispatch({ type: FETCH_LANGUAGES_REQUEST });
+  dispatch({ type: action.FETCH_LANGUAGES_REQUEST });
 
   return axios
     .post("http://localhost:1337/show/languages", {
@@ -259,7 +167,7 @@ export const fetchLanguages = () => (dispatch, getState) => {
     })
     .then(({ data }) => {
       dispatch({
-        type: FETCH_LANGUAGES_SUCCESS,
+        type: action.FETCH_LANGUAGES_SUCCESS,
         payload: {
           data,
         },
@@ -267,12 +175,12 @@ export const fetchLanguages = () => (dispatch, getState) => {
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: FETCH_LANGUAGES_FAILURE });
+      dispatch({ type: action.FETCH_LANGUAGES_FAILURE });
     });
 };
 
 export const editLanguage = (name, languageId) => (dispatch, getState) => {
-  dispatch({ type: UPDATE_LANGUAGE_REQUEST });
+  dispatch({ type: action.UPDATE_LANGUAGE_REQUEST });
 
   return axios
     .put(`http://localhost:1337/edit/language/${languageId}`, {
@@ -282,7 +190,7 @@ export const editLanguage = (name, languageId) => (dispatch, getState) => {
     })
     .then(({ data }) => {
       dispatch({
-        type: UPDATE_LANGUAGE_SUCCESS,
+        type: action.UPDATE_LANGUAGE_SUCCESS,
         payload: {
           data,
         },
@@ -290,18 +198,18 @@ export const editLanguage = (name, languageId) => (dispatch, getState) => {
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: UPDATE_LANGUAGE_FAILURE });
+      dispatch({ type: action.UPDATE_LANGUAGE_FAILURE });
     });
 };
 
 export const deleteLanguage = (languageId) => (dispatch) => {
-  dispatch({ type: DELETE_LANGUAGE_REQUEST });
+  dispatch({ type: action.DELETE_LANGUAGE_REQUEST });
 
   return axios
     .delete(`http://localhost:1337/delete/language/${languageId}`)
     .then(() => {
       dispatch({
-        type: DELETE_LANGUAGE_SUCCESS,
+        type: action.DELETE_LANGUAGE_SUCCESS,
         payload: {
           languageId,
         },
@@ -309,14 +217,14 @@ export const deleteLanguage = (languageId) => (dispatch) => {
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: DELETE_LANGUAGE_FAILURE });
+      dispatch({ type: action.DELETE_LANGUAGE_FAILURE });
     });
 };
 
 export const addActiveLanguages = (newActiveLanguage) => (dispatch, getState) => {
   const { _id: languageId, name, chosen } = newActiveLanguage;
 
-  dispatch({ type: ADD_ACTIVE_LANGUAGE_REQUEST });
+  dispatch({ type: action.ADD_ACTIVE_LANGUAGE_REQUEST });
 
   return axios
     .post("http://localhost:1337/add/active/language", {
@@ -327,7 +235,7 @@ export const addActiveLanguages = (newActiveLanguage) => (dispatch, getState) =>
     })
     .then(({ data }) => {
       dispatch({
-        type: ADD_ACTIVE_LANGUAGE_SUCCESS,
+        type: action.ADD_ACTIVE_LANGUAGE_SUCCESS,
         payload: {
           data,
         },
@@ -335,12 +243,12 @@ export const addActiveLanguages = (newActiveLanguage) => (dispatch, getState) =>
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: ADD_ACTIVE_LANGUAGE_FAILURE });
+      dispatch({ type: action.ADD_ACTIVE_LANGUAGE_FAILURE });
     });
 };
 
 export const fetchActiveLanguages = () => (dispatch, getState) => {
-  dispatch({ type: FETCH_ACTIVE_LANGUAGES_REQUEST });
+  dispatch({ type: action.FETCH_ACTIVE_LANGUAGES_REQUEST });
 
   return axios
     .post("http://localhost:1337/show/active/languages", {
@@ -348,7 +256,7 @@ export const fetchActiveLanguages = () => (dispatch, getState) => {
     })
     .then(({ data }) => {
       dispatch({
-        type: FETCH_ACTIVE_LANGUAGES_SUCCESS,
+        type: action.FETCH_ACTIVE_LANGUAGES_SUCCESS,
         payload: {
           data,
         },
@@ -356,14 +264,14 @@ export const fetchActiveLanguages = () => (dispatch, getState) => {
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: FETCH_ACTIVE_LANGUAGES_FAILURE });
+      dispatch({ type: action.FETCH_ACTIVE_LANGUAGES_FAILURE });
     });
 };
 
 export const editActiveLanguage = (newActiveLanguage, activeLanguageId) => (dispatch) => {
   const { languageId, name, chosen } = newActiveLanguage;
 
-  dispatch({ type: UPDATE_ACTIVE_LANGUAGES_REQUEST });
+  dispatch({ type: action.UPDATE_ACTIVE_LANGUAGES_REQUEST });
 
   return axios
     .put(`http://localhost:1337/edit/active/language/${activeLanguageId}`, {
@@ -373,7 +281,7 @@ export const editActiveLanguage = (newActiveLanguage, activeLanguageId) => (disp
     })
     .then(({ data }) => {
       dispatch({
-        type: UPDATE_ACTIVE_LANGUAGES_SUCCESS,
+        type: action.UPDATE_ACTIVE_LANGUAGES_SUCCESS,
         payload: {
           data,
         },
@@ -381,18 +289,18 @@ export const editActiveLanguage = (newActiveLanguage, activeLanguageId) => (disp
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: UPDATE_ACTIVE_LANGUAGES_FAILURE });
+      dispatch({ type: action.UPDATE_ACTIVE_LANGUAGES_FAILURE });
     });
 };
 
 export const deleteActiveLanguage = (activeLanguageId) => (dispatch) => {
-  dispatch({ type: DELETE_ACTIVE_LANGUAGES_REQUEST });
+  dispatch({ type: action.DELETE_ACTIVE_LANGUAGES_REQUEST });
 
   return axios
     .delete(`http://localhost:1337/delete/active/language/${activeLanguageId}`)
     .then(() => {
       dispatch({
-        type: DELETE_ACTIVE_LANGUAGES_SUCCESS,
+        type: action.DELETE_ACTIVE_LANGUAGES_SUCCESS,
         payload: {
           activeLanguageId,
         },
@@ -400,14 +308,14 @@ export const deleteActiveLanguage = (activeLanguageId) => (dispatch) => {
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: DELETE_ACTIVE_LANGUAGES_FAILURE });
+      dispatch({ type: action.DELETE_ACTIVE_LANGUAGES_FAILURE });
     });
 };
 
 export const addPhoto =
   ({ photoSource, photoName, title, description }) =>
   (dispatch, getState) => {
-    dispatch({ type: ADD_PHOTO_REQUEST });
+    dispatch({ type: action.ADD_PHOTO_REQUEST });
 
     return axios
       .post("http://localhost:1337/add/photo", {
@@ -419,7 +327,7 @@ export const addPhoto =
       })
       .then(({ data }) => {
         dispatch({
-          type: ADD_PHOTO_SUCCESS,
+          type: action.ADD_PHOTO_SUCCESS,
           payload: {
             data,
           },
@@ -427,12 +335,12 @@ export const addPhoto =
       })
       .catch((err) => {
         console.log(err);
-        dispatch({ type: ADD_PHOTO_FAILURE });
+        dispatch({ type: action.ADD_PHOTO_FAILURE });
       });
   };
 
 export const fetchPhotos = () => (dispatch, getState) => {
-  dispatch({ type: FETCH_PHOTOS_REQUEST });
+  dispatch({ type: action.FETCH_PHOTOS_REQUEST });
 
   return axios
     .post("http://localhost:1337/show/photos", {
@@ -440,7 +348,7 @@ export const fetchPhotos = () => (dispatch, getState) => {
     })
     .then(({ data }) => {
       dispatch({
-        type: FETCH_PHOTOS_SUCCESS,
+        type: action.FETCH_PHOTOS_SUCCESS,
         payload: {
           data,
         },
@@ -448,14 +356,14 @@ export const fetchPhotos = () => (dispatch, getState) => {
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: FETCH_PHOTOS_FAILURE });
+      dispatch({ type: action.FETCH_PHOTOS_FAILURE });
     });
 };
 
 export const editPhoto =
   ({ photoId, photoSource, photoName, title, description }) =>
   (dispatch, getState) => {
-    dispatch({ type: UPDATE_PHOTO_REQUEST });
+    dispatch({ type: action.UPDATE_PHOTO_REQUEST });
 
     return axios
       .put(`http://localhost:1337/edit/photo/${photoId}`, {
@@ -468,7 +376,7 @@ export const editPhoto =
       })
       .then(({ data }) => {
         dispatch({
-          type: UPDATE_PHOTO_SUCCESS,
+          type: action.UPDATE_PHOTO_SUCCESS,
           payload: {
             data,
           },
@@ -476,18 +384,18 @@ export const editPhoto =
       })
       .catch((err) => {
         console.log(err);
-        dispatch({ type: UPDATE_PHOTO_FAILURE });
+        dispatch({ type: action.UPDATE_PHOTO_FAILURE });
       });
   };
 
 export const deletePhoto = (photoId) => (dispatch) => {
-  dispatch({ type: DELETE_PHOTO_REQUEST });
+  dispatch({ type: action.DELETE_PHOTO_REQUEST });
 
   return axios
     .delete(`http://localhost:1337/delete/photo/${photoId}`)
     .then(() => {
       dispatch({
-        type: DELETE_PHOTO_SUCCESS,
+        type: action.DELETE_PHOTO_SUCCESS,
         payload: {
           photoId,
         },
@@ -495,12 +403,12 @@ export const deletePhoto = (photoId) => (dispatch) => {
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: DELETE_PHOTO_FAILURE });
+      dispatch({ type: action.DELETE_PHOTO_FAILURE });
     });
 };
 
 export const addTexts = (texts) => (dispatch, getState) => {
-  dispatch({ type: ADD_TEXTS_REQUEST });
+  dispatch({ type: action.ADD_TEXTS_REQUEST });
 
   const { title, firstText, secondText, firstLanguage, secondLanguage } = texts;
   return axios
@@ -514,7 +422,7 @@ export const addTexts = (texts) => (dispatch, getState) => {
     })
     .then(({ data }) => {
       dispatch({
-        type: ADD_TEXTS_SUCCESS,
+        type: action.ADD_TEXTS_SUCCESS,
         payload: {
           data,
         },
@@ -522,12 +430,12 @@ export const addTexts = (texts) => (dispatch, getState) => {
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: ADD_TEXTS_FAILURE });
+      dispatch({ type: action.ADD_TEXTS_FAILURE });
     });
 };
 
 export const fetchTexts = (firstLanguage, secondLanguage) => (dispatch, getState) => {
-  dispatch({ type: FETCH_TEXTS_REQUEST });
+  dispatch({ type: action.FETCH_TEXTS_REQUEST });
 
   return axios
     .post("http://localhost:1337/show/texts", {
@@ -537,21 +445,21 @@ export const fetchTexts = (firstLanguage, secondLanguage) => (dispatch, getState
     })
     .then(({ data }) => {
       dispatch({
-        type: FETCH_TEXTS_SUCCESS,
+        type: action.FETCH_TEXTS_SUCCESS,
         payload: {
           data,
         },
       });
     })
     .catch((err) => {
-      dispatch({ type: FETCH_TEXTS_FAILURE });
+      dispatch({ type: action.FETCH_TEXTS_FAILURE });
     });
 };
 
 export const editTexts =
   ({ textsId, title, firstText, secondText, firstLanguage, secondLanguage }) =>
   (dispatch, getState) => {
-    dispatch({ type: UPDATE_TEXTS_REQUEST });
+    dispatch({ type: action.UPDATE_TEXTS_REQUEST });
 
     return axios
       .put(`http://localhost:1337/edit/texts/${textsId}`, {
@@ -565,7 +473,7 @@ export const editTexts =
       })
       .then(({ data }) => {
         dispatch({
-          type: UPDATE_TEXTS_SUCCESS,
+          type: action.UPDATE_TEXTS_SUCCESS,
           payload: {
             data,
           },
@@ -573,18 +481,18 @@ export const editTexts =
       })
       .catch((err) => {
         console.log(err);
-        dispatch({ type: UPDATE_TEXTS_FAILURE });
+        dispatch({ type: action.UPDATE_TEXTS_FAILURE });
       });
   };
 
 export const deleteTexts = (textsId) => (dispatch) => {
-  dispatch({ type: DELETE_TEXTS_REQUEST });
+  dispatch({ type: action.DELETE_TEXTS_REQUEST });
 
   return axios
     .delete(`http://localhost:1337/delete/texts/${textsId}`)
     .then(() => {
       dispatch({
-        type: DELETE_TEXTS_SUCCESS,
+        type: action.DELETE_TEXTS_SUCCESS,
         payload: {
           textsId,
         },
@@ -592,6 +500,6 @@ export const deleteTexts = (textsId) => (dispatch) => {
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: DELETE_TEXTS_FAILURE });
+      dispatch({ type: action.DELETE_TEXTS_FAILURE });
     });
 };
