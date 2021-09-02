@@ -5,7 +5,7 @@ export const signUp = (username, password) => (dispatch) => {
   dispatch({ type: action.SIGNUP_REQUEST });
 
   return axios
-    .post("http://localhost:1337/user/register", {
+    .post("https://mydictionarystrapi.herokuapp.com/user/register", {
       username,
       password,
     })
@@ -22,7 +22,7 @@ export const login = (username, password) => (dispatch) => {
   dispatch({ type: action.LOGIN_REQUEST });
 
   return axios
-    .post("http://localhost:1337/user/login", {
+    .post("https://mydictionarystrapi.herokuapp.com/user/login", {
       username,
       password,
     })
@@ -44,7 +44,7 @@ export const addWords = (words) => (dispatch, getState) => {
 
   const { firstWord, secondWord, firstLanguage, secondLanguage } = words;
   return axios
-    .post("http://localhost:1337/add/words", {
+    .post("https://mydictionarystrapi.herokuapp.com/add/words", {
       firstWord,
       secondWord,
       firstLanguage,
@@ -69,7 +69,7 @@ export const fetchWords = (firstLanguage, secondLanguage) => (dispatch, getState
   dispatch({ type: action.FETCH_WORDS_REQUEST });
 
   return axios
-    .post("http://localhost:1337/show/words", {
+    .post("https://mydictionarystrapi.herokuapp.com/show/words", {
       firstLanguage,
       secondLanguage,
       userID: getState().userID,
@@ -93,7 +93,7 @@ export const editWords =
     dispatch({ type: action.UPDATE_WORDS_REQUEST });
 
     return axios
-      .put(`http://localhost:1337/edit/words/${wordsId}`, {
+      .put(`https://mydictionarystrapi.herokuapp.com/edit/words/${wordsId}`, {
         _id: wordsId,
         firstWord,
         secondWord,
@@ -119,7 +119,7 @@ export const deleteWords = (wordsId) => (dispatch) => {
   dispatch({ type: action.DELETE_WORDS_REQUEST });
 
   return axios
-    .delete(`http://localhost:1337/delete/words/${wordsId}`)
+    .delete(`https://mydictionarystrapi.herokuapp.com/delete/words/${wordsId}`)
     .then(() => {
       dispatch({
         type: action.DELETE_WORDS_SUCCESS,
@@ -140,7 +140,7 @@ export const addLanguage =
     dispatch({ type: action.ADD_LANGUAGE_REQUEST });
 
     return axios
-      .post("http://localhost:1337/add/language", {
+      .post("https://mydictionarystrapi.herokuapp.com/add/language", {
         name,
         userID: getState().userID,
       })
@@ -162,7 +162,7 @@ export const fetchLanguages = () => (dispatch, getState) => {
   dispatch({ type: action.FETCH_LANGUAGES_REQUEST });
 
   return axios
-    .post("http://localhost:1337/show/languages", {
+    .post("https://mydictionarystrapi.herokuapp.com/show/languages", {
       userID: getState().userID,
     })
     .then(({ data }) => {
@@ -183,7 +183,7 @@ export const editLanguage = (name, languageId) => (dispatch, getState) => {
   dispatch({ type: action.UPDATE_LANGUAGE_REQUEST });
 
   return axios
-    .put(`http://localhost:1337/edit/language/${languageId}`, {
+    .put(`https://mydictionarystrapi.herokuapp.com/edit/language/${languageId}`, {
       _id: languageId,
       name,
       userID: getState().userID,
@@ -206,7 +206,7 @@ export const deleteLanguage = (languageId) => (dispatch) => {
   dispatch({ type: action.DELETE_LANGUAGE_REQUEST });
 
   return axios
-    .delete(`http://localhost:1337/delete/language/${languageId}`)
+    .delete(`https://mydictionarystrapi.herokuapp.com/delete/language/${languageId}`)
     .then(() => {
       dispatch({
         type: action.DELETE_LANGUAGE_SUCCESS,
@@ -227,7 +227,7 @@ export const addActiveLanguages = (newActiveLanguage) => (dispatch, getState) =>
   dispatch({ type: action.ADD_ACTIVE_LANGUAGE_REQUEST });
 
   return axios
-    .post("http://localhost:1337/add/active/language", {
+    .post("https://mydictionarystrapi.herokuapp.com/add/active/language", {
       languageId,
       name,
       chosen,
@@ -251,7 +251,7 @@ export const fetchActiveLanguages = () => (dispatch, getState) => {
   dispatch({ type: action.FETCH_ACTIVE_LANGUAGES_REQUEST });
 
   return axios
-    .post("http://localhost:1337/show/active/languages", {
+    .post("https://mydictionarystrapi.herokuapp.com/show/active/languages", {
       userID: getState().userID,
     })
     .then(({ data }) => {
@@ -274,7 +274,7 @@ export const editActiveLanguage = (newActiveLanguage, activeLanguageId) => (disp
   dispatch({ type: action.UPDATE_ACTIVE_LANGUAGES_REQUEST });
 
   return axios
-    .put(`http://localhost:1337/edit/active/language/${activeLanguageId}`, {
+    .put(`https://mydictionarystrapi.herokuapp.com/edit/active/language/${activeLanguageId}`, {
       languageId,
       name,
       chosen,
@@ -297,7 +297,7 @@ export const deleteActiveLanguage = (activeLanguageId) => (dispatch) => {
   dispatch({ type: action.DELETE_ACTIVE_LANGUAGES_REQUEST });
 
   return axios
-    .delete(`http://localhost:1337/delete/active/language/${activeLanguageId}`)
+    .delete(`https://mydictionarystrapi.herokuapp.com/delete/active/language/${activeLanguageId}`)
     .then(() => {
       dispatch({
         type: action.DELETE_ACTIVE_LANGUAGES_SUCCESS,
@@ -318,7 +318,7 @@ export const addPhoto =
     dispatch({ type: action.ADD_PHOTO_REQUEST });
 
     return axios
-      .post("http://localhost:1337/add/photo", {
+      .post("https://mydictionarystrapi.herokuapp.com/add/photo", {
         photoSource,
         photoName,
         title,
@@ -343,7 +343,7 @@ export const fetchPhotos = () => (dispatch, getState) => {
   dispatch({ type: action.FETCH_PHOTOS_REQUEST });
 
   return axios
-    .post("http://localhost:1337/show/photos", {
+    .post("https://mydictionarystrapi.herokuapp.com/show/photos", {
       userID: getState().userID,
     })
     .then(({ data }) => {
@@ -366,7 +366,7 @@ export const editPhoto =
     dispatch({ type: action.UPDATE_PHOTO_REQUEST });
 
     return axios
-      .put(`http://localhost:1337/edit/photo/${photoId}`, {
+      .put(`https://mydictionarystrapi.herokuapp.com/edit/photo/${photoId}`, {
         _id: photoId,
         photoSource,
         photoName,
@@ -392,7 +392,7 @@ export const deletePhoto = (photoId) => (dispatch) => {
   dispatch({ type: action.DELETE_PHOTO_REQUEST });
 
   return axios
-    .delete(`http://localhost:1337/delete/photo/${photoId}`)
+    .delete(`https://mydictionarystrapi.herokuapp.com/delete/photo/${photoId}`)
     .then(() => {
       dispatch({
         type: action.DELETE_PHOTO_SUCCESS,
@@ -412,7 +412,7 @@ export const addTexts = (texts) => (dispatch, getState) => {
 
   const { title, firstText, secondText, firstLanguage, secondLanguage } = texts;
   return axios
-    .post("http://localhost:1337/add/texts", {
+    .post("https://mydictionarystrapi.herokuapp.com/add/texts", {
       title,
       firstText,
       secondText,
@@ -438,7 +438,7 @@ export const fetchTexts = (firstLanguage, secondLanguage) => (dispatch, getState
   dispatch({ type: action.FETCH_TEXTS_REQUEST });
 
   return axios
-    .post("http://localhost:1337/show/texts", {
+    .post("https://mydictionarystrapi.herokuapp.com/show/texts", {
       firstLanguage,
       secondLanguage,
       userID: getState().userID,
@@ -462,7 +462,7 @@ export const editTexts =
     dispatch({ type: action.UPDATE_TEXTS_REQUEST });
 
     return axios
-      .put(`http://localhost:1337/edit/texts/${textsId}`, {
+      .put(`https://mydictionarystrapi.herokuapp.com/edit/texts/${textsId}`, {
         _id: textsId,
         title,
         firstText,
@@ -489,7 +489,7 @@ export const deleteTexts = (textsId) => (dispatch) => {
   dispatch({ type: action.DELETE_TEXTS_REQUEST });
 
   return axios
-    .delete(`http://localhost:1337/delete/texts/${textsId}`)
+    .delete(`https://mydictionarystrapi.herokuapp.com/delete/texts/${textsId}`)
     .then(() => {
       dispatch({
         type: action.DELETE_TEXTS_SUCCESS,
